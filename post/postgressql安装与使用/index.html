@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>PostgresSQL安装与使用 - モルガンナの家</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="Morgana" /><meta name="description" content="系统版本 CentOS6.8 安装官方yum源 1 2 3 yum install https://download.postgresql.org/pub/repos/yum/9.6/redhat/rhel-6-x86_64/pgdg-centos96-9.6-3.noarch.rpm #查看postgres版本 yum list postgres* 安装软件 1 yum install postgresql96-server postgresql96-devel 初始化数据库 1 2 service postgresql-9.6 initdb 这里使用默认初始化位置：/va" /><meta name="keywords" content="Hugo, theme, even" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.54-DEV with even 4.0.0" />
+
+
+<link rel="canonical" href="http://linuxfunk.com/post/postgressql%E5%AE%89%E8%A3%85%E4%B8%8E%E4%BD%BF%E7%94%A8/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+<link href="/dist/even.c2a46f00.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="PostgresSQL安装与使用" />
+<meta property="og:description" content="系统版本 CentOS6.8 安装官方yum源 1 2 3 yum install https://download.postgresql.org/pub/repos/yum/9.6/redhat/rhel-6-x86_64/pgdg-centos96-9.6-3.noarch.rpm #查看postgres版本 yum list postgres* 安装软件 1 yum install postgresql96-server postgresql96-devel 初始化数据库 1 2 service postgresql-9.6 initdb 这里使用默认初始化位置：/va" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://linuxfunk.com/post/postgressql%E5%AE%89%E8%A3%85%E4%B8%8E%E4%BD%BF%E7%94%A8/" /><meta property="article:published_time" content="2017-03-23T16:30:33&#43;00:00"/>
+<meta property="article:modified_time" content="2017-03-23T16:30:33&#43;00:00"/>
+
+<meta itemprop="name" content="PostgresSQL安装与使用">
+<meta itemprop="description" content="系统版本 CentOS6.8 安装官方yum源 1 2 3 yum install https://download.postgresql.org/pub/repos/yum/9.6/redhat/rhel-6-x86_64/pgdg-centos96-9.6-3.noarch.rpm #查看postgres版本 yum list postgres* 安装软件 1 yum install postgresql96-server postgresql96-devel 初始化数据库 1 2 service postgresql-9.6 initdb 这里使用默认初始化位置：/va">
+
+
+<meta itemprop="datePublished" content="2017-03-23T16:30:33&#43;00:00" />
+<meta itemprop="dateModified" content="2017-03-23T16:30:33&#43;00:00" />
+<meta itemprop="wordCount" content="798">
+
+
+
+<meta itemprop="keywords" content="" />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="PostgresSQL安装与使用"/>
+<meta name="twitter:description" content="系统版本 CentOS6.8 安装官方yum源 1 2 3 yum install https://download.postgresql.org/pub/repos/yum/9.6/redhat/rhel-6-x86_64/pgdg-centos96-9.6-3.noarch.rpm #查看postgres版本 yum list postgres* 安装软件 1 yum install postgresql96-server postgresql96-devel 初始化数据库 1 2 service postgresql-9.6 initdb 这里使用默认初始化位置：/va"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">モルガンナの家</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">モルガンナの家</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">Categories</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">PostgresSQL安装与使用</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2017-03-23 </span>
+        
+          <span class="more-meta"> 798 words </span>
+          <span class="more-meta"> 2 mins read </span>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">Contents</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li>
+<ul>
+<li><a href="#系统版本">系统版本</a></li>
+<li><a href="#安装官方yum源">安装官方yum源</a></li>
+<li><a href="#安装软件">安装软件</a></li>
+<li><a href="#初始化数据库">初始化数据库</a></li>
+<li><a href="#启动数据库">启动数据库</a></li>
+<li><a href="#登录数据库">登录数据库</a></li>
+<li><a href="#创建数据库">创建数据库</a></li>
+<li><a href="#创建用户">创建用户</a></li>
+<li><a href="#给用户赋予权限">给用户赋予权限</a></li>
+<li><a href="#查看用户-使用数据库">查看用户 使用数据库</a></li>
+<li><a href="#创建表">创建表</a></li>
+<li><a href="#查看表">查看表</a></li>
+<li><a href="#修改表字段自增">修改表字段自增</a></li>
+<li><a href="#插入数据">插入数据</a></li>
+<li><a href="#查询数据">查询数据</a></li>
+<li><a href="#配置允许远程登录">配置允许远程登录</a></li>
+<li><a href="#配置用户访问权限">配置用户访问权限</a></li>
+<li><a href="#命令行登录">命令行登录</a></li>
+</ul></li>
+</ul></li>
+</ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      
+
+<h3 id="系统版本">系统版本</h3>
+
+<p>CentOS6.8</p>
+
+<h3 id="安装官方yum源">安装官方yum源</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">yum install https://download.postgresql.org/pub/repos/yum/9.6/redhat/rhel-6-x86_64/pgdg-centos96-9.6-3.noarch.rpm
+#查看postgres版本
+yum list postgres*</pre></td></tr></table>
+</div>
+</div>
+<h3 id="安装软件">安装软件</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt">1
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">yum install postgresql96-server postgresql96-devel</pre></td></tr></table>
+</div>
+</div>
+<h3 id="初始化数据库">初始化数据库</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt">1
+</span><span class="lnt">2
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">service postgresql-9.6 initdb
+这里使用默认初始化位置：/var/lib/pgsql/9.6/data/</pre></td></tr></table>
+</div>
+</div>
+<h3 id="启动数据库">启动数据库</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt">1
+</span><span class="lnt">2
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">chkconfig postgresql-9.6 on #设置开机自启动，可选
+service postgresql-9.6 start</pre></td></tr></table>
+</div>
+</div>
+<h3 id="登录数据库">登录数据库</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt">1
+</span><span class="lnt">2
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">su postgres
+psql</pre></td></tr></table>
+</div>
+</div>
+<h3 id="创建数据库">创建数据库</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt">1
+</span><span class="lnt">2
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">CREATE DATABASE villains;
+CREATE DATABASE villains ENCODING &#39;UTF-8&#39; #指定数据库编码，默认为utf-8</pre></td></tr></table>
+</div>
+</div>
+<h3 id="创建用户">创建用户</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt">1
+</span><span class="lnt">2
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">CREATE USER batman WITH PASSWORD &#39;Extremly-Secret-Password&#39;;  
+ALTER user postgres with password &#39;foobar&#39;; ＃修改密码</pre></td></tr></table>
+</div>
+</div>
+<h3 id="给用户赋予权限">给用户赋予权限</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">ALTER DATABASE villains owner to batman;　#改变数据库所有者
+GRANT ALL PRIVILEGES ON DATABASE villains to batman; 
+
+GRANT SELECT ON DATABASE villains to alfred;  #或者仅赋予部分权限
+可选权限如下：
+SELECT
+INSERT
+UPDATE
+DELETE
+RULE
+REFERENCES
+TRIGGER
+CREATE
+TEMPORARY
+EXECUTE
+USAGE</pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt">1
+</span><span class="lnt">2
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">可以在创建数据库的时候使用一个命令给予用户(create database, create user and grant all privileges)
+CREATE DATABASE villains OWNER batman;</pre></td></tr></table>
+</div>
+</div>
+<h3 id="查看用户-使用数据库">查看用户 使用数据库</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma"># \du 查看用户
+# \c villains 进入数据库
+# \l 查看当前所有数据库</pre></td></tr></table>
+</div>
+</div>
+<h3 id="创建表">创建表</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt">1
+</span><span class="lnt">2
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">CREATE TABLE super_villains (id serial PRIMARY KEY, name character varying(100), super_power character varying(100), weakness character varying(100));  
+CREATE TABLE equipment (id serial PRIMARY KEY, name character varying(100), status character varying(100), special_move character varying(100)); </pre></td></tr></table>
+</div>
+</div>
+<h3 id="查看表">查看表</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma"># \d 查看当前数据库所有表
+# \d+ equipment; 查看具体表，以及字段
+# SELECT *  FROM information_schema.columns  WHERE table_name = &#39;equipment&#39;;  查询语句</pre></td></tr></table>
+</div>
+</div>
+<h3 id="修改表字段自增">修改表字段自增</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">#我们创建表的时候id字段添加了serial,系统会为我们自动创建两个序列表equipment_id_seq and super_villains_id_seq
+#我们可以将他们绑定到id字段以实现自增(应该默认就绑定了)
+#ALTER table equipment alter id set default nextval(&#39;equipment_id_seq&#39;);  
+#ALTER table super_villains alter id set default nextval(&#39;super_villains_id_seq&#39;);</pre></td></tr></table>
+</div>
+</div>
+<h3 id="插入数据">插入数据</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt">1
+</span><span class="lnt">2
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">INSERT INTO equipment(name, status, special_move) VALUES(&#39;Utility Belt&#39;, &#39;Nice and yellow&#39;, &#39;All kind of cool stuff in your waist&#39;); 
+INSERT INTO super_villains(name, super_power, weakness) VALUES(&#39;The Joker&#39;, &#39;Extra Crazy&#39;, &#39;Super punch&#39;); </pre></td></tr></table>
+</div>
+</div>
+<h3 id="查询数据">查询数据</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt">1
+</span><span class="lnt">2
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">SELECT * from equipment;  
+SELECT * from super_villains; </pre></td></tr></table>
+</div>
+</div>
+<h3 id="配置允许远程登录">配置允许远程登录</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt">1
+</span><span class="lnt">2
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">#编辑/var/lib/pgsql/9.6/data/postgresql.conf
+#listen_addresses = &#39;localhost&#39;  替换为　listen_addresses = &#39;*&#39;  </pre></td></tr></table>
+</div>
+</div>
+<h3 id="配置用户访问权限">配置用户访问权限</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">在配置文件pg_hba.conf中,将peer, ident均改成md5，这样就可以像mysql一样使用用户名密码登录
+# &#34;local&#34; is for Unix domain socket connections only
+local   all             all                                     md5
+# IPv4 local connections:
+host    all             all             127.0.0.1/32            md5
+# IPv6 local connections:
+host    all             all             ::1/128                 md5</pre></td></tr></table>
+</div>
+</div>
+<h3 id="命令行登录">命令行登录</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma"># psql -U postgres postgres -h 127.0.0.1
+-U 指定登录用户 postgres
+第二个postgres指明登录的数据库
+-h 登录主机地址</pre></td></tr></table>
+</div>
+</div>
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">Author</span>
+    <span class="item-content">Morgana</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">LastMod</span>
+    <span class="item-content">2017-03-23</span>
+  </p>
+  
+  
+</div><footer class="post-footer">
+      
+      <nav class="post-nav">
+        <a class="prev" href="/post/zabbix-3-%E9%85%8D%E7%BD%AE%E9%82%AE%E4%BB%B6%E6%8A%A5%E8%AD%A6/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">zabbix 3 配置邮件报警</span>
+            <span class="prev-text nav-mobile">Prev</span>
+          </a>
+        <a class="next" href="/post/mysql-bind-dlz-%E5%AE%9E%E7%8E%B0%E6%99%BA%E8%83%BDdns/">
+            <span class="next-text nav-default">MySQL&#43;BIND-dlz 实现智能DNS</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:your@email.com" class="iconfont icon-email" title="email"></a>
+      <a href="http://localhost:1313" class="iconfont icon-stack-overflow" title="stack-overflow"></a>
+      <a href="http://localhost:1313" class="iconfont icon-twitter" title="twitter"></a>
+      <a href="http://localhost:1313" class="iconfont icon-facebook" title="facebook"></a>
+      <a href="http://localhost:1313" class="iconfont icon-linkedin" title="linkedin"></a>
+      <a href="http://localhost:1313" class="iconfont icon-google" title="google"></a>
+      <a href="http://localhost:1313" class="iconfont icon-github" title="github"></a>
+      <a href="http://localhost:1313" class="iconfont icon-weibo" title="weibo"></a>
+      <a href="http://localhost:1313" class="iconfont icon-zhihu" title="zhihu"></a>
+      <a href="http://localhost:1313" class="iconfont icon-douban" title="douban"></a>
+      <a href="http://localhost:1313" class="iconfont icon-pocket" title="pocket"></a>
+      <a href="http://localhost:1313" class="iconfont icon-tumblr" title="tumblr"></a>
+      <a href="http://localhost:1313" class="iconfont icon-instagram" title="instagram"></a>
+      <a href="http://localhost:1313" class="iconfont icon-gitlab" title="gitlab"></a>
+      <a href="http://localhost:1313" class="iconfont icon-bilibili" title="bilibili"></a>
+  <a href="http://linuxfunk.com/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2017 - 
+    2019
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">Morgana</span>
+  </span>
+</div>
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/dist/even.26188efa.min.js"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>モルガンナの家</title>
-    <link>http://linuxfunk.com/</link>
-    <description>Recent content on モルガンナの家</description>
+    <title>Posts on モルガンナの家</title>
+    <link>http://linuxfunk.com/post/</link>
+    <description>Recent content in Posts on モルガンナの家</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <lastBuildDate>Sat, 28 Apr 2018 14:08:45 +0000</lastBuildDate>
     
-	<atom:link href="http://linuxfunk.com/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="http://linuxfunk.com/post/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
@@ -201,15 +201,6 @@
       
       <guid>http://linuxfunk.com/post/nfs%E6%9C%8D%E5%8A%A1%E9%85%8D%E7%BD%AE/</guid>
       <description>一、NFS的相关概念 NFS（Network File System）即网络文件系统的缩写，由Sun公司研发，其目的是为了解决网络文件共享的问题。用户可</description>
-    </item>
-    
-    <item>
-      <title></title>
-      <link>http://linuxfunk.com/archives/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>http://linuxfunk.com/archives/</guid>
-      <description>type: archives</description>
     </item>
     
   </channel>
