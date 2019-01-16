@@ -1,0 +1,284 @@
+<!doctype html>
+<html lang="en-us">
+<head>
+
+    <meta charset="utf-8">
+    <meta name="generator" content="Hugo 0.54-DEV" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>用git hooks将静态文件部署到VPS | My New Hugo Site</title>
+    <meta property="og:title" content="用git hooks将静态文件部署到VPS - My New Hugo Site">
+    <meta property="og:type" content="article">
+        
+    <meta property="article:published_time" content="2017-11-03T15:56:46&#43;08:00">
+        
+        
+    <meta property="article:modified_time" content="2017-11-03T15:56:46&#43;08:00">
+        
+    <meta name="Keywords" content="">
+    <meta name="description" content="用git hooks将静态文件部署到VPS">
+        
+    <meta name="author" content="">
+    <meta property="og:url" content="http://linuxfunk.com/posts/%E7%94%A8git-hooks%E5%B0%86%E9%9D%99%E6%80%81%E6%96%87%E4%BB%B6%E9%83%A8%E7%BD%B2%E5%88%B0vps/">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+
+    <link rel="stylesheet" href="/css/normalize.css">
+    
+        <link rel="stylesheet" href="/css/prism.css">
+    
+    <link rel="stylesheet" href="/css/style.css">
+    <script type="text/javascript" src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+
+    
+
+
+    
+    
+</head>
+
+<body>
+<header id="header" class="clearfix">
+    <div class="container">
+        <div class="col-group">
+            <div class="site-name ">
+                
+                    <a id="logo" href="http://linuxfunk.com/">
+                        My New Hugo Site
+                    </a>
+                
+                
+            </div>
+            <div>
+                <nav id="nav-menu" class="clearfix">
+                    <a class="" href="http://linuxfunk.com/">首页</a>
+                    
+                </nav>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+<div id="body">
+    <div class="container">
+        <div class="col-group">
+
+            <div class="col-8" id="main">
+                <div class="res-cons">
+                    <article class="post">
+                        <header>
+                            <h1 class="post-title">用git hooks将静态文件部署到VPS</h1>
+                        </header>
+                        <date class="post-meta meta-date">
+                            2017年11月3日
+                        </date>
+                        
+                        
+                        <div class="post-content">
+                            
+
+<p>Hexo 静态部署博客默认使用的是github提供的gitpages,如果你有自己的域名以及VPS的话，可以将博客同步一份到主机上并且在gitpage上保留一份副本。
+下面简单介绍一下通过git hook,同步文章的部署步骤，这样以后更换写作平台，以及VPS主机平台都方便回来查找。</p>
+
+<h3 id="使用ssh密钥登录远程vps">使用SSH密钥登录远程VPS</h3>
+
+<p>看.ssh目录下有没有，没有的话生成:</p>
+
+<pre><code>ssh-keygen -t rsa -C &quot;你的邮箱或者任何字符串&quot;
+</code></pre>
+
+<p>利用ssh-copy-id 复制到远程主机</p>
+
+<pre><code>ssh-copy-id -i .ssh/id_rsa.pub root@ip -p 22
+</code></pre>
+
+<p>如果换了ssh端口的话，post的时候会报错，可以在.ssh/下写入配置</p>
+
+<pre><code>vim .ssh/config
+
+Host HOST_ALIAS                       # 用于 SSH 连接的别名，最好与 HostName 保持一致，都用ip或者都用域名
+  HostName SERVER_DOMAIN              # 服务器的域名或 IP 地址
+  Port SERVER_PORT                    # 服务器的端口号，默认为 22，可选
+  User SERVER_USER                    # 服务器的用户名
+  PreferredAuthentications publickey
+  IdentityFile ~/.ssh/id_rsa    # 本机上存放的私钥路径
+
+</code></pre>
+
+<h3 id="在远程主机配置git仓库">在远程主机配置git仓库</h3>
+
+<p>比如在root目录下生成blog.git,并编辑post-receive(没有的话生成一个)</p>
+
+<pre><code>git init --bare blog.git
+cd blog.git、hooks
+vim post-receive
+</code></pre>
+
+<p>直接删除原来,静态目录，把新的clone过去</p>
+
+<pre><code>#!/bin/bash
+rm -rf /var/www/blog
+git clone /root/blog.git /var/www/blog
+</code></pre>
+
+<p>赋予可执行权限</p>
+
+<pre><code>chmoc +x post-receive
+</code></pre>
+
+<h3 id="配置hexo-config-yml">配置hexo，_config.yml</h3>
+
+<pre><code>deploy:
+  type: git
+  repo: 
+    github: &lt;repository url&gt;
+    prod: user@ip_address:repos/test.git
+</code></pre>
+
+<p>接下来，执行部署流程就可以了</p>
+
+<pre><code>hexo clean
+hexo g
+hexo d
+</code></pre>
+
+                        </div>
+
+                        
+
+
+                        <div class="post-meta meta-tags">
+                            
+                            没有标签
+                            
+                        </div>
+                    </article>
+                    
+    
+
+    
+    
+                </div>
+            </div>
+            <div id="secondary">
+    <section class="widget">
+        <form id="search" action="//www.google.com/search" method="get" accept-charset="utf-8" target="_blank" _lpchecked="1">
+      
+      <input type="text" name="q" maxlength="20" placeholder="Search">
+      <input type="hidden" name="sitesearch" value="http://linuxfunk.com/">
+      <button type="submit" class="submit icon-search"></button>
+</form>
+    </section>
+    
+    <section class="widget">
+        <h3 class="widget-title">最近文章</h3>
+<ul class="widget-list">
+    
+    <li>
+        <a href="http://linuxfunk.com/posts/centos-7-%E7%BC%96%E8%AF%91%E5%AE%89%E8%A3%85nginx%E5%B9%B6%E5%90%AF%E7%94%A8tls1-3/" title="CentOS 7 编译安装nginx并启用TLS1.3">CentOS 7 编译安装nginx并启用TLS1.3</a>
+    </li>
+    
+    <li>
+        <a href="http://linuxfunk.com/posts/%E7%94%A8git-hooks%E5%B0%86%E9%9D%99%E6%80%81%E6%96%87%E4%BB%B6%E9%83%A8%E7%BD%B2%E5%88%B0vps/" title="用git hooks将静态文件部署到VPS">用git hooks将静态文件部署到VPS</a>
+    </li>
+    
+    <li>
+        <a href="http://linuxfunk.com/posts/github%E5%88%86%E6%94%AF%E5%A4%87%E4%BB%BDhexo%E5%8D%9A%E5%AE%A2%E6%BA%90%E6%96%87%E4%BB%B6/" title="Github分支备份Hexo博客源文件">Github分支备份Hexo博客源文件</a>
+    </li>
+    
+    <li>
+        <a href="http://linuxfunk.com/posts/v2ray-ws-tls-nginx%E5%AE%9E%E7%8E%B0%E5%8A%A0%E5%AF%86%E4%BC%A0%E8%BE%93/" title="v2ray实现ws&#43;tls&#43;nginx加密传输">v2ray实现ws&#43;tls&#43;nginx加密传输</a>
+    </li>
+    
+    <li>
+        <a href="http://linuxfunk.com/posts/%E4%BD%BF%E7%94%A8docker%E6%9C%8D%E5%8A%A1%E9%85%8D%E7%BD%AEzabbix-grafana%E7%9B%91%E6%8E%A7/" title="使用docker服务配置Zabbix&#43;Grafana监控">使用docker服务配置Zabbix&#43;Grafana监控</a>
+    </li>
+    
+    <li>
+        <a href="http://linuxfunk.com/posts/gitlab-%E9%80%9A%E8%BF%87docker%E9%95%9C%E5%83%8F%E8%BF%81%E7%A7%BB%E5%8D%87%E7%BA%A7/" title="gitlab 通过docker镜像迁移升级">gitlab 通过docker镜像迁移升级</a>
+    </li>
+    
+    <li>
+        <a href="http://linuxfunk.com/posts/docker-%E5%AE%B9%E5%99%A8%E7%AE%A1%E7%90%86/" title="Docker 容器管理">Docker 容器管理</a>
+    </li>
+    
+    <li>
+        <a href="http://linuxfunk.com/posts/%E5%88%9B%E5%BB%BAdocker%E5%AE%B9%E5%99%A8%E9%95%9C%E5%83%8F/" title="创建Docker容器镜像">创建Docker容器镜像</a>
+    </li>
+    
+    <li>
+        <a href="http://linuxfunk.com/posts/docker-basic/" title="Docker Basic">Docker Basic</a>
+    </li>
+    
+    <li>
+        <a href="http://linuxfunk.com/posts/zabbix-agent-yum-install/" title="zabbix-agent yum install ">zabbix-agent yum install </a>
+    </li>
+    
+</ul>
+    </section>
+
+    
+
+    <section class="widget">
+        <h3 class="widget-title">分类</h3>
+<ul class="widget-list">
+    
+</ul>
+    </section>
+
+    <section class="widget">
+        <h3 class="widget-title">标签</h3>
+<div class="tagcloud">
+    
+</div>
+    </section>
+
+    
+
+    <section class="widget">
+        <h3 class="widget-title">其它</h3>
+        <ul class="widget-list">
+            <li><a href="http://linuxfunk.com/index.xml">文章 RSS</a></li>
+        </ul>
+    </section>
+</div>
+        </div>
+    </div>
+</div>
+<footer id="footer">
+    <div class="container">
+        &copy; 2018 <a href="http://linuxfunk.com/">My New Hugo Site By </a>.
+        Powered by <a rel="nofollow noreferer noopener" href="https://gohugo.io" target="_blank">Hugo</a>.
+        <a href="https://www.flysnow.org/" target="_blank">Theme</a> based on <a href="https://github.com/rujews/maupassant-hugo" target="_blank">maupassant</a>.
+        
+    </div>
+</footer>
+
+
+    <script type="text/javascript">
+    
+    (function(){
+        $("pre code").parent().addClass("line-numbers")
+    }())
+
+    window.MathJax = {
+        tex2jax: {
+            inlineMath: [ ['$','$'] ],
+            processEscapes: true
+        }
+    };
+    </script>
+    <script type="text/javascript" src="/js/prism.js" async="true"></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
+
+<a id="rocket" href="#top"></a>
+<script type="text/javascript" src="/js/totop.js?v=0.0.0" async=""></script>
+
+
+
+
+
+
+</body>
+</html>

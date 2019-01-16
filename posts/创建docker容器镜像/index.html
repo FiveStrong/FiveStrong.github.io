@@ -1,0 +1,342 @@
+<!doctype html>
+<html lang="en-us">
+<head>
+
+    <meta charset="utf-8">
+    <meta name="generator" content="Hugo 0.54-DEV" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>创建Docker容器镜像 | My New Hugo Site</title>
+    <meta property="og:title" content="创建Docker容器镜像 - My New Hugo Site">
+    <meta property="og:type" content="article">
+        
+    <meta property="article:published_time" content="2017-10-30T12:10:15&#43;08:00">
+        
+        
+    <meta property="article:modified_time" content="2017-10-30T12:10:15&#43;08:00">
+        
+    <meta name="Keywords" content="">
+    <meta name="description" content="创建Docker容器镜像">
+        
+    <meta name="author" content="">
+    <meta property="og:url" content="http://linuxfunk.com/posts/%E5%88%9B%E5%BB%BAdocker%E5%AE%B9%E5%99%A8%E9%95%9C%E5%83%8F/">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+
+    <link rel="stylesheet" href="/css/normalize.css">
+    
+        <link rel="stylesheet" href="/css/prism.css">
+    
+    <link rel="stylesheet" href="/css/style.css">
+    <script type="text/javascript" src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+
+    
+
+
+    
+    
+</head>
+
+<body>
+<header id="header" class="clearfix">
+    <div class="container">
+        <div class="col-group">
+            <div class="site-name ">
+                
+                    <a id="logo" href="http://linuxfunk.com/">
+                        My New Hugo Site
+                    </a>
+                
+                
+            </div>
+            <div>
+                <nav id="nav-menu" class="clearfix">
+                    <a class="" href="http://linuxfunk.com/">首页</a>
+                    
+                </nav>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+<div id="body">
+    <div class="container">
+        <div class="col-group">
+
+            <div class="col-8" id="main">
+                <div class="res-cons">
+                    <article class="post">
+                        <header>
+                            <h1 class="post-title">创建Docker容器镜像</h1>
+                        </header>
+                        <date class="post-meta meta-date">
+                            2017年10月30日
+                        </date>
+                        
+                        
+                        <div class="post-content">
+                            
+
+<h3 id="1-dockerfile">1.Dockerfile</h3>
+
+<p>Dockerfile 是用户定义的一系列用来生成容器镜像的文件，通过执行来构建镜像</p>
+
+<pre><code>docker image build xxx.xx
+</code></pre>
+
+<p>一个Dockerfile 大概内容如下, 几遍你对dockerfile一无所知，也大概能看懂这个配置文件：</p>
+
+<pre><code>FROM alpine:latest
+LABEL maintainer=&quot;Russ McKendrick &lt;russ@mckendrick.io&gt;&quot;
+LABEL description=&quot;This example Dockerfile installs NGINX.&quot;
+RUN apk add --update nginx &amp;&amp; \
+        rm -rf /var/cache/apk/* &amp;&amp; \
+        mkdir -p /tmp/nginx/
+
+COPY files/nginx.conf /etc/nginx/nginx.conf
+COPY files/default.conf /etc/nginx/conf.d/default.conf
+ADD files/html.tar.gz /usr/share/nginx/
+
+EXPOSE 80/tcp
+
+ENTRYPOINT [&quot;nginx&quot;]
+CMD [&quot;-g&quot;, &quot;daemon off;&quot;]
+</code></pre>
+
+<p>接下来解释一下各个参数的含义：</p>
+
+<pre><code>FROM:指明基础镜像来源，这里使用了alpine linux,alpine:latest分别指明了所用镜像名称以及发布标签。
+LABEL:为镜像添加额外的信息。从版本号到描述都可以加。
+　　　可以通过docker inspect查看容器标签信息:docker image inspect &lt;IMAGE_ID&gt;
+RUN:在容器中运行脚本或安装软件等其他命令行操作。
+    我们也可以用以下命令行来安装软件：
+       RUN apk add --update nginx
+       RUN rm -rf /var/cache/apk/*
+       RUN mkdir -p /tmp/nginx/
+    这与文件中的格式相比会在每运行一个命令之后都新建立一层，我们因尽量避免不必要的容器层建立。
+COPY AND ADD:
+    主要区别就是copy单纯的只是copy功能，从本地的files文件夹里面拷贝配置文件到docker镜像内的相录
+    而ADD命令不仅可以拷贝，也可以自动的将html.tar.gz打包目录解压到nginx根目录下。
+EXPOSE 80/tcp：监听tcp的80端口
+ENTRYPOINT:配置给容器一个可执行的命令，在每次使用镜像创建容器时一个特定的应用程序可以被设置为默认程序，同时也意味着镜像每次被调用时仅能运行指定的应用。类似于CMD，Docker只允许一个ENTRYPOINT，多个ENTRYPOINT会抵消之前所有的指令，只执行最后的ENTRYPOINT指令
+CMD:提供了容器默认的执行命令
+USER：镜像正在运行时设置一个UID
+WORKDIR：指定RUN、CMD与ENTRYPOINT命令的工作目录
+ENV：设置环境变量
+VOLUME：授权访问从容器内到主机上的目录
+</code></pre>
+
+<h3 id="2-从dockerfile构建镜像">2.从dockerfile构建镜像</h3>
+
+<p>docker image build &ndash;help 有许多构建参数可选。</p>
+
+<pre><code>docker image build --file &lt;ltpath_to_Dockerfile&gt; --tag &lt;REPOSITORY&gt;:&lt;TAG&gt;
+</code></pre>
+
+<p>将Dockerfile文件与所用到的files中的配置文件放在同一目录中，执行下列命令构建:</p>
+
+<pre><code>docker image build --tag local:dockerfile-example .    #最后的点表示指定本目录下的配置文件
+docker image ls    
+</code></pre>
+
+<p>实例：从scratch镜像构建一个小型系统</p>
+
+<pre><code>在https://www.alpinelinux.org/downloads/　　下载最小化的系统文件
+编辑dockerfile
+FROM scratch
+ADD files/alpine-minirootfs-3.6.1-x86_64.tar
+CMD [&quot;/bin/sh&quot;]
+
+构建镜像:
+docker image build --tag local:fromscratch .
+启动并登录镜像:
+docker container run -it --name alpine-test local:fromscratch /bin/sh
+cat /etc/*release  查看系统版本
+这样一个小型系统就能用了,镜像大小只有3.96MB
+local               fromscratch          87f3032a596c        4 minutes ago       3.96MB
+</code></pre>
+
+<h3 id="3-环境变量使用">3.环境变量使用</h3>
+
+<p>格式　ENV username admin
+     ENV username=admin</p>
+
+<p>实例：
+- 设置环境变量用来定义我们使用的PHP版本
+- 安装Apache2和选定版本的PHP
+- 使Apache2随镜像启动
+- 删除默认index.html 添加index.php,显示phpinfo信息。
+- 监听80端口
+- 设置Apache为默认进程</p>
+
+<pre><code># dockerfile
+FROM alpine:latest
+LABEL maintainer=&quot;Russ McKendrick &lt;russ@mckendrick.io&gt;&quot;
+LABEL description=&quot;This example Dockerfile installs Apache &amp; PHP.&quot;
+ENV PHPVERSION 7
+
+RUN apk add --update apache2 php${PHPVERSION}-apache2 php${PHPVERSION} &amp;&amp; \
+        rm -rf /var/cache/apk/* &amp;&amp; \
+        mkdir /run/apache2/ &amp;&amp; \
+        rm -rf /var/www/localhost/htdocs/index.html &amp;&amp; \
+        echo &quot;&lt;?php phpinfo(); ?&gt;&quot; &gt; /var/www/localhost/htdocs/index.php &amp;&amp; \
+        chmod 755 /var/www/localhost/htdocs/index.php
+
+EXPOSE 80/tcp
+
+ENTRYPOINT [&quot;httpd&quot;]
+CMD [&quot;-D&quot;, &quot;FOREGROUND&quot;]
+
+# docker build --tag local/apache-php:7 .
+# docker container run -d -p 8080:80 --name apache-php7 local/apache-php:7
+你可以改变PHPVERSION为５，再次构建一个新镜像。
+docker image build --tag local/apache-php:5 .
+docker container run -d -p 9090:80 --name apache-php5 local/apache-php:5
+</code></pre>
+
+<h3 id="网站资料">网站资料</h3>
+
+<p><a href="https://www.alpinelinux.org/">https://www.alpinelinux.org/</a>
+<a href="http://label-schema.org/">http://label-schema.org/</a>
+<a href="https://github.com/docker-library/official-images/">https://github.com/docker-library/official-images/</a></p>
+
+                        </div>
+
+                        
+
+
+                        <div class="post-meta meta-tags">
+                            
+                            没有标签
+                            
+                        </div>
+                    </article>
+                    
+    
+
+    
+    
+                </div>
+            </div>
+            <div id="secondary">
+    <section class="widget">
+        <form id="search" action="//www.google.com/search" method="get" accept-charset="utf-8" target="_blank" _lpchecked="1">
+      
+      <input type="text" name="q" maxlength="20" placeholder="Search">
+      <input type="hidden" name="sitesearch" value="http://linuxfunk.com/">
+      <button type="submit" class="submit icon-search"></button>
+</form>
+    </section>
+    
+    <section class="widget">
+        <h3 class="widget-title">最近文章</h3>
+<ul class="widget-list">
+    
+    <li>
+        <a href="http://linuxfunk.com/posts/centos-7-%E7%BC%96%E8%AF%91%E5%AE%89%E8%A3%85nginx%E5%B9%B6%E5%90%AF%E7%94%A8tls1-3/" title="CentOS 7 编译安装nginx并启用TLS1.3">CentOS 7 编译安装nginx并启用TLS1.3</a>
+    </li>
+    
+    <li>
+        <a href="http://linuxfunk.com/posts/%E7%94%A8git-hooks%E5%B0%86%E9%9D%99%E6%80%81%E6%96%87%E4%BB%B6%E9%83%A8%E7%BD%B2%E5%88%B0vps/" title="用git hooks将静态文件部署到VPS">用git hooks将静态文件部署到VPS</a>
+    </li>
+    
+    <li>
+        <a href="http://linuxfunk.com/posts/github%E5%88%86%E6%94%AF%E5%A4%87%E4%BB%BDhexo%E5%8D%9A%E5%AE%A2%E6%BA%90%E6%96%87%E4%BB%B6/" title="Github分支备份Hexo博客源文件">Github分支备份Hexo博客源文件</a>
+    </li>
+    
+    <li>
+        <a href="http://linuxfunk.com/posts/v2ray-ws-tls-nginx%E5%AE%9E%E7%8E%B0%E5%8A%A0%E5%AF%86%E4%BC%A0%E8%BE%93/" title="v2ray实现ws&#43;tls&#43;nginx加密传输">v2ray实现ws&#43;tls&#43;nginx加密传输</a>
+    </li>
+    
+    <li>
+        <a href="http://linuxfunk.com/posts/%E4%BD%BF%E7%94%A8docker%E6%9C%8D%E5%8A%A1%E9%85%8D%E7%BD%AEzabbix-grafana%E7%9B%91%E6%8E%A7/" title="使用docker服务配置Zabbix&#43;Grafana监控">使用docker服务配置Zabbix&#43;Grafana监控</a>
+    </li>
+    
+    <li>
+        <a href="http://linuxfunk.com/posts/gitlab-%E9%80%9A%E8%BF%87docker%E9%95%9C%E5%83%8F%E8%BF%81%E7%A7%BB%E5%8D%87%E7%BA%A7/" title="gitlab 通过docker镜像迁移升级">gitlab 通过docker镜像迁移升级</a>
+    </li>
+    
+    <li>
+        <a href="http://linuxfunk.com/posts/docker-%E5%AE%B9%E5%99%A8%E7%AE%A1%E7%90%86/" title="Docker 容器管理">Docker 容器管理</a>
+    </li>
+    
+    <li>
+        <a href="http://linuxfunk.com/posts/%E5%88%9B%E5%BB%BAdocker%E5%AE%B9%E5%99%A8%E9%95%9C%E5%83%8F/" title="创建Docker容器镜像">创建Docker容器镜像</a>
+    </li>
+    
+    <li>
+        <a href="http://linuxfunk.com/posts/docker-basic/" title="Docker Basic">Docker Basic</a>
+    </li>
+    
+    <li>
+        <a href="http://linuxfunk.com/posts/zabbix-agent-yum-install/" title="zabbix-agent yum install ">zabbix-agent yum install </a>
+    </li>
+    
+</ul>
+    </section>
+
+    
+
+    <section class="widget">
+        <h3 class="widget-title">分类</h3>
+<ul class="widget-list">
+    
+</ul>
+    </section>
+
+    <section class="widget">
+        <h3 class="widget-title">标签</h3>
+<div class="tagcloud">
+    
+</div>
+    </section>
+
+    
+
+    <section class="widget">
+        <h3 class="widget-title">其它</h3>
+        <ul class="widget-list">
+            <li><a href="http://linuxfunk.com/index.xml">文章 RSS</a></li>
+        </ul>
+    </section>
+</div>
+        </div>
+    </div>
+</div>
+<footer id="footer">
+    <div class="container">
+        &copy; 2018 <a href="http://linuxfunk.com/">My New Hugo Site By </a>.
+        Powered by <a rel="nofollow noreferer noopener" href="https://gohugo.io" target="_blank">Hugo</a>.
+        <a href="https://www.flysnow.org/" target="_blank">Theme</a> based on <a href="https://github.com/rujews/maupassant-hugo" target="_blank">maupassant</a>.
+        
+    </div>
+</footer>
+
+
+    <script type="text/javascript">
+    
+    (function(){
+        $("pre code").parent().addClass("line-numbers")
+    }())
+
+    window.MathJax = {
+        tex2jax: {
+            inlineMath: [ ['$','$'] ],
+            processEscapes: true
+        }
+    };
+    </script>
+    <script type="text/javascript" src="/js/prism.js" async="true"></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
+
+<a id="rocket" href="#top"></a>
+<script type="text/javascript" src="/js/totop.js?v=0.0.0" async=""></script>
+
+
+
+
+
+
+</body>
+</html>

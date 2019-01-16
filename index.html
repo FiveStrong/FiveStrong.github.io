@@ -61,9 +61,229 @@
             <div class="col-8" id="main">
                 <div class="res-cons">
                     
+                        <article class="post">
+                            <header>
+                                <h1 class="post-title">
+                                    <a href="http://linuxfunk.com/posts/centos-7-%E7%BC%96%E8%AF%91%E5%AE%89%E8%A3%85nginx%E5%B9%B6%E5%90%AF%E7%94%A8tls1-3/" title="CentOS 7 编译安装nginx并启用TLS1.3" >CentOS 7 编译安装nginx并启用TLS1.3</a>
+                                </h1>
+                            </header>
+                            <date class="post-meta meta-date">
+                                2018年4月28日
+                            </date>
+                            
+                            <div class="post-content">
+                                ### 更新日志 20180428 记录LNMP的CentOS 7 系统上启用TLSv1.3的过程。 20180411 Firefox Nightly 61.0a1支持tls1.3 Draft 26(然而测试并不成功)。 20180404 IESG批准将TLS 1.3 Draft 28作为TLS version 1.3 的建议标准； 至20180404，Openssl支持的标准为Draft 26。 20180312 Chrome 65正式版已经发布，支持tls1.3 Draft 23。  1 升级系统 yum update  升级后的系统版本为：
+cat /etc/centos-release CentOS Linux release 7.4.1708 (Core)  2 安装官方mainline版的nginx 通过官方源安装nginx的目的是： 自动生成nginx的配置文件，减少大量的工作； 获取nginx的编译参数。  配置源：
+vi /etc/yum.repos.d/nginx.repo 写入如下内容： [nginx] name=nginx repo baseurl=http://nginx.org/packages/mainline/centos/7/$basearch/ gpgcheck=0 enabled=1  安装nginx：
+yum install nginx -y  查看nginx版本(可能未及时更新到最新版)：
+nginx -v nginx version: nginx/1.……
+                            </div>
+                            <p class="readmore"><a href="http://linuxfunk.com/posts/centos-7-%E7%BC%96%E8%AF%91%E5%AE%89%E8%A3%85nginx%E5%B9%B6%E5%90%AF%E7%94%A8tls1-3/">阅读全文</a></p>
+                        </article>
+                    
+                        <article class="post">
+                            <header>
+                                <h1 class="post-title">
+                                    <a href="http://linuxfunk.com/posts/%E7%94%A8git-hooks%E5%B0%86%E9%9D%99%E6%80%81%E6%96%87%E4%BB%B6%E9%83%A8%E7%BD%B2%E5%88%B0vps/" title="用git hooks将静态文件部署到VPS" >用git hooks将静态文件部署到VPS</a>
+                                </h1>
+                            </header>
+                            <date class="post-meta meta-date">
+                                2017年11月3日
+                            </date>
+                            
+                            <div class="post-content">
+                                Hexo 静态部署博客默认使用的是github提供的gitpages,如果你有自己的域名以及VPS的话，可以将博客同步一份到主机上并且在gitpage上保留一份副本。 下面简单介绍一下通过git hook,同步文章的部署步骤，这样以后更换写作平台，以及VPS主机平台都方便回来查找。
+使用SSH密钥登录远程VPS 看.ssh目录下有没有，没有的话生成:
+ssh-keygen -t rsa -C &quot;你的邮箱或者任何字符串&quot;  利用ssh-copy-id 复制到远程主机
+ssh-copy-id -i .ssh/id_rsa.pub root@ip -p 22  如果换了ssh端口的话，post的时候会报错，可以在.ssh/下写入配置
+vim .ssh/config Host HOST_ALIAS # 用于 SSH 连接的别名，最好与 HostName 保持一致，都用ip或者都用域名 HostName SERVER_DOMAIN # 服务器的域名或 IP 地址 Port SERVER_PORT # 服务器的端口号，默认为 22，可选 User SERVER_USER # 服务器的用户名 PreferredAuthentications publickey IdentityFile ~/.ssh/id_rsa # 本机上存放的私钥路径  在远程主机配置git仓库 比如在root目录下生成blog.git,并编辑post-receive(没有的话生成一个)
+git init --bare blog.git cd blog.git、hooks vim post-receive  直接删除原来,静态目录，把新的clone过去
+#!/bin/bash rm -rf /var/www/blog git clone /root/blog.……
+                            </div>
+                            <p class="readmore"><a href="http://linuxfunk.com/posts/%E7%94%A8git-hooks%E5%B0%86%E9%9D%99%E6%80%81%E6%96%87%E4%BB%B6%E9%83%A8%E7%BD%B2%E5%88%B0vps/">阅读全文</a></p>
+                        </article>
+                    
+                        <article class="post">
+                            <header>
+                                <h1 class="post-title">
+                                    <a href="http://linuxfunk.com/posts/github%E5%88%86%E6%94%AF%E5%A4%87%E4%BB%BDhexo%E5%8D%9A%E5%AE%A2%E6%BA%90%E6%96%87%E4%BB%B6/" title="Github分支备份Hexo博客源文件" >Github分支备份Hexo博客源文件</a>
+                                </h1>
+                            </header>
+                            <date class="post-meta meta-date">
+                                2017年11月1日
+                            </date>
+                            
+                            <div class="post-content">
+                                需求 将hexo部署在GitHub Pages上，但仅同步编译好的静态文件，如果想要在多个平台写博客，hexo的源码就需要同步到云端，方便拉取部署。 最简单的方法就是利用博客的 repo 分支（ master 分支的必须用来存放你博客网站文件）托管 Hexo 源文件和配置达到备份的目的。
+将博客目录源文件push到repo分支上 # 在博客目录下 git init git add . git commit -m &quot;commit source files&quot; # 将hexo源文件映射到远程repo上 git remote add origin https://github.com/your-name/your-name.github.io.git # 新建分支（hexo静态文件必须使用master） git branch blogSource # 切换分支 git checkout blogSource # 拉取远程代码，将源文件push到分支 git pull origin master git push -u origin blogSource  这里有个小坑，源文件中themes下主题如果是从原作者那里git下来的话，这里是无法提交的，需要使用fork + subtree的方法同步主题，具体可以看 http://w4lle.com/2016/06/06/Hexo-themes/index.html
+我嫌麻烦，直接把git下来的next目录下文件复制出来，在themes里面新建文件夹，在博客目录重复进行以上初始化操作即可(感觉可以直接把next下的.git/目录删掉)
+更新博客源文件 git add . git commit -m &quot;modify blog&quot; git push --set-upstream origin blogSource //配置push,方便以后直接git push推送 git push #不用上一个步骤的话可直接使用git push -u origin blogSource  在其他机器上使用repo分支上的博客源文件 git clone xxxx.……
+                            </div>
+                            <p class="readmore"><a href="http://linuxfunk.com/posts/github%E5%88%86%E6%94%AF%E5%A4%87%E4%BB%BDhexo%E5%8D%9A%E5%AE%A2%E6%BA%90%E6%96%87%E4%BB%B6/">阅读全文</a></p>
+                        </article>
+                    
+                        <article class="post">
+                            <header>
+                                <h1 class="post-title">
+                                    <a href="http://linuxfunk.com/posts/v2ray-ws-tls-nginx%E5%AE%9E%E7%8E%B0%E5%8A%A0%E5%AF%86%E4%BC%A0%E8%BE%93/" title="v2ray实现ws&#43;tls&#43;nginx加密传输" >v2ray实现ws&#43;tls&#43;nginx加密传输</a>
+                                </h1>
+                            </header>
+                            <date class="post-meta meta-date">
+                                2017年10月31日
+                            </date>
+                            
+                            <div class="post-content">
+                                1.V2Ray加密tls原理 别的代理都是直接客户端穿墙使用TCP、HTTP或自定义协议和墙外的服务器连接。 V2Ray的这套方案则是在墙外做一个启用HTTPS的Nginx服务，使用本地的客户端和墙外的Nginx以WS协议进行连接（这就和一个真正的网站行为一模一样了）。然后在Nginx背后用代理进行内容的访问。 这样的解决方案墙是无法分辨到底是一个代理服务器还是一个正常用户在用HTTPS访问网站，HTTPS也保证了墙无法探知流量的内容。
+2.安装 2.1 安装v2ray centos7以及其他支持系统可以直接使用官方一键安装脚本
+bash &lt;(curl -L -s https://install.direct/go.sh)  安装信息:
+bin命令：/usr/bin/v2ray/v2ray 配置文件：/etc/v2ray/config.json service：/lib/systemd/system/v2ray.service 日志指定是放在配置文件里的：log.access 和 log.error，一般放在：/var/log/v2ray/access.log 和 /var/log/v2ray/error.log  2.2 安装nginx yum install nginx  nginx配置信息
+配置路径：/etc/nginx html路径：/usr/share/nginx/html/ #这里改成了常用的/var/www/html 日志：/var/log/nginx  2.3 安装证书 使用 TLS 需要证书，证书也有免费付费的，同样的这里使用免费证书，证书认证机构为 Let&rsquo;s Encrypt。 证书的生成有许多方法，这里使用的是比较简单的方法：使用 acme.sh 脚本生成. 前提：一定要有效域名并且指向了VPS地址，否则证书解析会报错。
+curl https://get.acme.sh | sh  如果安装报错，那么可能是因为系统缺少 acme.sh 所需要的依赖项，根据提示安装依赖之后然后重新安装一遍 acme.sh
+证书生成 acme.sh --issue -d mydomain.com --standalone -k ec-256 # 以上的命令会临时监听 80 端口，请确保执行该命令前 80 端口没有使用，采用了ECC证书 证书强制更新 # sudo ~/.……
+                            </div>
+                            <p class="readmore"><a href="http://linuxfunk.com/posts/v2ray-ws-tls-nginx%E5%AE%9E%E7%8E%B0%E5%8A%A0%E5%AF%86%E4%BC%A0%E8%BE%93/">阅读全文</a></p>
+                        </article>
+                    
+                        <article class="post">
+                            <header>
+                                <h1 class="post-title">
+                                    <a href="http://linuxfunk.com/posts/%E4%BD%BF%E7%94%A8docker%E6%9C%8D%E5%8A%A1%E9%85%8D%E7%BD%AEzabbix-grafana%E7%9B%91%E6%8E%A7/" title="使用docker服务配置Zabbix&#43;Grafana监控" >使用docker服务配置Zabbix&#43;Grafana监控</a>
+                                </h1>
+                            </header>
+                            <date class="post-meta meta-date">
+                                2017年10月30日
+                            </date>
+                            
+                            <div class="post-content">
+                                纯命令行启动
+1. Start empty MySQL server instance docker run --name zabbix-mysql -t \ --restart=always \ -e MYSQL_DATABASE=&quot;zabbix&quot; \ -e MYSQL_USER=&quot;zabbix&quot; \ -e MYSQL_PASSWORD=&quot;zabbix_pwd&quot; \ -e MYSQL_ROOT_PASSWORD=&quot;root_pwd&quot; \ -d mysql:5.7 \ --character-set-server=utf8 --collation-server=utf8_bin 2. Start Zabbix server instance and link the instance with created MySQL server instance docker run --name zabbix-server -t \ --restart=always \ -e DB_SERVER_HOST=&quot;zabbix-mysql&quot; \ -e MYSQL_DATABASE=&quot;zabbix&quot; \ -e MYSQL_USER=&quot;zabbix&quot; \ -e MYSQL_PASSWORD=&quot;zabbix_pwd&quot; \ -e MYSQL_ROOT_PASSWORD=&quot;root_pwd&quot; \ --link zabbix-mysql:zabbix-mysql \ -p 10051:10051 \ -d zabbix/zabbix-server-mysql 3.……
+                            </div>
+                            <p class="readmore"><a href="http://linuxfunk.com/posts/%E4%BD%BF%E7%94%A8docker%E6%9C%8D%E5%8A%A1%E9%85%8D%E7%BD%AEzabbix-grafana%E7%9B%91%E6%8E%A7/">阅读全文</a></p>
+                        </article>
+                    
+                        <article class="post">
+                            <header>
+                                <h1 class="post-title">
+                                    <a href="http://linuxfunk.com/posts/gitlab-%E9%80%9A%E8%BF%87docker%E9%95%9C%E5%83%8F%E8%BF%81%E7%A7%BB%E5%8D%87%E7%BA%A7/" title="gitlab 通过docker镜像迁移升级" >gitlab 通过docker镜像迁移升级</a>
+                                </h1>
+                            </header>
+                            <date class="post-meta meta-date">
+                                2017年10月30日
+                            </date>
+                            
+                            <div class="post-content">
+                                迁移版本: 旧gitlab(8.8.3) CentOS 6.8 新gitlab(9.5.5) postgresql(9.6) redis(2.8.4) CentOS 7.4
+目录规划：
+总目录：/home/data docker-compose配置文件：/home/data/docker-compose.yml docker数据：/home/data/gitlab/gitlab postgresql数据：/home/data/gitlab/postgresql redis数据：/home/data/gitlab/redis  一、基本环境准备 关闭SELinux
+setenforce 0 #即时生效 vim /etc/selinux/config “SELINUX=enforcing”修改为“SELINUX=disabled” #重启后生效 &quot;&quot;  二、安装 1.docker安装
+#官方一键安装脚本 curl -sSL https://get.docker.com | sh #启动docker systemctl start docker #加入开机启动docker systemctl enable docker  2.docker-compose安装
+curl -L https://github.com/docker/compose/releases/download/1.16.1/docker-compose-`uname -s`-`uname -m` &gt; /usr/local/bin/docker-compose chmod +x /usr/local/bin/docker-compose  3.docker镜像
+#因为迁移和升级是两个部分，所有需要pull两个版本，gitlab（https://github.com/sameersbn/docker-gitlab） docker pull sameersbn/gitlab:8.8.3 docker pull sameersbn/gitlab:9.5.5 #redis（https://github.com/sameersbn/docker-redis） docker pull sameersbn/redis #postgresql（https://github.com/sameersbn/docker-postgresql） docker pull sameersbn/postgresql:9.……
+                            </div>
+                            <p class="readmore"><a href="http://linuxfunk.com/posts/gitlab-%E9%80%9A%E8%BF%87docker%E9%95%9C%E5%83%8F%E8%BF%81%E7%A7%BB%E5%8D%87%E7%BA%A7/">阅读全文</a></p>
+                        </article>
+                    
+                        <article class="post">
+                            <header>
+                                <h1 class="post-title">
+                                    <a href="http://linuxfunk.com/posts/docker-%E5%AE%B9%E5%99%A8%E7%AE%A1%E7%90%86/" title="Docker 容器管理" >Docker 容器管理</a>
+                                </h1>
+                            </header>
+                            <date class="post-meta meta-date">
+                                2017年10月30日
+                            </date>
+                            
+                            <div class="post-content">
+                                1.基础命令 docker container ls -a #查看所有容器 docker container attach nginx-test #连接到容器，显示输出，ctrl+c退出，容器也会停止。 docker container start nginx-test #重启容器 docker container attach --sig-proxy=false nginx-test #同样为连接到容器，这次退出后容器不会停止。 docker container exec nginx-test cat /etc/debian_version #在容器内执行命令 docker container exec -i -t nginx-test /bin/bash #在容器中开启bash进程，并显示输入输出，其中-i --interactive(交互) -t --tty(终端) docker container logs --tail 5 nginx-test #查看最新生成的5条日志 docker container logs -f nginx-test #查看实时目录 -f --follow docker container logs --since 2017-09-12T06:00 nginx-test #查看从６点开始的日志 docker container exec nginx-test date #查看容器内时间 docker container top nginx-test #列出当前容器内进程 docker container stats nginx-test #列出所有容器实时资源占用情况 docker container run -d --name nginx-test --cpu-shares 512 --memory 128M -p 8080:80 nginx docker container inspect nginx-test | grep -i memory #查看配置文件 for i in {1.……
+                            </div>
+                            <p class="readmore"><a href="http://linuxfunk.com/posts/docker-%E5%AE%B9%E5%99%A8%E7%AE%A1%E7%90%86/">阅读全文</a></p>
+                        </article>
+                    
+                        <article class="post">
+                            <header>
+                                <h1 class="post-title">
+                                    <a href="http://linuxfunk.com/posts/%E5%88%9B%E5%BB%BAdocker%E5%AE%B9%E5%99%A8%E9%95%9C%E5%83%8F/" title="创建Docker容器镜像" >创建Docker容器镜像</a>
+                                </h1>
+                            </header>
+                            <date class="post-meta meta-date">
+                                2017年10月30日
+                            </date>
+                            
+                            <div class="post-content">
+                                1.Dockerfile Dockerfile 是用户定义的一系列用来生成容器镜像的文件，通过执行来构建镜像
+docker image build xxx.xx  一个Dockerfile 大概内容如下, 几遍你对dockerfile一无所知，也大概能看懂这个配置文件：
+FROM alpine:latest LABEL maintainer=&quot;Russ McKendrick &lt;russ@mckendrick.io&gt;&quot; LABEL description=&quot;This example Dockerfile installs NGINX.&quot; RUN apk add --update nginx &amp;&amp; \ rm -rf /var/cache/apk/* &amp;&amp; \ mkdir -p /tmp/nginx/ COPY files/nginx.conf /etc/nginx/nginx.conf COPY files/default.conf /etc/nginx/conf.d/default.conf ADD files/html.tar.gz /usr/share/nginx/ EXPOSE 80/tcp ENTRYPOINT [&quot;nginx&quot;] CMD [&quot;-g&quot;, &quot;daemon off;&quot;]  接下来解释一下各个参数的含义：
+FROM:指明基础镜像来源，这里使用了alpine linux,alpine:latest分别指明了所用镜像名称以及发布标签。 LABEL:为镜像添加额外的信息。从版本号到描述都可以加。 可以通过docker inspect查看容器标签信息:docker image inspect &lt;IMAGE_ID&gt; RUN:在容器中运行脚本或安装软件等其他命令行操作。 我们也可以用以下命令行来安装软件： RUN apk add --update nginx RUN rm -rf /var/cache/apk/* RUN mkdir -p /tmp/nginx/ 这与文件中的格式相比会在每运行一个命令之后都新建立一层，我们因尽量避免不必要的容器层建立。 COPY AND ADD: 主要区别就是copy单纯的只是copy功能，从本地的files文件夹里面拷贝配置文件到docker镜像内的相录 而ADD命令不仅可以拷贝，也可以自动的将html.……
+                            </div>
+                            <p class="readmore"><a href="http://linuxfunk.com/posts/%E5%88%9B%E5%BB%BAdocker%E5%AE%B9%E5%99%A8%E9%95%9C%E5%83%8F/">阅读全文</a></p>
+                        </article>
+                    
+                        <article class="post">
+                            <header>
+                                <h1 class="post-title">
+                                    <a href="http://linuxfunk.com/posts/docker-basic/" title="Docker Basic" >Docker Basic</a>
+                                </h1>
+                            </header>
+                            <date class="post-meta meta-date">
+                                2017年10月30日
+                            </date>
+                            
+                            <div class="post-content">
+                                1. Docker安装 Docker必须要内核版本高于3.10,所以默认的centos6版本过低无法正常运行docker,推荐使用CentOS7或者选择升级内核。 可以使用yum源安装
+sudo tee /etc/yum.repos.d/docker.repo &lt;&lt;- 'EOF' [dockerrepo] name=Docker Repository baseurl=https://yum.dockerproject.org/repo/main/centos/7/ enabled=1 gpgcheck=1 gpgkey=https://yum.dockerproject.org/gpg EOF sudo yum install docker-engine sudo service docker start  也可以使用以下方法：
+curl -sSL https://get.docker.com | sh sudo systemctl start docker  目前最新版为官方17.07 # docker version Client: Version: 17.07.0-ce API version: 1.31 Go version: go1.8.3 Git commit: 8784753 Built: Tue Aug 29 17:42:01 2017 OS/Arch: linux/amd64 Server: Version: 17.07.0-ce API version: 1.31 (minimum version 1.……
+                            </div>
+                            <p class="readmore"><a href="http://linuxfunk.com/posts/docker-basic/">阅读全文</a></p>
+                        </article>
+                    
+                        <article class="post">
+                            <header>
+                                <h1 class="post-title">
+                                    <a href="http://linuxfunk.com/posts/zabbix-agent-yum-install/" title="zabbix-agent yum install " >zabbix-agent yum install </a>
+                                </h1>
+                            </header>
+                            <date class="post-meta meta-date">
+                                2017年10月17日
+                            </date>
+                            
+                            <div class="post-content">
+                                Step 1 – Add Required Repository
+CentOS/RHEL 7: rpm -Uvh http://repo.zabbix.com/zabbix/3.4/rhel/7/x86_64/zabbix-release-3.4-2.el7.noarch.rpm CentOS/RHEL 6: rpm -Uvh http://repo.zabbix.com/zabbix/3.4/rhel/6/x86_64/zabbix-release-3.4-1.el6.noarch.rpm  Step 2 – Install Zabbix Agent
+yum install zabbix-agent  Step 3 – Edit Zabbix Agent Configuration
+# vim /etc/zabbix/zabbix_agentd.conf #Server=[zabbix server ip] #Hostname=[ Hostname of client system ] Server=192.168.1.11 Hostname=Server1  Step 4 – Restarting Zabbix Agent
+# systemctl restart zabbix-agent  Step 5 – open the firewall port
+firewall-cmd --permanent --zone=public --add-port=10050/tcp firewall-cmd --reload firewall-cmd --list-all  ……
+                            </div>
+                            <p class="readmore"><a href="http://linuxfunk.com/posts/zabbix-agent-yum-install/">阅读全文</a></p>
+                        </article>
+                    
 
                     
 
+
+<ol class="page-navigator">
+    
+
+    
+    <li  class="current">
+        <a href="http://linuxfunk.com/">1</a>
+    </li>
+    
+    <li >
+        <a href="http://linuxfunk.com/page/2/">2</a>
+    </li>
+    
+    <li >
+        <a href="http://linuxfunk.com/page/3/">3</a>
+    </li>
+    
+
+    
+    <li class="next">
+        <a href="http://linuxfunk.com/page/2/">下一页</a>
+    </li>
+    
+</ol>
 
 
 
@@ -83,6 +303,46 @@
     <section class="widget">
         <h3 class="widget-title">最近文章</h3>
 <ul class="widget-list">
+    
+    <li>
+        <a href="http://linuxfunk.com/posts/centos-7-%E7%BC%96%E8%AF%91%E5%AE%89%E8%A3%85nginx%E5%B9%B6%E5%90%AF%E7%94%A8tls1-3/" title="CentOS 7 编译安装nginx并启用TLS1.3">CentOS 7 编译安装nginx并启用TLS1.3</a>
+    </li>
+    
+    <li>
+        <a href="http://linuxfunk.com/posts/%E7%94%A8git-hooks%E5%B0%86%E9%9D%99%E6%80%81%E6%96%87%E4%BB%B6%E9%83%A8%E7%BD%B2%E5%88%B0vps/" title="用git hooks将静态文件部署到VPS">用git hooks将静态文件部署到VPS</a>
+    </li>
+    
+    <li>
+        <a href="http://linuxfunk.com/posts/github%E5%88%86%E6%94%AF%E5%A4%87%E4%BB%BDhexo%E5%8D%9A%E5%AE%A2%E6%BA%90%E6%96%87%E4%BB%B6/" title="Github分支备份Hexo博客源文件">Github分支备份Hexo博客源文件</a>
+    </li>
+    
+    <li>
+        <a href="http://linuxfunk.com/posts/v2ray-ws-tls-nginx%E5%AE%9E%E7%8E%B0%E5%8A%A0%E5%AF%86%E4%BC%A0%E8%BE%93/" title="v2ray实现ws&#43;tls&#43;nginx加密传输">v2ray实现ws&#43;tls&#43;nginx加密传输</a>
+    </li>
+    
+    <li>
+        <a href="http://linuxfunk.com/posts/%E4%BD%BF%E7%94%A8docker%E6%9C%8D%E5%8A%A1%E9%85%8D%E7%BD%AEzabbix-grafana%E7%9B%91%E6%8E%A7/" title="使用docker服务配置Zabbix&#43;Grafana监控">使用docker服务配置Zabbix&#43;Grafana监控</a>
+    </li>
+    
+    <li>
+        <a href="http://linuxfunk.com/posts/gitlab-%E9%80%9A%E8%BF%87docker%E9%95%9C%E5%83%8F%E8%BF%81%E7%A7%BB%E5%8D%87%E7%BA%A7/" title="gitlab 通过docker镜像迁移升级">gitlab 通过docker镜像迁移升级</a>
+    </li>
+    
+    <li>
+        <a href="http://linuxfunk.com/posts/docker-%E5%AE%B9%E5%99%A8%E7%AE%A1%E7%90%86/" title="Docker 容器管理">Docker 容器管理</a>
+    </li>
+    
+    <li>
+        <a href="http://linuxfunk.com/posts/%E5%88%9B%E5%BB%BAdocker%E5%AE%B9%E5%99%A8%E9%95%9C%E5%83%8F/" title="创建Docker容器镜像">创建Docker容器镜像</a>
+    </li>
+    
+    <li>
+        <a href="http://linuxfunk.com/posts/docker-basic/" title="Docker Basic">Docker Basic</a>
+    </li>
+    
+    <li>
+        <a href="http://linuxfunk.com/posts/zabbix-agent-yum-install/" title="zabbix-agent yum install ">zabbix-agent yum install </a>
+    </li>
     
 </ul>
     </section>

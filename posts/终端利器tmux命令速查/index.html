@@ -1,0 +1,268 @@
+<!doctype html>
+<html lang="en-us">
+<head>
+
+    <meta charset="utf-8">
+    <meta name="generator" content="Hugo 0.54-DEV" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>终端利器tmux命令速查 | My New Hugo Site</title>
+    <meta property="og:title" content="终端利器tmux命令速查 - My New Hugo Site">
+    <meta property="og:type" content="article">
+        
+    <meta property="article:published_time" content="2016-06-28T14:19:36&#43;08:00">
+        
+        
+    <meta property="article:modified_time" content="2016-06-28T14:19:36&#43;08:00">
+        
+    <meta name="Keywords" content="">
+    <meta name="description" content="终端利器tmux命令速查">
+        
+    <meta name="author" content="">
+    <meta property="og:url" content="http://linuxfunk.com/posts/%E7%BB%88%E7%AB%AF%E5%88%A9%E5%99%A8tmux%E5%91%BD%E4%BB%A4%E9%80%9F%E6%9F%A5/">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+
+    <link rel="stylesheet" href="/css/normalize.css">
+    
+        <link rel="stylesheet" href="/css/prism.css">
+    
+    <link rel="stylesheet" href="/css/style.css">
+    <script type="text/javascript" src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+
+    
+
+
+    
+    
+</head>
+
+<body>
+<header id="header" class="clearfix">
+    <div class="container">
+        <div class="col-group">
+            <div class="site-name ">
+                
+                    <a id="logo" href="http://linuxfunk.com/">
+                        My New Hugo Site
+                    </a>
+                
+                
+            </div>
+            <div>
+                <nav id="nav-menu" class="clearfix">
+                    <a class="" href="http://linuxfunk.com/">首页</a>
+                    
+                </nav>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+<div id="body">
+    <div class="container">
+        <div class="col-group">
+
+            <div class="col-8" id="main">
+                <div class="res-cons">
+                    <article class="post">
+                        <header>
+                            <h1 class="post-title">终端利器tmux命令速查</h1>
+                        </header>
+                        <date class="post-meta meta-date">
+                            2016年6月28日
+                        </date>
+                        
+                        
+                        <div class="post-content">
+                            
+
+<p>配置文件：<a href="https://github.com/gpakosz/.tmux">https://github.com/gpakosz/.tmux</a></p>
+
+<h3 id="基本操作">基本操作：</h3>
+
+<pre><code class="language-shell">?	列出所有快捷键；按q返回
+d	脱离当前会话,可暂时返回Shell界面，输入tmux attach能够重新进入之前会话
+s	选择并切换会话；在同时开启了多个会话时使用
+D	选择要脱离的会话；在同时开启了多个会话时使用
+:	进入命令行模式；此时可输入支持的命令，例如kill-server所有tmux会话
+[	复制模式，光标移动到复制内容位置，空格键开始，方向键选择复制，回车确认，q/Esc退出
+]	进入粘贴模式，粘贴之前复制的内容，按q/Esc退出
+~	列出提示信息缓存；其中包含了之前tmux返回的各种提示信息
+t	显示当前的时间
+Ctrl+z	挂起当前会话
+</code></pre>
+
+<h3 id="窗口操作">窗口操作：</h3>
+
+<pre><code>c	创建新窗口
+&amp;	关闭当前窗口
+数字键	切换到指定窗口
+p	切换至上一窗口
+n	切换至下一窗口
+l	前后窗口间互相切换
+w	通过窗口列表切换窗口
+,	重命名当前窗口，便于识别
+.	修改当前窗口编号，相当于重新排序
+f	在所有窗口中查找关键词，便于窗口多了切换
+</code></pre>
+
+<h3 id="面板操作">面板操作：</h3>
+
+<pre><code>“	将当前面板上下分屏
+%	将当前面板左右分屏
+x	关闭当前分屏
+!	将当前面板置于新窗口,即新建一个窗口,其中仅包含当前面板
+Ctrl+方向键	以1个单元格为单位移动边缘以调整当前面板大小
+Alt+方向键	以5个单元格为单位移动边缘以调整当前面板大小
+空格键	可以在默认面板布局中切换，试试就知道了
+q	显示面板编号
+o	选择当前窗口中下一个面板
+方向键	移动光标选择对应面板
+{	向前置换当前面板
+}	向后置换当前面板
+Alt+o	逆时针旋转当前窗口的面板
+Ctrl+o	顺时针旋转当前窗口的面板
+z	tmux 1.8新特性，最大化当前所在面板
+</code></pre>
+
+                        </div>
+
+                        
+
+
+                        <div class="post-meta meta-tags">
+                            
+                            没有标签
+                            
+                        </div>
+                    </article>
+                    
+    
+
+    
+    
+                </div>
+            </div>
+            <div id="secondary">
+    <section class="widget">
+        <form id="search" action="//www.google.com/search" method="get" accept-charset="utf-8" target="_blank" _lpchecked="1">
+      
+      <input type="text" name="q" maxlength="20" placeholder="Search">
+      <input type="hidden" name="sitesearch" value="http://linuxfunk.com/">
+      <button type="submit" class="submit icon-search"></button>
+</form>
+    </section>
+    
+    <section class="widget">
+        <h3 class="widget-title">最近文章</h3>
+<ul class="widget-list">
+    
+    <li>
+        <a href="http://linuxfunk.com/posts/centos-7-%E7%BC%96%E8%AF%91%E5%AE%89%E8%A3%85nginx%E5%B9%B6%E5%90%AF%E7%94%A8tls1-3/" title="CentOS 7 编译安装nginx并启用TLS1.3">CentOS 7 编译安装nginx并启用TLS1.3</a>
+    </li>
+    
+    <li>
+        <a href="http://linuxfunk.com/posts/%E7%94%A8git-hooks%E5%B0%86%E9%9D%99%E6%80%81%E6%96%87%E4%BB%B6%E9%83%A8%E7%BD%B2%E5%88%B0vps/" title="用git hooks将静态文件部署到VPS">用git hooks将静态文件部署到VPS</a>
+    </li>
+    
+    <li>
+        <a href="http://linuxfunk.com/posts/github%E5%88%86%E6%94%AF%E5%A4%87%E4%BB%BDhexo%E5%8D%9A%E5%AE%A2%E6%BA%90%E6%96%87%E4%BB%B6/" title="Github分支备份Hexo博客源文件">Github分支备份Hexo博客源文件</a>
+    </li>
+    
+    <li>
+        <a href="http://linuxfunk.com/posts/v2ray-ws-tls-nginx%E5%AE%9E%E7%8E%B0%E5%8A%A0%E5%AF%86%E4%BC%A0%E8%BE%93/" title="v2ray实现ws&#43;tls&#43;nginx加密传输">v2ray实现ws&#43;tls&#43;nginx加密传输</a>
+    </li>
+    
+    <li>
+        <a href="http://linuxfunk.com/posts/%E4%BD%BF%E7%94%A8docker%E6%9C%8D%E5%8A%A1%E9%85%8D%E7%BD%AEzabbix-grafana%E7%9B%91%E6%8E%A7/" title="使用docker服务配置Zabbix&#43;Grafana监控">使用docker服务配置Zabbix&#43;Grafana监控</a>
+    </li>
+    
+    <li>
+        <a href="http://linuxfunk.com/posts/gitlab-%E9%80%9A%E8%BF%87docker%E9%95%9C%E5%83%8F%E8%BF%81%E7%A7%BB%E5%8D%87%E7%BA%A7/" title="gitlab 通过docker镜像迁移升级">gitlab 通过docker镜像迁移升级</a>
+    </li>
+    
+    <li>
+        <a href="http://linuxfunk.com/posts/docker-%E5%AE%B9%E5%99%A8%E7%AE%A1%E7%90%86/" title="Docker 容器管理">Docker 容器管理</a>
+    </li>
+    
+    <li>
+        <a href="http://linuxfunk.com/posts/%E5%88%9B%E5%BB%BAdocker%E5%AE%B9%E5%99%A8%E9%95%9C%E5%83%8F/" title="创建Docker容器镜像">创建Docker容器镜像</a>
+    </li>
+    
+    <li>
+        <a href="http://linuxfunk.com/posts/docker-basic/" title="Docker Basic">Docker Basic</a>
+    </li>
+    
+    <li>
+        <a href="http://linuxfunk.com/posts/zabbix-agent-yum-install/" title="zabbix-agent yum install ">zabbix-agent yum install </a>
+    </li>
+    
+</ul>
+    </section>
+
+    
+
+    <section class="widget">
+        <h3 class="widget-title">分类</h3>
+<ul class="widget-list">
+    
+</ul>
+    </section>
+
+    <section class="widget">
+        <h3 class="widget-title">标签</h3>
+<div class="tagcloud">
+    
+</div>
+    </section>
+
+    
+
+    <section class="widget">
+        <h3 class="widget-title">其它</h3>
+        <ul class="widget-list">
+            <li><a href="http://linuxfunk.com/index.xml">文章 RSS</a></li>
+        </ul>
+    </section>
+</div>
+        </div>
+    </div>
+</div>
+<footer id="footer">
+    <div class="container">
+        &copy; 2018 <a href="http://linuxfunk.com/">My New Hugo Site By </a>.
+        Powered by <a rel="nofollow noreferer noopener" href="https://gohugo.io" target="_blank">Hugo</a>.
+        <a href="https://www.flysnow.org/" target="_blank">Theme</a> based on <a href="https://github.com/rujews/maupassant-hugo" target="_blank">maupassant</a>.
+        
+    </div>
+</footer>
+
+
+    <script type="text/javascript">
+    
+    (function(){
+        $("pre code").parent().addClass("line-numbers")
+    }())
+
+    window.MathJax = {
+        tex2jax: {
+            inlineMath: [ ['$','$'] ],
+            processEscapes: true
+        }
+    };
+    </script>
+    <script type="text/javascript" src="/js/prism.js" async="true"></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
+
+<a id="rocket" href="#top"></a>
+<script type="text/javascript" src="/js/totop.js?v=0.0.0" async=""></script>
+
+
+
+
+
+
+</body>
+</html>

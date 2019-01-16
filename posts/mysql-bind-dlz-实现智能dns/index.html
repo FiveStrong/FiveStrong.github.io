@@ -1,0 +1,490 @@
+<!doctype html>
+<html lang="en-us">
+<head>
+
+    <meta charset="utf-8">
+    <meta name="generator" content="Hugo 0.54-DEV" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>MySQL&#43;BIND-dlz 实现智能DNS | My New Hugo Site</title>
+    <meta property="og:title" content="MySQL&#43;BIND-dlz 实现智能DNS - My New Hugo Site">
+    <meta property="og:type" content="article">
+        
+    <meta property="article:published_time" content="2017-03-17T13:12:03&#43;08:00">
+        
+        
+    <meta property="article:modified_time" content="2017-03-17T13:12:03&#43;08:00">
+        
+    <meta name="Keywords" content="">
+    <meta name="description" content="MySQL&#43;BIND-dlz 实现智能DNS">
+        
+    <meta name="author" content="">
+    <meta property="og:url" content="http://linuxfunk.com/posts/mysql-bind-dlz-%E5%AE%9E%E7%8E%B0%E6%99%BA%E8%83%BDdns/">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+
+    <link rel="stylesheet" href="/css/normalize.css">
+    
+        <link rel="stylesheet" href="/css/prism.css">
+    
+    <link rel="stylesheet" href="/css/style.css">
+    <script type="text/javascript" src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+
+    
+
+
+    
+    
+</head>
+
+<body>
+<header id="header" class="clearfix">
+    <div class="container">
+        <div class="col-group">
+            <div class="site-name ">
+                
+                    <a id="logo" href="http://linuxfunk.com/">
+                        My New Hugo Site
+                    </a>
+                
+                
+            </div>
+            <div>
+                <nav id="nav-menu" class="clearfix">
+                    <a class="" href="http://linuxfunk.com/">首页</a>
+                    
+                </nav>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+<div id="body">
+    <div class="container">
+        <div class="col-group">
+
+            <div class="col-8" id="main">
+                <div class="res-cons">
+                    <article class="post">
+                        <header>
+                            <h1 class="post-title">MySQL&#43;BIND-dlz 实现智能DNS</h1>
+                        </header>
+                        <date class="post-meta meta-date">
+                            2017年3月17日
+                        </date>
+                        
+                        
+                        <div class="post-content">
+                            
+
+<h3 id="配置环境">配置环境</h3>
+
+<pre><code>系统：centos 6.8
+Mysql: 5.7
+BIND: 9.11.0 
+</code></pre>
+
+<h3 id="centos6编译环境安装">CentOS6编译环境安装</h3>
+
+<pre><code>yum groupinstall &quot;Development Tools&quot;
+yum install openssl-devel
+</code></pre>
+
+<h3 id="mysql-安装">mysql 安装</h3>
+
+<pre><code>这里直接使用官方yum源安装
+1. 找对应系统版本的rpm包，https://dev.mysql.com/downloads/repo/yum/
+2. sudo yum localinstall mysql57-community-release-el6-{version-number}.noarch.rpm
+3. 查看开启的mysql是哪个版本的yum repolist enabled | grep &quot;mysql.*-community.*&quot;
+4. 官方默认5.7直接安装　sudo yum install mysql-community-server mysql-community-devel
+5. 启动　sudo service mysqld start
+6. 查看状态　sudo service mysqld status
+7. 找到临时密码　sudo grep 'temporary password' /var/log/mysqld.log
+8. 登录并修改密码 mysql -uroot -p  
+   ALTER USER 'root'@'localhost' IDENTIFIED BY 'MyNewPass4!';
+其他需求查看官网教程:https://dev.mysql.com/doc/refman/5.7/en/linux-installation-yum-repo.html
+</code></pre>
+
+<h3 id="bind编译安装dlz插件">Bind编译安装dlz插件</h3>
+
+<p>下载:  <a href="https://www.isc.org/downloads/">https://www.isc.org/downloads/</a></p>
+
+<pre><code>1. 添加用户,和编译安装bind 
+# tar xvf bind-9.11.0-P1.tar.gz
+# cd bind-9.11.0-P1
+# groupadd -r named
+# useradd -s /sbin/nologin -M -r -g named named
+# ./configure --with-dlz-mysql --enable-largefile --enable-threads=yes --prefix=/usr/local/bind --with-openssl
+# make -j 4
+# make install 
+注: 这里的--enable-threds一般建议为no,dlz开启mysql多线程会崩溃，我为了测试所以编译时开了多线程，结果不行.
+再注:后面有开启多线程的方法，所以推荐开启多线程。
+2. 这里编译引用libmysqlclient.so可能会报错，我这里该库文件所在位置为/usr/lib64/mysql/libmysqlclient.so 需要在/usr/lib/下做个软链接
+＃ln -s /usr/lib64/mysql/libmysqlclient.so /usr/lib/libmysqlclient.so
+3. 配置bind 环境变量
+# chown -R named:named /usr/local/bind 
+# echo &quot;export PATH=${PATH}:/usr/local/bind/sbin/:/usr/local/bind/bin/&quot; &gt;&gt; /etc/profile
+# source /etc/profile
+4. 配置rndc  配置named.conf
+# cd /usr/local/bind/etc/
+# rndc-confgen -r /dev/urandom &gt;rndc.conf
+# 添加其他配置
+#  options {
+        directory &quot;/var/named/&quot;;
+        recursion yes;
+        listen-on port 53    { any; };
+        dump-file &quot;/var/named/data/cache_dump.db&quot;;
+        statistics-file &quot;/var/named/data/named_stats.txt&quot;;
+        allow-query { any; };
+        blackhole { none; };
+ };
+# mkdir /var/named/
+# wget -O /var/named/named.ca  http://www.internic.net/domain/named.root
+# chown -R named:named /var/named/
+5. 启动named,查看根递归解析域名是否成功
+＃named -u named -n 1 -c /usr/local/bind/etc/named.conf
+＃dig www.baidu.com @127.0.0.1
+如果这一步成功的话，一个基本的dns就搭建成功了。
+</code></pre>
+
+<h3 id="配置dlz数据库查询">配置dlz数据库查询</h3>
+
+<pre><code>1. 创建单独的数据库
+＃ mysql -uroot -p
+# &gt; create database bind;
+2. 建表
+＃&gt; CREATE TABLE IF NOT EXISTS `dns_records` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `zone` varchar(255) NOT NULL,
+  `host` varchar(255) NOT NULL DEFAULT '@',
+  `type` enum('A','MX','CNAME','NS','SOA','PTR','TXT','AAAA','SVR','URL') NOT NULL,
+  `data` varchar(255) DEFAULT NULL,
+  `ttl` int(11) NOT NULL DEFAULT '3600',
+  `mx_priority` int(11) DEFAULT NULL,
+  `view`  enum('any', 'Telecom', 'Unicom', 'CMCC', 'ours') NOT NULL  DEFAULT &quot;any&quot; ,
+  `priority` tinyint UNSIGNED NOT NULL DEFAULT '255',
+  `refresh` int(11) NOT NULL DEFAULT '28800',
+  `retry` int(11) NOT NULL DEFAULT '14400',
+  `expire` int(11) NOT NULL DEFAULT '86400',
+  `minimum` int(11) NOT NULL DEFAULT '86400',
+  `serial` bigint(20) NOT NULL DEFAULT '2015050917',
+  `resp_person` varchar(64) NOT NULL DEFAULT 'ddns.net',
+  `primary_ns` varchar(64) NOT NULL DEFAULT 'ns.ddns.net.',
+  PRIMARY KEY (`id`),
+  KEY `type` (`type`),
+  KEY `host` (`host`),
+  KEY `zone` (`zone`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+view:是区分不同网络区域的字段.
+Priority:是区分不同优先级的字段.
+3. 创建单独用户,并授权
+# grant all privileges on bind.* to named@'%' identified by &quot;named_passwd&quot;;
+# flush privileges;
+4. 创建view, 在named.conf中加入
+＃view &quot;ours_domain&quot; {
+        match-clients           {127.0.0.1; };
+        allow-query-cache           {any; };
+        allow-recursion          {any; };
+        allow-transfer          {none; };
+ 
+        dlz &quot;Mysql zone&quot; {
+               database        &quot;mysql
+               {host=localhost dbname=bind ssl=false port=3306 user=named pass=named}
+               {select zone from dns_records where zone='$zone$'}
+               {select ttl, type, mx_priority, case when lower(type)='txt' then concat('\&quot;', data, '\&quot;') when lower(type) = 'soa' then concat_ws(' ', data, resp_person, serial, refresh, retry, expire, minimum) else data end from dns_records where zone = '$zone$' and host = '$record$'}&quot;; 
+        };
+        zone &quot;.&quot;  IN {
+            type hint;
+            file &quot;named.ca&quot;;
+        };
+ 
+};
+5. 插入数据
+&gt; insert into named.dns_records (zone, host, type, data, ttl) VALUES ('test.info', 'www', 'A', '1.1.1.1', '60');
+&gt; insert into named.dns_records (zone, host, type, data, ttl) VALUES ('test.info', 'mail', 'CNAME', 'www', '60');
+&gt; insert into named.dns_records (zone, host, type, data, ttl) VALUES ('test.info', '@', 'NS', 'ns', '60');
+&gt; insert into named.dns_records (zone, host, type, data, ttl) VALUES ('test.info', 'ns', 'A', '127.0.0.1', '60');
+６.测试结果
+# dig  @127.0.0.1
+# dig mail.test.info @127.0.0.1
+# dig -t NS test.info @127.0.0.1 
+# dig -t ANY test.info @127.0.0.1
+</code></pre>
+
+<h3 id="启动脚本">启动脚本</h3>
+
+<pre><code class="language-sh">#!/bin/bash
+# named a network name service.
+# chkconfig: 345 87 75
+# description: a name server
+
+[ -r /etc/rc.d/init.d/functions ] &amp;&amp; . /etc/rc.d/init.d/functions
+
+Builddir=/usr/local/bind
+PidFile=/usr/local/bind/var/run/named/named.pid
+LockFile=/var/lock/subsys/named
+Sbindir=${Builddir}/sbin
+Configfile=${Builddir}/etc/named.conf
+CheckConf=${Builddir}/sbin/named-checkconf
+named=named
+
+if [ ! -f ${Configfile} ]
+then
+    echo &quot;Can't find named.conf &quot;
+    exit 1
+fi
+
+if [ ! -d /var/run/named/ ]
+then
+    echo &quot;could not open directory '/var/run/named/': Permission denied &quot;
+    exit 1
+elif [ ! -w /var/run/named/ ]
+    then
+        echo &quot;could not open directory '/var/run/named/': Permission denied &quot;
+        exit 1
+fi
+
+
+if [ ! -r ${Configfile} ]
+then
+    echo &quot;Error: ${Configfile} is not readfile!&quot;
+    exit 1
+else
+    $CheckConf
+    if [ $? != 0 ]
+    then
+        echo -e &quot;Please check config file in \033[31m${Configfile} \033[0m!&quot;
+        exit 2
+    fi
+fi
+
+start() {
+    [ -x ${Builddir}/sbin/$named ] ||   exit 4
+    if [ -f $LockFile ]; then
+        echo -n &quot;$named is already running...&quot;
+        echo_failure
+        echo
+        exit 5
+    fi
+
+    echo -n &quot;Starting $named: &quot;
+    daemon --pidfile &quot;$PidFile&quot; ${Sbindir}/$named -u named -n 1 -c ${Configfile}
+    RETVAL=$?
+    echo
+    if [ $RETVAL -eq 0 ]; then
+        touch $LockFile
+        return 0
+    else
+        rm -f $LockFile $PidFile
+        return 1
+    fi
+}
+
+stop() {
+    if [ ! -f $LockFile ];then
+        echo &quot;$named is not started.&quot;
+        echo_failure
+    fi
+
+    echo -n &quot;Stopping $named: &quot;
+    killproc $named
+    RETVAL=$?
+    echo
+    [ $RETVAL -eq 0 ] &amp;&amp; rm -f $LockFile
+    return 0
+}
+
+restart() {
+    stop
+    sleep 1
+    start
+}
+
+reload() {
+    echo -n &quot;Reloading $named: &quot;
+    killproc $named -HUP
+    RETVAL=$?
+    echo
+    return $RETVAL
+}
+
+
+status() {
+    if pidof $named &gt; /dev/null &amp;&amp; [ -f $PidFile ]; then
+        echo &quot;$named is running...&quot;
+    else
+        echo &quot;$named is stopped...&quot;
+    fi
+}
+
+case $1 in
+start)
+    start ;;
+stop)
+    stop ;;
+restart)
+    restart ;;
+reload)
+    reload ;;
+status)
+    status ;;
+*)
+    echo &quot;Usage:named {start|stop|status|reload|restart}&quot;
+    exit 2;;
+esac
+
+</code></pre>
+
+<h2 id="关于dlz默认开启多线程-mysql崩溃问题">关于dlz默认开启多线程，Mysql崩溃问题</h2>
+
+<pre><code>默认编译开启多线程支持后,每次启动后，查询一次，dlz对mysql的接口就会崩溃。
+其实官方已经解决了这个问题，https://source.isc.org/cgi-bin/gitweb.cgi?p=bind9.git;a=commit;h=5ba1d3dcc5739a1f77ec2875b276b163a42ef1e8
+
+首先在源码包下面找到bind-9.11.0-P1/contrib/dlz/modules/mysql　目录
+里面有dlz_mysql_dynamic.c 源码执行make 编译一下,可能会报错，还是之前mysql库文件那个，如果之前设置过应该没问题。
+在contrib/dlz/modules/mysql/testing 下面有给出的配置文件和数据库文件，按照READEME导入测试即可。
+其中最重要的是加一句 database &quot;dlopen ../dlz_mysql_dynamic.so
+这个.so就是刚才编译出来的库文件，把它放在你的配置文件目录下载，加载之后就可以了。以前的配置可以不变，即可支持多线程。
+终于不崩溃了。其实数据库也可以使用postgresql,这个亲测dlz支持多线程,也不崩溃。
+</code></pre>
+
+                        </div>
+
+                        
+
+
+                        <div class="post-meta meta-tags">
+                            
+                            没有标签
+                            
+                        </div>
+                    </article>
+                    
+    
+
+    
+    
+                </div>
+            </div>
+            <div id="secondary">
+    <section class="widget">
+        <form id="search" action="//www.google.com/search" method="get" accept-charset="utf-8" target="_blank" _lpchecked="1">
+      
+      <input type="text" name="q" maxlength="20" placeholder="Search">
+      <input type="hidden" name="sitesearch" value="http://linuxfunk.com/">
+      <button type="submit" class="submit icon-search"></button>
+</form>
+    </section>
+    
+    <section class="widget">
+        <h3 class="widget-title">最近文章</h3>
+<ul class="widget-list">
+    
+    <li>
+        <a href="http://linuxfunk.com/posts/centos-7-%E7%BC%96%E8%AF%91%E5%AE%89%E8%A3%85nginx%E5%B9%B6%E5%90%AF%E7%94%A8tls1-3/" title="CentOS 7 编译安装nginx并启用TLS1.3">CentOS 7 编译安装nginx并启用TLS1.3</a>
+    </li>
+    
+    <li>
+        <a href="http://linuxfunk.com/posts/%E7%94%A8git-hooks%E5%B0%86%E9%9D%99%E6%80%81%E6%96%87%E4%BB%B6%E9%83%A8%E7%BD%B2%E5%88%B0vps/" title="用git hooks将静态文件部署到VPS">用git hooks将静态文件部署到VPS</a>
+    </li>
+    
+    <li>
+        <a href="http://linuxfunk.com/posts/github%E5%88%86%E6%94%AF%E5%A4%87%E4%BB%BDhexo%E5%8D%9A%E5%AE%A2%E6%BA%90%E6%96%87%E4%BB%B6/" title="Github分支备份Hexo博客源文件">Github分支备份Hexo博客源文件</a>
+    </li>
+    
+    <li>
+        <a href="http://linuxfunk.com/posts/v2ray-ws-tls-nginx%E5%AE%9E%E7%8E%B0%E5%8A%A0%E5%AF%86%E4%BC%A0%E8%BE%93/" title="v2ray实现ws&#43;tls&#43;nginx加密传输">v2ray实现ws&#43;tls&#43;nginx加密传输</a>
+    </li>
+    
+    <li>
+        <a href="http://linuxfunk.com/posts/%E4%BD%BF%E7%94%A8docker%E6%9C%8D%E5%8A%A1%E9%85%8D%E7%BD%AEzabbix-grafana%E7%9B%91%E6%8E%A7/" title="使用docker服务配置Zabbix&#43;Grafana监控">使用docker服务配置Zabbix&#43;Grafana监控</a>
+    </li>
+    
+    <li>
+        <a href="http://linuxfunk.com/posts/gitlab-%E9%80%9A%E8%BF%87docker%E9%95%9C%E5%83%8F%E8%BF%81%E7%A7%BB%E5%8D%87%E7%BA%A7/" title="gitlab 通过docker镜像迁移升级">gitlab 通过docker镜像迁移升级</a>
+    </li>
+    
+    <li>
+        <a href="http://linuxfunk.com/posts/docker-%E5%AE%B9%E5%99%A8%E7%AE%A1%E7%90%86/" title="Docker 容器管理">Docker 容器管理</a>
+    </li>
+    
+    <li>
+        <a href="http://linuxfunk.com/posts/%E5%88%9B%E5%BB%BAdocker%E5%AE%B9%E5%99%A8%E9%95%9C%E5%83%8F/" title="创建Docker容器镜像">创建Docker容器镜像</a>
+    </li>
+    
+    <li>
+        <a href="http://linuxfunk.com/posts/docker-basic/" title="Docker Basic">Docker Basic</a>
+    </li>
+    
+    <li>
+        <a href="http://linuxfunk.com/posts/zabbix-agent-yum-install/" title="zabbix-agent yum install ">zabbix-agent yum install </a>
+    </li>
+    
+</ul>
+    </section>
+
+    
+
+    <section class="widget">
+        <h3 class="widget-title">分类</h3>
+<ul class="widget-list">
+    
+</ul>
+    </section>
+
+    <section class="widget">
+        <h3 class="widget-title">标签</h3>
+<div class="tagcloud">
+    
+</div>
+    </section>
+
+    
+
+    <section class="widget">
+        <h3 class="widget-title">其它</h3>
+        <ul class="widget-list">
+            <li><a href="http://linuxfunk.com/index.xml">文章 RSS</a></li>
+        </ul>
+    </section>
+</div>
+        </div>
+    </div>
+</div>
+<footer id="footer">
+    <div class="container">
+        &copy; 2018 <a href="http://linuxfunk.com/">My New Hugo Site By </a>.
+        Powered by <a rel="nofollow noreferer noopener" href="https://gohugo.io" target="_blank">Hugo</a>.
+        <a href="https://www.flysnow.org/" target="_blank">Theme</a> based on <a href="https://github.com/rujews/maupassant-hugo" target="_blank">maupassant</a>.
+        
+    </div>
+</footer>
+
+
+    <script type="text/javascript">
+    
+    (function(){
+        $("pre code").parent().addClass("line-numbers")
+    }())
+
+    window.MathJax = {
+        tex2jax: {
+            inlineMath: [ ['$','$'] ],
+            processEscapes: true
+        }
+    };
+    </script>
+    <script type="text/javascript" src="/js/prism.js" async="true"></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
+
+<a id="rocket" href="#top"></a>
+<script type="text/javascript" src="/js/totop.js?v=0.0.0" async=""></script>
+
+
+
+
+
+
+</body>
+</html>

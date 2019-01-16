@@ -1,0 +1,278 @@
+<!doctype html>
+<html lang="en-us">
+<head>
+
+    <meta charset="utf-8">
+    <meta name="generator" content="Hugo 0.54-DEV" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>KVM-从模板镜像克隆虚拟机 | My New Hugo Site</title>
+    <meta property="og:title" content="KVM-从模板镜像克隆虚拟机 - My New Hugo Site">
+    <meta property="og:type" content="article">
+        
+    <meta property="article:published_time" content="2017-09-04T17:18:00&#43;08:00">
+        
+        
+    <meta property="article:modified_time" content="2017-09-04T17:18:00&#43;08:00">
+        
+    <meta name="Keywords" content="">
+    <meta name="description" content="KVM-从模板镜像克隆虚拟机">
+        
+    <meta name="author" content="">
+    <meta property="og:url" content="http://linuxfunk.com/posts/kvm-%E4%BB%8E%E6%A8%A1%E6%9D%BF%E9%95%9C%E5%83%8F%E5%85%8B%E9%9A%86%E8%99%9A%E6%8B%9F%E6%9C%BA/">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+
+    <link rel="stylesheet" href="/css/normalize.css">
+    
+        <link rel="stylesheet" href="/css/prism.css">
+    
+    <link rel="stylesheet" href="/css/style.css">
+    <script type="text/javascript" src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+
+    
+
+
+    
+    
+</head>
+
+<body>
+<header id="header" class="clearfix">
+    <div class="container">
+        <div class="col-group">
+            <div class="site-name ">
+                
+                    <a id="logo" href="http://linuxfunk.com/">
+                        My New Hugo Site
+                    </a>
+                
+                
+            </div>
+            <div>
+                <nav id="nav-menu" class="clearfix">
+                    <a class="" href="http://linuxfunk.com/">首页</a>
+                    
+                </nav>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+<div id="body">
+    <div class="container">
+        <div class="col-group">
+
+            <div class="col-8" id="main">
+                <div class="res-cons">
+                    <article class="post">
+                        <header>
+                            <h1 class="post-title">KVM-从模板镜像克隆虚拟机</h1>
+                        </header>
+                        <date class="post-meta meta-date">
+                            2017年9月4日
+                        </date>
+                        
+                        
+                        <div class="post-content">
+                            
+
+<h3 id="1-准备工作">1.准备工作</h3>
+
+<p>克隆虚拟机你需要以下文件:
+ - 一个定义文件（用于描述内存大小，CPUs的个数等等）
+ - 一个镜像模板（以安装好操作系统）</p>
+
+<h3 id="2-创建预定义文件和镜像模板">2.创建预定义文件和镜像模板</h3>
+
+<p>定义文件为一个xml格式的文件，模板是一个虚拟机disk image.通过以下方法创建:</p>
+
+<ul>
+<li>创建一个基本的虚拟机并安装好操作系统</li>
+
+<li><p>关闭该虚拟机</p>
+
+<pre><code class="language-bash">virsh shutdown basevm
+</code></pre>
+
+<ul>
+<li><p>导出XML格式文件，并复制基础镜像为template.qcow2</p>
+
+<pre><code>virsh dumpxml basevm &gt; /var/lib/libvirt/images/template.xml
+cp /var/lib/libvirt/images/basevm.qcow2 /var/lib/libvirt/images/template.qcow2
+</code></pre></li>
+
+<li><p>修改template.xml文件中镜像文件的指定位置</p>
+
+<pre><code>&lt;disk type='file' device='disk'&gt;
+&lt;driver name='qemu' type='qcow2' cache='none'/&gt;
+&lt;source file='/var/lib/libvirt/images/template.qcow2'/&gt;
+&lt;target dev='vda' bus='virtio'/&gt;
+&lt;address type='pci' domain='0x0000' bus='0x00' slot='0x04' function='0x0'/&gt;
+&lt;/disk&gt;
+</code></pre></li>
+
+<li><p>通过 virt-sysprep 命令处理template.qcow2
+这将重置镜像并移除SSH kesy, 为网卡创建新的MAC地址，修改udev persistent net rules, 清除log文件等</p>
+
+<pre><code>virt-sysprep -a /var/lib/libvirt/images/template.qcow2
+</code></pre></li>
+
+<li><p>【可选】如果你不再需要basevm，删除它。</p>
+
+<pre><code>virsh undefine basevm
+rm /var/lib/libvirt/images/basevm.qcow2
+</code></pre>
+
+<h3 id="3-从模板克隆新的虚拟机">3.从模板克隆新的虚拟机</h3></li>
+
+<li><p>通过template.xml, template.qcow2 创建虚拟机</p>
+
+<pre><code>virt-clone --connect qemu:///system                    \
+--original-xml /var/lib/libvirt/images/template.xml  \
+--name newvm                                         \
+--file /var/lib/libvirt/images/newvm.qcow2
+</code></pre></li>
+</ul></li>
+</ul>
+
+                        </div>
+
+                        
+
+
+                        <div class="post-meta meta-tags">
+                            
+                            没有标签
+                            
+                        </div>
+                    </article>
+                    
+    
+
+    
+    
+                </div>
+            </div>
+            <div id="secondary">
+    <section class="widget">
+        <form id="search" action="//www.google.com/search" method="get" accept-charset="utf-8" target="_blank" _lpchecked="1">
+      
+      <input type="text" name="q" maxlength="20" placeholder="Search">
+      <input type="hidden" name="sitesearch" value="http://linuxfunk.com/">
+      <button type="submit" class="submit icon-search"></button>
+</form>
+    </section>
+    
+    <section class="widget">
+        <h3 class="widget-title">最近文章</h3>
+<ul class="widget-list">
+    
+    <li>
+        <a href="http://linuxfunk.com/posts/centos-7-%E7%BC%96%E8%AF%91%E5%AE%89%E8%A3%85nginx%E5%B9%B6%E5%90%AF%E7%94%A8tls1-3/" title="CentOS 7 编译安装nginx并启用TLS1.3">CentOS 7 编译安装nginx并启用TLS1.3</a>
+    </li>
+    
+    <li>
+        <a href="http://linuxfunk.com/posts/%E7%94%A8git-hooks%E5%B0%86%E9%9D%99%E6%80%81%E6%96%87%E4%BB%B6%E9%83%A8%E7%BD%B2%E5%88%B0vps/" title="用git hooks将静态文件部署到VPS">用git hooks将静态文件部署到VPS</a>
+    </li>
+    
+    <li>
+        <a href="http://linuxfunk.com/posts/github%E5%88%86%E6%94%AF%E5%A4%87%E4%BB%BDhexo%E5%8D%9A%E5%AE%A2%E6%BA%90%E6%96%87%E4%BB%B6/" title="Github分支备份Hexo博客源文件">Github分支备份Hexo博客源文件</a>
+    </li>
+    
+    <li>
+        <a href="http://linuxfunk.com/posts/v2ray-ws-tls-nginx%E5%AE%9E%E7%8E%B0%E5%8A%A0%E5%AF%86%E4%BC%A0%E8%BE%93/" title="v2ray实现ws&#43;tls&#43;nginx加密传输">v2ray实现ws&#43;tls&#43;nginx加密传输</a>
+    </li>
+    
+    <li>
+        <a href="http://linuxfunk.com/posts/%E4%BD%BF%E7%94%A8docker%E6%9C%8D%E5%8A%A1%E9%85%8D%E7%BD%AEzabbix-grafana%E7%9B%91%E6%8E%A7/" title="使用docker服务配置Zabbix&#43;Grafana监控">使用docker服务配置Zabbix&#43;Grafana监控</a>
+    </li>
+    
+    <li>
+        <a href="http://linuxfunk.com/posts/gitlab-%E9%80%9A%E8%BF%87docker%E9%95%9C%E5%83%8F%E8%BF%81%E7%A7%BB%E5%8D%87%E7%BA%A7/" title="gitlab 通过docker镜像迁移升级">gitlab 通过docker镜像迁移升级</a>
+    </li>
+    
+    <li>
+        <a href="http://linuxfunk.com/posts/docker-%E5%AE%B9%E5%99%A8%E7%AE%A1%E7%90%86/" title="Docker 容器管理">Docker 容器管理</a>
+    </li>
+    
+    <li>
+        <a href="http://linuxfunk.com/posts/%E5%88%9B%E5%BB%BAdocker%E5%AE%B9%E5%99%A8%E9%95%9C%E5%83%8F/" title="创建Docker容器镜像">创建Docker容器镜像</a>
+    </li>
+    
+    <li>
+        <a href="http://linuxfunk.com/posts/docker-basic/" title="Docker Basic">Docker Basic</a>
+    </li>
+    
+    <li>
+        <a href="http://linuxfunk.com/posts/zabbix-agent-yum-install/" title="zabbix-agent yum install ">zabbix-agent yum install </a>
+    </li>
+    
+</ul>
+    </section>
+
+    
+
+    <section class="widget">
+        <h3 class="widget-title">分类</h3>
+<ul class="widget-list">
+    
+</ul>
+    </section>
+
+    <section class="widget">
+        <h3 class="widget-title">标签</h3>
+<div class="tagcloud">
+    
+</div>
+    </section>
+
+    
+
+    <section class="widget">
+        <h3 class="widget-title">其它</h3>
+        <ul class="widget-list">
+            <li><a href="http://linuxfunk.com/index.xml">文章 RSS</a></li>
+        </ul>
+    </section>
+</div>
+        </div>
+    </div>
+</div>
+<footer id="footer">
+    <div class="container">
+        &copy; 2018 <a href="http://linuxfunk.com/">My New Hugo Site By </a>.
+        Powered by <a rel="nofollow noreferer noopener" href="https://gohugo.io" target="_blank">Hugo</a>.
+        <a href="https://www.flysnow.org/" target="_blank">Theme</a> based on <a href="https://github.com/rujews/maupassant-hugo" target="_blank">maupassant</a>.
+        
+    </div>
+</footer>
+
+
+    <script type="text/javascript">
+    
+    (function(){
+        $("pre code").parent().addClass("line-numbers")
+    }())
+
+    window.MathJax = {
+        tex2jax: {
+            inlineMath: [ ['$','$'] ],
+            processEscapes: true
+        }
+    };
+    </script>
+    <script type="text/javascript" src="/js/prism.js" async="true"></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
+
+<a id="rocket" href="#top"></a>
+<script type="text/javascript" src="/js/totop.js?v=0.0.0" async=""></script>
+
+
+
+
+
+
+</body>
+</html>
