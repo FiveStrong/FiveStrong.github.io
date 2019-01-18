@@ -16,7 +16,8 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
 
 
-<meta name="author" content="Morgana" /><meta name="description" content="一、NFS的相关概念 NFS（Network File System）即网络文件系统的缩写，由Sun公司研发，其目的是为了解决网络文件共享的问题。用户可" /><meta name="keywords" content="Hugo, モルガンナの家" />
+<meta name="author" content="Morgana" /><meta name="description" content="NFS服务配置
+" /><meta name="keywords" content="Hugo, モルガンナの家" />
 
 
 
@@ -39,25 +40,25 @@
 
 
 <meta property="og:title" content="NFS服务配置" />
-<meta property="og:description" content="一、NFS的相关概念 NFS（Network File System）即网络文件系统的缩写，由Sun公司研发，其目的是为了解决网络文件共享的问题。用户可" />
+<meta property="og:description" content="NFS服务配置" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="http://linuxfunk.com/post/nfs%E6%9C%8D%E5%8A%A1%E9%85%8D%E7%BD%AE/" /><meta property="article:published_time" content="2015-11-02T21:43:56&#43;00:00"/>
 <meta property="article:modified_time" content="2015-11-02T21:43:56&#43;00:00"/>
 
 <meta itemprop="name" content="NFS服务配置">
-<meta itemprop="description" content="一、NFS的相关概念 NFS（Network File System）即网络文件系统的缩写，由Sun公司研发，其目的是为了解决网络文件共享的问题。用户可">
+<meta itemprop="description" content="NFS服务配置">
 
 
 <meta itemprop="datePublished" content="2015-11-02T21:43:56&#43;00:00" />
 <meta itemprop="dateModified" content="2015-11-02T21:43:56&#43;00:00" />
-<meta itemprop="wordCount" content="2762">
+<meta itemprop="wordCount" content="2769">
 
 
 
-<meta itemprop="keywords" content="" />
+<meta itemprop="keywords" content="nfs," />
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="NFS服务配置"/>
-<meta name="twitter:description" content="一、NFS的相关概念 NFS（Network File System）即网络文件系统的缩写，由Sun公司研发，其目的是为了解决网络文件共享的问题。用户可"/>
+<meta name="twitter:description" content="NFS服务配置"/>
 
 <!--[if lte IE 9]>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
@@ -128,8 +129,10 @@
 
       <div class="post-meta">
         <span class="post-time"> 2015-11-02 </span>
-        
-          <span class="more-meta"> 约 2762 字 </span>
+        <div class="post-category">
+            <a href="/categories/linux/"> linux </a>
+            </div>
+          <span class="more-meta"> 约 2769 字 </span>
           <span class="more-meta"> 预计阅读 6 分钟 </span>
         <span id="busuanzi_container_page_pv" class="more-meta"> <span id="busuanzi_value_page_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次阅读 </span>
       </div>
@@ -170,7 +173,7 @@
   </div>
 </div>
     <div class="post-content">
-      
+      <p>NFS服务配置</p>
 
 <h4 id="一-nfs的相关概念">一、NFS的相关概念</h4>
 
@@ -466,7 +469,6 @@ mount -t nfs -o nosuid,noexec,nodev,noatime,nodiratime,rsize=131072,wsize=131072
 <li>大型网站NFS网络文件系统代替软件：
 分布式文件系统Moosefs(mfs),glusterfs,FastDFS</li>
 </ol>
-
     </div>
 
     <div class="post-copyright">
@@ -484,7 +486,9 @@ mount -t nfs -o nosuid,noexec,nodev,noatime,nodiratime,rsize=131072,wsize=131072
     <span class="item-content"><a rel="license noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a></span>
   </p>
 </div><footer class="post-footer">
-      
+      <div class="post-tags">
+          <a href="/tags/nfs/">nfs</a>
+          </div>
       <nav class="post-nav">
         <a class="prev" href="/post/drbd%E9%85%8D%E7%BD%AE%E4%B8%8E%E6%B5%8B%E8%AF%95/">
             <i class="iconfont icon-left"></i>

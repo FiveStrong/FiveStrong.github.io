@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>DRBD on モルガンナの家</title>
+    <link>http://linuxfunk.com/tags/drbd/</link>
+    <description>Recent content in DRBD on モルガンナの家</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Wed, 16 Dec 2015 20:41:38 +0000</lastBuildDate>
+    
+	<atom:link href="http://linuxfunk.com/tags/drbd/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>DRBD配置与测试</title>
+      <link>http://linuxfunk.com/post/drbd%E9%85%8D%E7%BD%AE%E4%B8%8E%E6%B5%8B%E8%AF%95/</link>
+      <pubDate>Wed, 16 Dec 2015 20:41:38 +0000</pubDate>
+      
+      <guid>http://linuxfunk.com/post/drbd%E9%85%8D%E7%BD%AE%E4%B8%8E%E6%B5%8B%E8%AF%95/</guid>
+      <description>&lt;p&gt;DRBD配置与测试&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

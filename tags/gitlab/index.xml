@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>gitlab on モルガンナの家</title>
+    <link>http://linuxfunk.com/tags/gitlab/</link>
+    <description>Recent content in gitlab on モルガンナの家</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Mon, 30 Oct 2017 12:18:13 +0000</lastBuildDate>
+    
+	<atom:link href="http://linuxfunk.com/tags/gitlab/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>gitlab 通过docker镜像迁移升级</title>
+      <link>http://linuxfunk.com/post/gitlab-%E9%80%9A%E8%BF%87docker%E9%95%9C%E5%83%8F%E8%BF%81%E7%A7%BB%E5%8D%87%E7%BA%A7/</link>
+      <pubDate>Mon, 30 Oct 2017 12:18:13 +0000</pubDate>
+      
+      <guid>http://linuxfunk.com/post/gitlab-%E9%80%9A%E8%BF%87docker%E9%95%9C%E5%83%8F%E8%BF%81%E7%A7%BB%E5%8D%87%E7%BA%A7/</guid>
+      <description>&lt;p&gt;迁移版本:&lt;/p&gt;
+
+&lt;p&gt;旧gitlab(8.8.3)  CentOS 6.8&lt;/p&gt;
+
+&lt;p&gt;新gitlab(9.5.5) postgresql(9.6) redis(2.8.4) CentOS 7.4&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

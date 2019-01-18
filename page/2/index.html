@@ -44,7 +44,7 @@
 <meta property="og:description" content="You must be tired, go to sleep!" />
 <meta property="og:type" content="website" />
 <meta property="og:url" content="http://linuxfunk.com/" />
-<meta property="og:updated_time" content="2017-10-30T12:18:13&#43;00:00"/>
+<meta property="og:updated_time" content="2017-10-30T12:20:08&#43;00:00"/>
 
 <meta itemprop="name" content="モルガンナの家">
 <meta itemprop="description" content="You must be tired, go to sleep!">
@@ -118,10 +118,36 @@
           <section id="posts" class="posts">
     <article class="post">
   <header class="post-header">
+    <h1 class="post-title"><a class="post-link" href="/post/%E4%BD%BF%E7%94%A8docker%E6%9C%8D%E5%8A%A1%E9%85%8D%E7%BD%AEzabbix-grafana%E7%9B%91%E6%8E%A7/">使用docker服务配置Zabbix&#43;Grafana监控</a></h1>
+    <div class="post-meta">
+      <span class="post-time"> 2017-10-30 </span>
+      <div class="post-category">
+          <a href="/categories/linux/"> linux </a>
+          </div>
+        <span class="more-meta"> 约 216 字 </span>
+        <span class="more-meta"> 预计阅读 1 分钟 </span>
+    </div>
+  </header>
+  
+  <div class="post-content">
+    <div class="post-summary">
+      <p>使用docker服务配置Zabbix+Grafana监控
+纯命令行启动</p>
+    </div>
+    <div class="read-more">
+      <a href="/post/%E4%BD%BF%E7%94%A8docker%E6%9C%8D%E5%8A%A1%E9%85%8D%E7%BD%AEzabbix-grafana%E7%9B%91%E6%8E%A7/" class="read-more-link">阅读更多</a>
+    </div>
+  </div>
+</article>
+
+    <article class="post">
+  <header class="post-header">
     <h1 class="post-title"><a class="post-link" href="/post/gitlab-%E9%80%9A%E8%BF%87docker%E9%95%9C%E5%83%8F%E8%BF%81%E7%A7%BB%E5%8D%87%E7%BA%A7/">gitlab 通过docker镜像迁移升级</a></h1>
     <div class="post-meta">
       <span class="post-time"> 2017-10-30 </span>
-      
+      <div class="post-category">
+          <a href="/categories/linux/"> linux </a>
+          </div>
         <span class="more-meta"> 约 1871 字 </span>
         <span class="more-meta"> 预计阅读 4 分钟 </span>
     </div>
@@ -129,7 +155,11 @@
   
   <div class="post-content">
     <div class="post-summary">
-      迁移版本: 旧gitlab(8.8.3) CentOS 6.8 新gitlab(9.5.5) postgresql(9.6) redis(2.8.4) CentOS 7.4 目录规划： 1 2 3 4 5 总目录：/home/data docker-
+      <p>迁移版本:</p>
+
+<p>旧gitlab(8.8.3)  CentOS 6.8</p>
+
+<p>新gitlab(9.5.5) postgresql(9.6) redis(2.8.4) CentOS 7.4</p>
     </div>
     <div class="read-more">
       <a href="/post/gitlab-%E9%80%9A%E8%BF%87docker%E9%95%9C%E5%83%8F%E8%BF%81%E7%A7%BB%E5%8D%87%E7%BA%A7/" class="read-more-link">阅读更多</a>
@@ -142,15 +172,17 @@
     <h1 class="post-title"><a class="post-link" href="/post/docker-%E5%AE%B9%E5%99%A8%E7%AE%A1%E7%90%86/">Docker 容器管理</a></h1>
     <div class="post-meta">
       <span class="post-time"> 2017-10-30 </span>
-      
-        <span class="more-meta"> 约 598 字 </span>
+      <div class="post-category">
+          <a href="/categories/linux/"> linux </a>
+          </div>
+        <span class="more-meta"> 约 605 字 </span>
         <span class="more-meta"> 预计阅读 2 分钟 </span>
     </div>
   </header>
   
   <div class="post-content">
     <div class="post-summary">
-      1.基础命令 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 docker container ls -a #查看所有容器 docker container attach nginx-test #连接到容器，显示输出，ctrl+c
+      <p>docker 常用命令纪录</p>
     </div>
     <div class="read-more">
       <a href="/post/docker-%E5%AE%B9%E5%99%A8%E7%AE%A1%E7%90%86/" class="read-more-link">阅读更多</a>
@@ -163,7 +195,9 @@
     <h1 class="post-title"><a class="post-link" href="/post/%E5%88%9B%E5%BB%BAdocker%E5%AE%B9%E5%99%A8%E9%95%9C%E5%83%8F/">创建Docker容器镜像</a></h1>
     <div class="post-meta">
       <span class="post-time"> 2017-10-30 </span>
-      
+      <div class="post-category">
+          <a href="/categories/linux/"> linux </a>
+          </div>
         <span class="more-meta"> 约 1348 字 </span>
         <span class="more-meta"> 预计阅读 3 分钟 </span>
     </div>
@@ -171,7 +205,9 @@
   
   <div class="post-content">
     <div class="post-summary">
-      1.Dockerfile Dockerfile 是用户定义的一系列用来生成容器镜像的文件，通过执行来构建镜像 1 docker image build xxx.xx 一个Dockerfile 大概内容如下, 几遍你对dockerfile
+      <h3 id="1-dockerfile">1.Dockerfile</h3>
+
+<p>Dockerfile 是用户定义的一系列用来生成容器镜像的文件，通过执行来构建镜像</p>
     </div>
     <div class="read-more">
       <a href="/post/%E5%88%9B%E5%BB%BAdocker%E5%AE%B9%E5%99%A8%E9%95%9C%E5%83%8F/" class="read-more-link">阅读更多</a>
@@ -184,42 +220,20 @@
     <h1 class="post-title"><a class="post-link" href="/post/docker-basic/">Docker Basic</a></h1>
     <div class="post-meta">
       <span class="post-time"> 2017-10-30 </span>
-      
-        <span class="more-meta"> 约 872 字 </span>
+      <div class="post-category">
+          <a href="/categories/linux/"> linux </a>
+          </div>
+        <span class="more-meta"> 约 884 字 </span>
         <span class="more-meta"> 预计阅读 2 分钟 </span>
     </div>
   </header>
   
   <div class="post-content">
     <div class="post-summary">
-      1. Docker安装 Docker必须要内核版本高于3.10,所以默认的centos6版本过低无法正常运行docker,推荐使用CentOS7或
+      <p>一些docker基础知识</p>
     </div>
     <div class="read-more">
       <a href="/post/docker-basic/" class="read-more-link">阅读更多</a>
-    </div>
-  </div>
-</article>
-
-    <article class="post">
-  <header class="post-header">
-    <h1 class="post-title"><a class="post-link" href="/post/zabbix-agent-yum-install/">zabbix-agent yum install </a></h1>
-    <div class="post-meta">
-      <span class="post-time"> 2017-10-17 </span>
-      
-        <span class="more-meta"> 约 88 字 </span>
-        <span class="more-meta"> 预计阅读 1 分钟 </span>
-    </div>
-  </header>
-  
-  <div class="post-content">
-    <div class="post-summary">
-      Step 1 – Add Required Repository
-1 2 3 4 5  CentOS/RHEL 7: rpm -Uvh http://repo.zabbix.com/zabbix/3.4/rhel/7/x86_64/zabbix-release-3.4-2.el7.noarch.rpm CentOS/RHEL 6: rpm -Uvh http://repo.zabbix.com/zabbix/3.4/rhel/6/x86_64/zabbix-release-3.4-1.el6.noarch.rpm   Step 2 – Install Zabbix Agent
-1  yum install zabbix-agent   Step 3 – Edit Zabbix Agent Configuration
-1 2 3 4 5 6 7  # vim /etc/zabbix/zabbix_agentd.conf #Server=[zabbix server ip] #Hostname=[ Hostname of client system ] Server=192.168.1.11 Hostname=Server1   Step 4 – Restarting Zabbix Agent
-    </div>
-    <div class="read-more">
-      <a href="/post/zabbix-agent-yum-install/" class="read-more-link">阅读更多</a>
     </div>
   </div>
 </article>

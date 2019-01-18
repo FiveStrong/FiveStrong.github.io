@@ -16,7 +16,8 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
 
 
-<meta name="author" content="Morgana" /><meta name="description" content="zabbix 配置邮件报警,其实网上有一堆教程，但是在按着他们的教程配置好了之后，或多或少有些问题，比如邮件发不出去，没内容等等。 我整理了一下自己配置成" /><meta name="keywords" content="Hugo, モルガンナの家" />
+<meta name="author" content="Morgana" /><meta name="description" content="zabbix 配置邮件报警,其实网上有一堆教程，但是在按着他们的教程配置好了之后，或多或少有些问题，比如邮件发不出去，没内容等等。 我整理了一下自己配置成功之后需要注意的几点。
+" /><meta name="keywords" content="Hugo, モルガンナの家" />
 
 
 
@@ -39,13 +40,15 @@
 
 
 <meta property="og:title" content="zabbix 3 配置邮件报警" />
-<meta property="og:description" content="zabbix 配置邮件报警,其实网上有一堆教程，但是在按着他们的教程配置好了之后，或多或少有些问题，比如邮件发不出去，没内容等等。 我整理了一下自己配置成" />
+<meta property="og:description" content="zabbix 配置邮件报警,其实网上有一堆教程，但是在按着他们的教程配置好了之后，或多或少有些问题，比如邮件发不出去，没内容等等。
+我整理了一下自己配置成功之后需要注意的几点。" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="http://linuxfunk.com/post/zabbix-3-%E9%85%8D%E7%BD%AE%E9%82%AE%E4%BB%B6%E6%8A%A5%E8%AD%A6/" /><meta property="article:published_time" content="2017-04-05T15:58:50&#43;00:00"/>
 <meta property="article:modified_time" content="2017-04-05T15:58:50&#43;00:00"/>
 
 <meta itemprop="name" content="zabbix 3 配置邮件报警">
-<meta itemprop="description" content="zabbix 配置邮件报警,其实网上有一堆教程，但是在按着他们的教程配置好了之后，或多或少有些问题，比如邮件发不出去，没内容等等。 我整理了一下自己配置成">
+<meta itemprop="description" content="zabbix 配置邮件报警,其实网上有一堆教程，但是在按着他们的教程配置好了之后，或多或少有些问题，比如邮件发不出去，没内容等等。
+我整理了一下自己配置成功之后需要注意的几点。">
 
 
 <meta itemprop="datePublished" content="2017-04-05T15:58:50&#43;00:00" />
@@ -54,10 +57,11 @@
 
 
 
-<meta itemprop="keywords" content="" />
+<meta itemprop="keywords" content="zabbix," />
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="zabbix 3 配置邮件报警"/>
-<meta name="twitter:description" content="zabbix 配置邮件报警,其实网上有一堆教程，但是在按着他们的教程配置好了之后，或多或少有些问题，比如邮件发不出去，没内容等等。 我整理了一下自己配置成"/>
+<meta name="twitter:description" content="zabbix 配置邮件报警,其实网上有一堆教程，但是在按着他们的教程配置好了之后，或多或少有些问题，比如邮件发不出去，没内容等等。
+我整理了一下自己配置成功之后需要注意的几点。"/>
 
 <!--[if lte IE 9]>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
@@ -128,7 +132,9 @@
 
       <div class="post-meta">
         <span class="post-time"> 2017-04-05 </span>
-        
+        <div class="post-category">
+            <a href="/categories/linux/"> linux </a>
+            </div>
           <span class="more-meta"> 约 1418 字 </span>
           <span class="more-meta"> 预计阅读 3 分钟 </span>
         <span id="busuanzi_container_page_pv" class="more-meta"> <span id="busuanzi_value_page_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次阅读 </span>
@@ -158,9 +164,7 @@
   </div>
 </div>
     <div class="post-content">
-      
-
-<p>zabbix 配置邮件报警,其实网上有一堆教程，但是在按着他们的教程配置好了之后，或多或少有些问题，比如邮件发不出去，没内容等等。
+      <p>zabbix 配置邮件报警,其实网上有一堆教程，但是在按着他们的教程配置好了之后，或多或少有些问题，比如邮件发不出去，没内容等等。
 我整理了一下自己配置成功之后需要注意的几点。</p>
 
 <h3 id="1-安装mailx-服务-通过mailx-配置好外部smtp服务器相关信息发送邮件-这里是配置发信的地址">1. 安装mailx 服务 通过mailx 配置好外部SMTP服务器相关信息发送邮件（这里是配置发信的地址）：</h3>
@@ -326,7 +330,6 @@ chmod +x /usr/local/share/zabbix/alertscripts/sendmail.sh</pre></td></tr></table
 <p><a href="https://www.cnyunwei.cc/archives/242">2:zabbix 配置邮件报警</a></p>
 
 <p><a href="https://www.cnyunwei.cc/archives/249">3:zabbix 邮件内容为附件</a></p>
-
     </div>
 
     <div class="post-copyright">
@@ -344,7 +347,9 @@ chmod +x /usr/local/share/zabbix/alertscripts/sendmail.sh</pre></td></tr></table
     <span class="item-content"><a rel="license noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a></span>
   </p>
 </div><footer class="post-footer">
-      
+      <div class="post-tags">
+          <a href="/tags/zabbix/">zabbix</a>
+          </div>
       <nav class="post-nav">
         <a class="prev" href="/post/centos7-%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AEvnc/">
             <i class="iconfont icon-left"></i>

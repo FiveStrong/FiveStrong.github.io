@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>tumux on モルガンナの家</title>
+    <link>http://linuxfunk.com/tags/tumux/</link>
+    <description>Recent content in tumux on モルガンナの家</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Tue, 28 Jun 2016 14:19:36 +0000</lastBuildDate>
+    
+	<atom:link href="http://linuxfunk.com/tags/tumux/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>终端利器tmux命令速查</title>
+      <link>http://linuxfunk.com/post/%E7%BB%88%E7%AB%AF%E5%88%A9%E5%99%A8tmux%E5%91%BD%E4%BB%A4%E9%80%9F%E6%9F%A5/</link>
+      <pubDate>Tue, 28 Jun 2016 14:19:36 +0000</pubDate>
+      
+      <guid>http://linuxfunk.com/post/%E7%BB%88%E7%AB%AF%E5%88%A9%E5%99%A8tmux%E5%91%BD%E4%BB%A4%E9%80%9F%E6%9F%A5/</guid>
+      <description>&lt;p&gt;配置文件：&lt;a href=&#34;https://github.com/gpakosz/.tmux&#34;&gt;https://github.com/gpakosz/.tmux&lt;/a&gt;&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

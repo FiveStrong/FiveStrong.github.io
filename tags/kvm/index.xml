@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>kvm on モルガンナの家</title>
+    <link>http://linuxfunk.com/tags/kvm/</link>
+    <description>Recent content in kvm on モルガンナの家</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Mon, 04 Sep 2017 17:18:00 +0000</lastBuildDate>
+    
+	<atom:link href="http://linuxfunk.com/tags/kvm/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>KVM-从模板镜像克隆虚拟机</title>
+      <link>http://linuxfunk.com/post/kvm-%E4%BB%8E%E6%A8%A1%E6%9D%BF%E9%95%9C%E5%83%8F%E5%85%8B%E9%9A%86%E8%99%9A%E6%8B%9F%E6%9C%BA/</link>
+      <pubDate>Mon, 04 Sep 2017 17:18:00 +0000</pubDate>
+      
+      <guid>http://linuxfunk.com/post/kvm-%E4%BB%8E%E6%A8%A1%E6%9D%BF%E9%95%9C%E5%83%8F%E5%85%8B%E9%9A%86%E8%99%9A%E6%8B%9F%E6%9C%BA/</guid>
+      <description>&lt;p&gt;KVM-从模板镜像克隆虚拟机&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

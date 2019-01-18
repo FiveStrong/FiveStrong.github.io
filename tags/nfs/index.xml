@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>nfs on モルガンナの家</title>
+    <link>http://linuxfunk.com/tags/nfs/</link>
+    <description>Recent content in nfs on モルガンナの家</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Mon, 02 Nov 2015 21:43:56 +0000</lastBuildDate>
+    
+	<atom:link href="http://linuxfunk.com/tags/nfs/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>NFS服务配置</title>
+      <link>http://linuxfunk.com/post/nfs%E6%9C%8D%E5%8A%A1%E9%85%8D%E7%BD%AE/</link>
+      <pubDate>Mon, 02 Nov 2015 21:43:56 +0000</pubDate>
+      
+      <guid>http://linuxfunk.com/post/nfs%E6%9C%8D%E5%8A%A1%E9%85%8D%E7%BD%AE/</guid>
+      <description>&lt;p&gt;NFS服务配置&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

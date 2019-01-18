@@ -16,7 +16,8 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
 
 
-<meta name="author" content="Morgana" /><meta name="description" content="配置环境 1 2 3 系统：centos 6.8 Mysql: 5.7 BIND: 9.11.0 CentOS6编译环境安装 1 2 yum groupinstall &amp;#34;Development Tools&amp;#34; yum install openssl-devel mysql 安装 1 2 3 4 5 6 7 8 9 10 11 这里直接使用官方yum源安" /><meta name="keywords" content="Hugo, モルガンナの家" />
+<meta name="author" content="Morgana" /><meta name="description" content="MySQL&#43;BIND-dlz 实现智能DNS
+" /><meta name="keywords" content="Hugo, モルガンナの家" />
 
 
 
@@ -39,25 +40,25 @@
 
 
 <meta property="og:title" content="MySQL&#43;BIND-dlz 实现智能DNS" />
-<meta property="og:description" content="配置环境 1 2 3 系统：centos 6.8 Mysql: 5.7 BIND: 9.11.0 CentOS6编译环境安装 1 2 yum groupinstall &#34;Development Tools&#34; yum install openssl-devel mysql 安装 1 2 3 4 5 6 7 8 9 10 11 这里直接使用官方yum源安" />
+<meta property="og:description" content="MySQL&#43;BIND-dlz 实现智能DNS" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="http://linuxfunk.com/post/mysql-bind-dlz-%E5%AE%9E%E7%8E%B0%E6%99%BA%E8%83%BDdns/" /><meta property="article:published_time" content="2017-03-17T13:12:03&#43;00:00"/>
 <meta property="article:modified_time" content="2017-03-17T13:12:03&#43;00:00"/>
 
 <meta itemprop="name" content="MySQL&#43;BIND-dlz 实现智能DNS">
-<meta itemprop="description" content="配置环境 1 2 3 系统：centos 6.8 Mysql: 5.7 BIND: 9.11.0 CentOS6编译环境安装 1 2 yum groupinstall &#34;Development Tools&#34; yum install openssl-devel mysql 安装 1 2 3 4 5 6 7 8 9 10 11 这里直接使用官方yum源安">
+<meta itemprop="description" content="MySQL&#43;BIND-dlz 实现智能DNS">
 
 
 <meta itemprop="datePublished" content="2017-03-17T13:12:03&#43;00:00" />
 <meta itemprop="dateModified" content="2017-03-17T13:12:03&#43;00:00" />
-<meta itemprop="wordCount" content="2139">
+<meta itemprop="wordCount" content="2147">
 
 
 
-<meta itemprop="keywords" content="" />
+<meta itemprop="keywords" content="mysql,dns," />
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="MySQL&#43;BIND-dlz 实现智能DNS"/>
-<meta name="twitter:description" content="配置环境 1 2 3 系统：centos 6.8 Mysql: 5.7 BIND: 9.11.0 CentOS6编译环境安装 1 2 yum groupinstall &#34;Development Tools&#34; yum install openssl-devel mysql 安装 1 2 3 4 5 6 7 8 9 10 11 这里直接使用官方yum源安"/>
+<meta name="twitter:description" content="MySQL&#43;BIND-dlz 实现智能DNS"/>
 
 <!--[if lte IE 9]>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
@@ -128,8 +129,10 @@
 
       <div class="post-meta">
         <span class="post-time"> 2017-03-17 </span>
-        
-          <span class="more-meta"> 约 2139 字 </span>
+        <div class="post-category">
+            <a href="/categories/linux/"> linux </a>
+            </div>
+          <span class="more-meta"> 约 2147 字 </span>
           <span class="more-meta"> 预计阅读 5 分钟 </span>
         <span id="busuanzi_container_page_pv" class="more-meta"> <span id="busuanzi_value_page_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次阅读 </span>
       </div>
@@ -158,7 +161,7 @@
   </div>
 </div>
     <div class="post-content">
-      
+      <p>MySQL+BIND-dlz 实现智能DNS</p>
 
 <h3 id="配置环境">配置环境</h3>
 <div class="highlight"><div class="chroma">
@@ -708,7 +711,10 @@ status<span class="o">)</span>
     <span class="item-content"><a rel="license noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a></span>
   </p>
 </div><footer class="post-footer">
-      
+      <div class="post-tags">
+          <a href="/tags/mysql/">mysql</a>
+          <a href="/tags/dns/">dns</a>
+          </div>
       <nav class="post-nav">
         <a class="prev" href="/post/postgressql%E5%AE%89%E8%A3%85%E4%B8%8E%E4%BD%BF%E7%94%A8/">
             <i class="iconfont icon-left"></i>

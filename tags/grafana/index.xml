@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>grafana on モルガンナの家</title>
+    <link>http://linuxfunk.com/tags/grafana/</link>
+    <description>Recent content in grafana on モルガンナの家</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Mon, 30 Oct 2017 12:20:08 +0000</lastBuildDate>
+    
+	<atom:link href="http://linuxfunk.com/tags/grafana/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>使用docker服务配置Zabbix&#43;Grafana监控</title>
+      <link>http://linuxfunk.com/post/%E4%BD%BF%E7%94%A8docker%E6%9C%8D%E5%8A%A1%E9%85%8D%E7%BD%AEzabbix-grafana%E7%9B%91%E6%8E%A7/</link>
+      <pubDate>Mon, 30 Oct 2017 12:20:08 +0000</pubDate>
+      
+      <guid>http://linuxfunk.com/post/%E4%BD%BF%E7%94%A8docker%E6%9C%8D%E5%8A%A1%E9%85%8D%E7%BD%AEzabbix-grafana%E7%9B%91%E6%8E%A7/</guid>
+      <description>&lt;p&gt;使用docker服务配置Zabbix+Grafana监控
+纯命令行启动&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

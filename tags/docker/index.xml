@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>docker on モルガンナの家</title>
+    <link>http://linuxfunk.com/tags/docker/</link>
+    <description>Recent content in docker on モルガンナの家</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Mon, 30 Oct 2017 12:20:08 +0000</lastBuildDate>
+    
+	<atom:link href="http://linuxfunk.com/tags/docker/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>使用docker服务配置Zabbix&#43;Grafana监控</title>
+      <link>http://linuxfunk.com/post/%E4%BD%BF%E7%94%A8docker%E6%9C%8D%E5%8A%A1%E9%85%8D%E7%BD%AEzabbix-grafana%E7%9B%91%E6%8E%A7/</link>
+      <pubDate>Mon, 30 Oct 2017 12:20:08 +0000</pubDate>
+      
+      <guid>http://linuxfunk.com/post/%E4%BD%BF%E7%94%A8docker%E6%9C%8D%E5%8A%A1%E9%85%8D%E7%BD%AEzabbix-grafana%E7%9B%91%E6%8E%A7/</guid>
+      <description>&lt;p&gt;使用docker服务配置Zabbix+Grafana监控
+纯命令行启动&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>gitlab 通过docker镜像迁移升级</title>
+      <link>http://linuxfunk.com/post/gitlab-%E9%80%9A%E8%BF%87docker%E9%95%9C%E5%83%8F%E8%BF%81%E7%A7%BB%E5%8D%87%E7%BA%A7/</link>
+      <pubDate>Mon, 30 Oct 2017 12:18:13 +0000</pubDate>
+      
+      <guid>http://linuxfunk.com/post/gitlab-%E9%80%9A%E8%BF%87docker%E9%95%9C%E5%83%8F%E8%BF%81%E7%A7%BB%E5%8D%87%E7%BA%A7/</guid>
+      <description>&lt;p&gt;迁移版本:&lt;/p&gt;
+
+&lt;p&gt;旧gitlab(8.8.3)  CentOS 6.8&lt;/p&gt;
+
+&lt;p&gt;新gitlab(9.5.5) postgresql(9.6) redis(2.8.4) CentOS 7.4&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Docker 容器管理</title>
+      <link>http://linuxfunk.com/post/docker-%E5%AE%B9%E5%99%A8%E7%AE%A1%E7%90%86/</link>
+      <pubDate>Mon, 30 Oct 2017 12:17:03 +0000</pubDate>
+      
+      <guid>http://linuxfunk.com/post/docker-%E5%AE%B9%E5%99%A8%E7%AE%A1%E7%90%86/</guid>
+      <description>&lt;p&gt;docker 常用命令纪录&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>创建Docker容器镜像</title>
+      <link>http://linuxfunk.com/post/%E5%88%9B%E5%BB%BAdocker%E5%AE%B9%E5%99%A8%E9%95%9C%E5%83%8F/</link>
+      <pubDate>Mon, 30 Oct 2017 12:10:15 +0000</pubDate>
+      
+      <guid>http://linuxfunk.com/post/%E5%88%9B%E5%BB%BAdocker%E5%AE%B9%E5%99%A8%E9%95%9C%E5%83%8F/</guid>
+      <description>&lt;h3 id=&#34;1-dockerfile&#34;&gt;1.Dockerfile&lt;/h3&gt;
+
+&lt;p&gt;Dockerfile 是用户定义的一系列用来生成容器镜像的文件，通过执行来构建镜像&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Docker Basic</title>
+      <link>http://linuxfunk.com/post/docker-basic/</link>
+      <pubDate>Mon, 30 Oct 2017 12:07:34 +0000</pubDate>
+      
+      <guid>http://linuxfunk.com/post/docker-basic/</guid>
+      <description>&lt;p&gt;一些docker基础知识&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>dns on モルガンナの家</title>
+    <link>http://linuxfunk.com/tags/dns/</link>
+    <description>Recent content in dns on モルガンナの家</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Fri, 17 Mar 2017 13:12:03 +0000</lastBuildDate>
+    
+	<atom:link href="http://linuxfunk.com/tags/dns/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>MySQL&#43;BIND-dlz 实现智能DNS</title>
+      <link>http://linuxfunk.com/post/mysql-bind-dlz-%E5%AE%9E%E7%8E%B0%E6%99%BA%E8%83%BDdns/</link>
+      <pubDate>Fri, 17 Mar 2017 13:12:03 +0000</pubDate>
+      
+      <guid>http://linuxfunk.com/post/mysql-bind-dlz-%E5%AE%9E%E7%8E%B0%E6%99%BA%E8%83%BDdns/</guid>
+      <description>&lt;p&gt;MySQL+BIND-dlz 实现智能DNS&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

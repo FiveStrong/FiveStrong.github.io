@@ -16,7 +16,8 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
 
 
-<meta name="author" content="Morgana" /><meta name="description" content="1. 安装图形化界面 1 2 3 # yum check-update # yum groupinstall &amp;#34;X Window System&amp;#34; # yum install gnome-classic-session gnome-terminal nautilus-open-terminal control-center liberation-mono-fonts 或者直接 1 yum groupinstall &amp;#34;GNOME Desktop&amp;#34; &amp;#34;Graphical Administration Tools&amp;#34; 1 2 3 4 ### 设置默认启动图形界面 # unlink /etc/systemd/system/default.target # ln -sf /lib/systemd/system/graphical.target /etc/systemd/system/default.target # reboot 2.安装 tigervnc" /><meta name="keywords" content="Hugo, モルガンナの家" />
+<meta name="author" content="Morgana" /><meta name="description" content="CentOS7 安装配置VNC
+" /><meta name="keywords" content="Hugo, モルガンナの家" />
 
 
 
@@ -39,25 +40,25 @@
 
 
 <meta property="og:title" content="CentOS7 安装配置VNC" />
-<meta property="og:description" content="1. 安装图形化界面 1 2 3 # yum check-update # yum groupinstall &#34;X Window System&#34; # yum install gnome-classic-session gnome-terminal nautilus-open-terminal control-center liberation-mono-fonts 或者直接 1 yum groupinstall &#34;GNOME Desktop&#34; &#34;Graphical Administration Tools&#34; 1 2 3 4 ### 设置默认启动图形界面 # unlink /etc/systemd/system/default.target # ln -sf /lib/systemd/system/graphical.target /etc/systemd/system/default.target # reboot 2.安装 tigervnc" />
+<meta property="og:description" content="CentOS7 安装配置VNC" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="http://linuxfunk.com/post/centos7-%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AEvnc/" /><meta property="article:published_time" content="2017-08-31T13:27:11&#43;00:00"/>
 <meta property="article:modified_time" content="2017-08-31T13:27:11&#43;00:00"/>
 
 <meta itemprop="name" content="CentOS7 安装配置VNC">
-<meta itemprop="description" content="1. 安装图形化界面 1 2 3 # yum check-update # yum groupinstall &#34;X Window System&#34; # yum install gnome-classic-session gnome-terminal nautilus-open-terminal control-center liberation-mono-fonts 或者直接 1 yum groupinstall &#34;GNOME Desktop&#34; &#34;Graphical Administration Tools&#34; 1 2 3 4 ### 设置默认启动图形界面 # unlink /etc/systemd/system/default.target # ln -sf /lib/systemd/system/graphical.target /etc/systemd/system/default.target # reboot 2.安装 tigervnc">
+<meta itemprop="description" content="CentOS7 安装配置VNC">
 
 
 <meta itemprop="datePublished" content="2017-08-31T13:27:11&#43;00:00" />
 <meta itemprop="dateModified" content="2017-08-31T13:27:11&#43;00:00" />
-<meta itemprop="wordCount" content="572">
+<meta itemprop="wordCount" content="580">
 
 
 
-<meta itemprop="keywords" content="" />
+<meta itemprop="keywords" content="vnc," />
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="CentOS7 安装配置VNC"/>
-<meta name="twitter:description" content="1. 安装图形化界面 1 2 3 # yum check-update # yum groupinstall &#34;X Window System&#34; # yum install gnome-classic-session gnome-terminal nautilus-open-terminal control-center liberation-mono-fonts 或者直接 1 yum groupinstall &#34;GNOME Desktop&#34; &#34;Graphical Administration Tools&#34; 1 2 3 4 ### 设置默认启动图形界面 # unlink /etc/systemd/system/default.target # ln -sf /lib/systemd/system/graphical.target /etc/systemd/system/default.target # reboot 2.安装 tigervnc"/>
+<meta name="twitter:description" content="CentOS7 安装配置VNC"/>
 
 <!--[if lte IE 9]>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
@@ -128,8 +129,10 @@
 
       <div class="post-meta">
         <span class="post-time"> 2017-08-31 </span>
-        
-          <span class="more-meta"> 约 572 字 </span>
+        <div class="post-category">
+            <a href="/categories/linux/"> linux </a>
+            </div>
+          <span class="more-meta"> 约 580 字 </span>
           <span class="more-meta"> 预计阅读 2 分钟 </span>
         <span id="busuanzi_container_page_pv" class="more-meta"> <span id="busuanzi_value_page_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次阅读 </span>
       </div>
@@ -154,7 +157,7 @@
   </div>
 </div>
     <div class="post-content">
-      
+      <p>CentOS7 安装配置VNC</p>
 
 <h3 id="1-安装图形化界面">1. 安装图形化界面</h3>
 <div class="highlight"><div class="chroma">
@@ -331,7 +334,6 @@ systemctl <span class="nb">enable</span> vncserver@:5.service</code></pre></td><
 </div>
 </div>
 <p>然后通过ipaddress:5905 or ipaddress:5登录远程服务器</p>
-
     </div>
 
     <div class="post-copyright">
@@ -349,7 +351,9 @@ systemctl <span class="nb">enable</span> vncserver@:5.service</code></pre></td><
     <span class="item-content"><a rel="license noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a></span>
   </p>
 </div><footer class="post-footer">
-      
+      <div class="post-tags">
+          <a href="/tags/vnc/">vnc</a>
+          </div>
       <nav class="post-nav">
         <a class="prev" href="/post/kvm-%E4%BB%8E%E6%A8%A1%E6%9D%BF%E9%95%9C%E5%83%8F%E5%85%8B%E9%9A%86%E8%99%9A%E6%8B%9F%E6%9C%BA/">
             <i class="iconfont icon-left"></i>

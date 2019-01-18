@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>linux on モルガンナの家</title>
+    <link>http://linuxfunk.com/categories/linux/</link>
+    <description>Recent content in linux on モルガンナの家</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Fri, 18 Jan 2019 11:24:43 +0800</lastBuildDate>
+    
+	<atom:link href="http://linuxfunk.com/categories/linux/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Zabbix Unreachable Hosts</title>
+      <link>http://linuxfunk.com/post/zabbix-unreachable-hosts/</link>
+      <pubDate>Fri, 18 Jan 2019 11:24:43 +0800</pubDate>
+      
+      <guid>http://linuxfunk.com/post/zabbix-unreachable-hosts/</guid>
+      <description>&lt;p&gt;解决zabbix 频繁报错主机不可用&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>CentOS 7 编译安装nginx并启用TLS1.3</title>
+      <link>http://linuxfunk.com/post/centos-7-%E7%BC%96%E8%AF%91%E5%AE%89%E8%A3%85nginx%E5%B9%B6%E5%90%AF%E7%94%A8tls1-3/</link>
+      <pubDate>Sat, 28 Apr 2018 14:08:45 +0000</pubDate>
+      
+      <guid>http://linuxfunk.com/post/centos-7-%E7%BC%96%E8%AF%91%E5%AE%89%E8%A3%85nginx%E5%B9%B6%E5%90%AF%E7%94%A8tls1-3/</guid>
+      <description>&lt;p&gt;CentOS 7 编译安装nginx并启用TLS1.3&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>用git hooks将静态文件部署到VPS</title>
+      <link>http://linuxfunk.com/post/%E7%94%A8git-hooks%E5%B0%86%E9%9D%99%E6%80%81%E6%96%87%E4%BB%B6%E9%83%A8%E7%BD%B2%E5%88%B0vps/</link>
+      <pubDate>Fri, 03 Nov 2017 15:56:46 +0000</pubDate>
+      
+      <guid>http://linuxfunk.com/post/%E7%94%A8git-hooks%E5%B0%86%E9%9D%99%E6%80%81%E6%96%87%E4%BB%B6%E9%83%A8%E7%BD%B2%E5%88%B0vps/</guid>
+      <description>&lt;p&gt;Hexo 静态部署博客默认使用的是github提供的gitpages,如果你有自己的域名以及VPS的话，可以将博客同步一份到主机上并且在gitpage上保留一份副本。
+下面简单介绍一下通过git hook,同步文章的部署步骤，这样以后更换写作平台，以及VPS主机平台都方便回来查找。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Github分支备份Hexo博客源文件</title>
+      <link>http://linuxfunk.com/post/github%E5%88%86%E6%94%AF%E5%A4%87%E4%BB%BDhexo%E5%8D%9A%E5%AE%A2%E6%BA%90%E6%96%87%E4%BB%B6/</link>
+      <pubDate>Wed, 01 Nov 2017 12:22:52 +0000</pubDate>
+      
+      <guid>http://linuxfunk.com/post/github%E5%88%86%E6%94%AF%E5%A4%87%E4%BB%BDhexo%E5%8D%9A%E5%AE%A2%E6%BA%90%E6%96%87%E4%BB%B6/</guid>
+      <description>&lt;h3 id=&#34;需求&#34;&gt;需求&lt;/h3&gt;
+
+&lt;p&gt;将hexo部署在GitHub Pages上，但仅同步编译好的静态文件，如果想要在多个平台写博客，hexo的源码就需要同步到云端，方便拉取部署。
+最简单的方法就是利用博客的 repo 分支（ master 分支的必须用来存放你博客网站文件）托管 Hexo 源文件和配置达到备份的目的。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>v2ray实现ws&#43;tls&#43;nginx加密传输</title>
+      <link>http://linuxfunk.com/post/v2ray-ws-tls-nginx%E5%AE%9E%E7%8E%B0%E5%8A%A0%E5%AF%86%E4%BC%A0%E8%BE%93/</link>
+      <pubDate>Tue, 31 Oct 2017 14:29:14 +0000</pubDate>
+      
+      <guid>http://linuxfunk.com/post/v2ray-ws-tls-nginx%E5%AE%9E%E7%8E%B0%E5%8A%A0%E5%AF%86%E4%BC%A0%E8%BE%93/</guid>
+      <description>&lt;h3 id=&#34;1-v2ray加密tls原理&#34;&gt;1.V2Ray加密tls原理&lt;/h3&gt;
+
+&lt;p&gt;别的代理都是直接客户端穿墙使用TCP、HTTP或自定义协议和墙外的服务器连接。
+V2Ray的这套方案则是在墙外做一个启用HTTPS的Nginx服务，使用本地的客户端和墙外的Nginx以WS协议进行连接（这就和一个真正的网站行为一模一样了）。然后在Nginx背后用代理进行内容的访问。
+这样的解决方案墙是无法分辨到底是一个代理服务器还是一个正常用户在用HTTPS访问网站，HTTPS也保证了墙无法探知流量的内容。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>使用docker服务配置Zabbix&#43;Grafana监控</title>
+      <link>http://linuxfunk.com/post/%E4%BD%BF%E7%94%A8docker%E6%9C%8D%E5%8A%A1%E9%85%8D%E7%BD%AEzabbix-grafana%E7%9B%91%E6%8E%A7/</link>
+      <pubDate>Mon, 30 Oct 2017 12:20:08 +0000</pubDate>
+      
+      <guid>http://linuxfunk.com/post/%E4%BD%BF%E7%94%A8docker%E6%9C%8D%E5%8A%A1%E9%85%8D%E7%BD%AEzabbix-grafana%E7%9B%91%E6%8E%A7/</guid>
+      <description>&lt;p&gt;使用docker服务配置Zabbix+Grafana监控
+纯命令行启动&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>gitlab 通过docker镜像迁移升级</title>
+      <link>http://linuxfunk.com/post/gitlab-%E9%80%9A%E8%BF%87docker%E9%95%9C%E5%83%8F%E8%BF%81%E7%A7%BB%E5%8D%87%E7%BA%A7/</link>
+      <pubDate>Mon, 30 Oct 2017 12:18:13 +0000</pubDate>
+      
+      <guid>http://linuxfunk.com/post/gitlab-%E9%80%9A%E8%BF%87docker%E9%95%9C%E5%83%8F%E8%BF%81%E7%A7%BB%E5%8D%87%E7%BA%A7/</guid>
+      <description>&lt;p&gt;迁移版本:&lt;/p&gt;
+
+&lt;p&gt;旧gitlab(8.8.3)  CentOS 6.8&lt;/p&gt;
+
+&lt;p&gt;新gitlab(9.5.5) postgresql(9.6) redis(2.8.4) CentOS 7.4&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Docker 容器管理</title>
+      <link>http://linuxfunk.com/post/docker-%E5%AE%B9%E5%99%A8%E7%AE%A1%E7%90%86/</link>
+      <pubDate>Mon, 30 Oct 2017 12:17:03 +0000</pubDate>
+      
+      <guid>http://linuxfunk.com/post/docker-%E5%AE%B9%E5%99%A8%E7%AE%A1%E7%90%86/</guid>
+      <description>&lt;p&gt;docker 常用命令纪录&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>创建Docker容器镜像</title>
+      <link>http://linuxfunk.com/post/%E5%88%9B%E5%BB%BAdocker%E5%AE%B9%E5%99%A8%E9%95%9C%E5%83%8F/</link>
+      <pubDate>Mon, 30 Oct 2017 12:10:15 +0000</pubDate>
+      
+      <guid>http://linuxfunk.com/post/%E5%88%9B%E5%BB%BAdocker%E5%AE%B9%E5%99%A8%E9%95%9C%E5%83%8F/</guid>
+      <description>&lt;h3 id=&#34;1-dockerfile&#34;&gt;1.Dockerfile&lt;/h3&gt;
+
+&lt;p&gt;Dockerfile 是用户定义的一系列用来生成容器镜像的文件，通过执行来构建镜像&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Docker Basic</title>
+      <link>http://linuxfunk.com/post/docker-basic/</link>
+      <pubDate>Mon, 30 Oct 2017 12:07:34 +0000</pubDate>
+      
+      <guid>http://linuxfunk.com/post/docker-basic/</guid>
+      <description>&lt;p&gt;一些docker基础知识&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>zabbix-agent yum install </title>
+      <link>http://linuxfunk.com/post/zabbix-agent-yum-install/</link>
+      <pubDate>Tue, 17 Oct 2017 08:39:53 +0000</pubDate>
+      
+      <guid>http://linuxfunk.com/post/zabbix-agent-yum-install/</guid>
+      <description>&lt;p&gt;zabbix-agent yum install&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>KVM-从模板镜像克隆虚拟机</title>
+      <link>http://linuxfunk.com/post/kvm-%E4%BB%8E%E6%A8%A1%E6%9D%BF%E9%95%9C%E5%83%8F%E5%85%8B%E9%9A%86%E8%99%9A%E6%8B%9F%E6%9C%BA/</link>
+      <pubDate>Mon, 04 Sep 2017 17:18:00 +0000</pubDate>
+      
+      <guid>http://linuxfunk.com/post/kvm-%E4%BB%8E%E6%A8%A1%E6%9D%BF%E9%95%9C%E5%83%8F%E5%85%8B%E9%9A%86%E8%99%9A%E6%8B%9F%E6%9C%BA/</guid>
+      <description>&lt;p&gt;KVM-从模板镜像克隆虚拟机&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>CentOS7 安装配置VNC</title>
+      <link>http://linuxfunk.com/post/centos7-%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AEvnc/</link>
+      <pubDate>Thu, 31 Aug 2017 13:27:11 +0000</pubDate>
+      
+      <guid>http://linuxfunk.com/post/centos7-%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AEvnc/</guid>
+      <description>&lt;p&gt;CentOS7 安装配置VNC&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>zabbix 3 配置邮件报警</title>
+      <link>http://linuxfunk.com/post/zabbix-3-%E9%85%8D%E7%BD%AE%E9%82%AE%E4%BB%B6%E6%8A%A5%E8%AD%A6/</link>
+      <pubDate>Wed, 05 Apr 2017 15:58:50 +0000</pubDate>
+      
+      <guid>http://linuxfunk.com/post/zabbix-3-%E9%85%8D%E7%BD%AE%E9%82%AE%E4%BB%B6%E6%8A%A5%E8%AD%A6/</guid>
+      <description>&lt;p&gt;zabbix 配置邮件报警,其实网上有一堆教程，但是在按着他们的教程配置好了之后，或多或少有些问题，比如邮件发不出去，没内容等等。
+我整理了一下自己配置成功之后需要注意的几点。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>PostgresSQL安装与使用</title>
+      <link>http://linuxfunk.com/post/postgressql%E5%AE%89%E8%A3%85%E4%B8%8E%E4%BD%BF%E7%94%A8/</link>
+      <pubDate>Thu, 23 Mar 2017 16:30:33 +0000</pubDate>
+      
+      <guid>http://linuxfunk.com/post/postgressql%E5%AE%89%E8%A3%85%E4%B8%8E%E4%BD%BF%E7%94%A8/</guid>
+      <description>&lt;p&gt;PostgresSQL安装与使用&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>MySQL&#43;BIND-dlz 实现智能DNS</title>
+      <link>http://linuxfunk.com/post/mysql-bind-dlz-%E5%AE%9E%E7%8E%B0%E6%99%BA%E8%83%BDdns/</link>
+      <pubDate>Fri, 17 Mar 2017 13:12:03 +0000</pubDate>
+      
+      <guid>http://linuxfunk.com/post/mysql-bind-dlz-%E5%AE%9E%E7%8E%B0%E6%99%BA%E8%83%BDdns/</guid>
+      <description>&lt;p&gt;MySQL+BIND-dlz 实现智能DNS&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>终端利器tmux命令速查</title>
+      <link>http://linuxfunk.com/post/%E7%BB%88%E7%AB%AF%E5%88%A9%E5%99%A8tmux%E5%91%BD%E4%BB%A4%E9%80%9F%E6%9F%A5/</link>
+      <pubDate>Tue, 28 Jun 2016 14:19:36 +0000</pubDate>
+      
+      <guid>http://linuxfunk.com/post/%E7%BB%88%E7%AB%AF%E5%88%A9%E5%99%A8tmux%E5%91%BD%E4%BB%A4%E9%80%9F%E6%9F%A5/</guid>
+      <description>&lt;p&gt;配置文件：&lt;a href=&#34;https://github.com/gpakosz/.tmux&#34;&gt;https://github.com/gpakosz/.tmux&lt;/a&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>解决Linux下Sublime text 3的中文输入问题 </title>
+      <link>http://linuxfunk.com/post/%E8%A7%A3%E5%86%B3linux%E4%B8%8Bsublime-text-3%E7%9A%84%E4%B8%AD%E6%96%87%E8%BE%93%E5%85%A5%E9%97%AE%E9%A2%98/</link>
+      <pubDate>Sat, 09 Apr 2016 14:14:05 +0000</pubDate>
+      
+      <guid>http://linuxfunk.com/post/%E8%A7%A3%E5%86%B3linux%E4%B8%8Bsublime-text-3%E7%9A%84%E4%B8%AD%E6%96%87%E8%BE%93%E5%85%A5%E9%97%AE%E9%A2%98/</guid>
+      <description>&lt;p&gt;&lt;a href=&#34;http://c4fun.cn/blog/2013/11/30/linux-sublimetext-chinese/&#34;&gt;http://c4fun.cn/blog/2013/11/30/linux-sublimetext-chinese/&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;搬个链接算了，博主已经写的很详细，就不重复编写了，只是为了留个记录。
+基本方法就是这个，个别问题 可以google。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>iptables防火墙规则实例</title>
+      <link>http://linuxfunk.com/post/iptables%E9%98%B2%E7%81%AB%E5%A2%99%E8%A7%84%E5%88%99%E5%AE%9E%E4%BE%8B/</link>
+      <pubDate>Mon, 14 Mar 2016 14:18:35 +0000</pubDate>
+      
+      <guid>http://linuxfunk.com/post/iptables%E9%98%B2%E7%81%AB%E5%A2%99%E8%A7%84%E5%88%99%E5%AE%9E%E4%BE%8B/</guid>
+      <description>&lt;p&gt;iptables防火墙规则实例&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>DRBD配置与测试</title>
+      <link>http://linuxfunk.com/post/drbd%E9%85%8D%E7%BD%AE%E4%B8%8E%E6%B5%8B%E8%AF%95/</link>
+      <pubDate>Wed, 16 Dec 2015 20:41:38 +0000</pubDate>
+      
+      <guid>http://linuxfunk.com/post/drbd%E9%85%8D%E7%BD%AE%E4%B8%8E%E6%B5%8B%E8%AF%95/</guid>
+      <description>&lt;p&gt;DRBD配置与测试&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>NFS服务配置</title>
+      <link>http://linuxfunk.com/post/nfs%E6%9C%8D%E5%8A%A1%E9%85%8D%E7%BD%AE/</link>
+      <pubDate>Mon, 02 Nov 2015 21:43:56 +0000</pubDate>
+      
+      <guid>http://linuxfunk.com/post/nfs%E6%9C%8D%E5%8A%A1%E9%85%8D%E7%BD%AE/</guid>
+      <description>&lt;p&gt;NFS服务配置&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

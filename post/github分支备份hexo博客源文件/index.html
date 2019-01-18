@@ -16,7 +16,8 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
 
 
-<meta name="author" content="Morgana" /><meta name="description" content="需求 将hexo部署在GitHub Pages上，但仅同步编译好的静态文件，如果想要在多个平台写博客，hexo的源码就需要同步到云端，方便拉取部" /><meta name="keywords" content="Hugo, モルガンナの家" />
+<meta name="author" content="Morgana" /><meta name="description" content="需求 将hexo部署在GitHub Pages上，但仅同步编译好的静态文件，如果想要在多个平台写博客，hexo的源码就需要同步到云端，方便拉取部署。 最简单的方法就是利用博客的 repo 分支（ master 分支的必须用来存放你博客网站文件）托管 Hexo 源文件和配置达到备份的目的。
+" /><meta name="keywords" content="Hugo, モルガンナの家" />
 
 
 
@@ -39,13 +40,19 @@
 
 
 <meta property="og:title" content="Github分支备份Hexo博客源文件" />
-<meta property="og:description" content="需求 将hexo部署在GitHub Pages上，但仅同步编译好的静态文件，如果想要在多个平台写博客，hexo的源码就需要同步到云端，方便拉取部" />
+<meta property="og:description" content="需求
+
+将hexo部署在GitHub Pages上，但仅同步编译好的静态文件，如果想要在多个平台写博客，hexo的源码就需要同步到云端，方便拉取部署。
+最简单的方法就是利用博客的 repo 分支（ master 分支的必须用来存放你博客网站文件）托管 Hexo 源文件和配置达到备份的目的。" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="http://linuxfunk.com/post/github%E5%88%86%E6%94%AF%E5%A4%87%E4%BB%BDhexo%E5%8D%9A%E5%AE%A2%E6%BA%90%E6%96%87%E4%BB%B6/" /><meta property="article:published_time" content="2017-11-01T12:22:52&#43;00:00"/>
 <meta property="article:modified_time" content="2017-11-01T12:22:52&#43;00:00"/>
 
 <meta itemprop="name" content="Github分支备份Hexo博客源文件">
-<meta itemprop="description" content="需求 将hexo部署在GitHub Pages上，但仅同步编译好的静态文件，如果想要在多个平台写博客，hexo的源码就需要同步到云端，方便拉取部">
+<meta itemprop="description" content="需求
+
+将hexo部署在GitHub Pages上，但仅同步编译好的静态文件，如果想要在多个平台写博客，hexo的源码就需要同步到云端，方便拉取部署。
+最简单的方法就是利用博客的 repo 分支（ master 分支的必须用来存放你博客网站文件）托管 Hexo 源文件和配置达到备份的目的。">
 
 
 <meta itemprop="datePublished" content="2017-11-01T12:22:52&#43;00:00" />
@@ -54,10 +61,13 @@
 
 
 
-<meta itemprop="keywords" content="" />
+<meta itemprop="keywords" content="hexo,github," />
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Github分支备份Hexo博客源文件"/>
-<meta name="twitter:description" content="需求 将hexo部署在GitHub Pages上，但仅同步编译好的静态文件，如果想要在多个平台写博客，hexo的源码就需要同步到云端，方便拉取部"/>
+<meta name="twitter:description" content="需求
+
+将hexo部署在GitHub Pages上，但仅同步编译好的静态文件，如果想要在多个平台写博客，hexo的源码就需要同步到云端，方便拉取部署。
+最简单的方法就是利用博客的 repo 分支（ master 分支的必须用来存放你博客网站文件）托管 Hexo 源文件和配置达到备份的目的。"/>
 
 <!--[if lte IE 9]>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
@@ -128,7 +138,9 @@
 
       <div class="post-meta">
         <span class="post-time"> 2017-11-01 </span>
-        
+        <div class="post-category">
+            <a href="/categories/linux/"> linux </a>
+            </div>
           <span class="more-meta"> 约 559 字 </span>
           <span class="more-meta"> 预计阅读 2 分钟 </span>
         <span id="busuanzi_container_page_pv" class="more-meta"> <span id="busuanzi_value_page_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次阅读 </span>
@@ -155,9 +167,7 @@
   </div>
 </div>
     <div class="post-content">
-      
-
-<h3 id="需求">需求</h3>
+      <h3 id="需求">需求</h3>
 
 <p>将hexo部署在GitHub Pages上，但仅同步编译好的静态文件，如果想要在多个平台写博客，hexo的源码就需要同步到云端，方便拉取部署。
 最简单的方法就是利用博客的 repo 分支（ master 分支的必须用来存放你博客网站文件）托管 Hexo 源文件和配置达到备份的目的。</p>
@@ -249,7 +259,10 @@ npm install hexo-deployer-git --save</pre></td></tr></table>
     <span class="item-content"><a rel="license noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a></span>
   </p>
 </div><footer class="post-footer">
-      
+      <div class="post-tags">
+          <a href="/tags/hexo/">hexo</a>
+          <a href="/tags/github/">github</a>
+          </div>
       <nav class="post-nav">
         <a class="prev" href="/post/%E7%94%A8git-hooks%E5%B0%86%E9%9D%99%E6%80%81%E6%96%87%E4%BB%B6%E9%83%A8%E7%BD%B2%E5%88%B0vps/">
             <i class="iconfont icon-left"></i>

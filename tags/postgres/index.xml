@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>postgres on モルガンナの家</title>
+    <link>http://linuxfunk.com/tags/postgres/</link>
+    <description>Recent content in postgres on モルガンナの家</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Thu, 23 Mar 2017 16:30:33 +0000</lastBuildDate>
+    
+	<atom:link href="http://linuxfunk.com/tags/postgres/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>PostgresSQL安装与使用</title>
+      <link>http://linuxfunk.com/post/postgressql%E5%AE%89%E8%A3%85%E4%B8%8E%E4%BD%BF%E7%94%A8/</link>
+      <pubDate>Thu, 23 Mar 2017 16:30:33 +0000</pubDate>
+      
+      <guid>http://linuxfunk.com/post/postgressql%E5%AE%89%E8%A3%85%E4%B8%8E%E4%BD%BF%E7%94%A8/</guid>
+      <description>&lt;p&gt;PostgresSQL安装与使用&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>
