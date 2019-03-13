@@ -23,7 +23,7 @@
 
 
 
-<meta name="generator" content="Hugo 0.54-DEV with even 4.0.0" />
+<meta name="generator" content="Hugo 0.55.0-DEV with even 4.0.0" />
 
 
 <link rel="canonical" href="http://linuxfunk.com/" />
@@ -44,7 +44,8 @@
 <meta property="og:description" content="You must be tired, go to sleep!" />
 <meta property="og:type" content="website" />
 <meta property="og:url" content="http://linuxfunk.com/" />
-<meta property="og:updated_time" content="2017-10-30T12:20:08&#43;00:00"/>
+
+<meta property="og:updated_time" content="2017-10-31T14:29:14&#43;00:00"/>
 
 <meta itemprop="name" content="モルガンナの家">
 <meta itemprop="description" content="You must be tired, go to sleep!">
@@ -116,6 +117,33 @@
       <div class="content-wrapper">
         <div id="content" class="content">
           <section id="posts" class="posts">
+    <article class="post">
+  <header class="post-header">
+    <h1 class="post-title"><a class="post-link" href="/post/v2ray-ws-tls-nginx%E5%AE%9E%E7%8E%B0%E5%8A%A0%E5%AF%86%E4%BC%A0%E8%BE%93/">v2ray实现ws&#43;tls&#43;nginx加密传输</a></h1>
+    <div class="post-meta">
+      <span class="post-time"> 2017-10-31 </span>
+      <div class="post-category">
+          <a href="/categories/linux/"> linux </a>
+          </div>
+        <span class="more-meta"> 约 1468 字 </span>
+        <span class="more-meta"> 预计阅读 3 分钟 </span>
+    </div>
+  </header>
+  
+  <div class="post-content">
+    <div class="post-summary">
+      <h3 id="1-v2ray加密tls原理">1.V2Ray加密tls原理</h3>
+
+<p>别的代理都是直接客户端穿墙使用TCP、HTTP或自定义协议和墙外的服务器连接。
+V2Ray的这套方案则是在墙外做一个启用HTTPS的Nginx服务，使用本地的客户端和墙外的Nginx以WS协议进行连接（这就和一个真正的网站行为一模一样了）。然后在Nginx背后用代理进行内容的访问。
+这样的解决方案墙是无法分辨到底是一个代理服务器还是一个正常用户在用HTTPS访问网站，HTTPS也保证了墙无法探知流量的内容。</p>
+    </div>
+    <div class="read-more">
+      <a href="/post/v2ray-ws-tls-nginx%E5%AE%9E%E7%8E%B0%E5%8A%A0%E5%AF%86%E4%BC%A0%E8%BE%93/" class="read-more-link">阅读更多</a>
+    </div>
+  </div>
+</article>
+
     <article class="post">
   <header class="post-header">
     <h1 class="post-title"><a class="post-link" href="/post/%E4%BD%BF%E7%94%A8docker%E6%9C%8D%E5%8A%A1%E9%85%8D%E7%BD%AEzabbix-grafana%E7%9B%91%E6%8E%A7/">使用docker服务配置Zabbix&#43;Grafana监控</a></h1>
@@ -211,29 +239,6 @@
     </div>
     <div class="read-more">
       <a href="/post/%E5%88%9B%E5%BB%BAdocker%E5%AE%B9%E5%99%A8%E9%95%9C%E5%83%8F/" class="read-more-link">阅读更多</a>
-    </div>
-  </div>
-</article>
-
-    <article class="post">
-  <header class="post-header">
-    <h1 class="post-title"><a class="post-link" href="/post/docker-basic/">Docker Basic</a></h1>
-    <div class="post-meta">
-      <span class="post-time"> 2017-10-30 </span>
-      <div class="post-category">
-          <a href="/categories/linux/"> linux </a>
-          </div>
-        <span class="more-meta"> 约 884 字 </span>
-        <span class="more-meta"> 预计阅读 2 分钟 </span>
-    </div>
-  </header>
-  
-  <div class="post-content">
-    <div class="post-summary">
-      <p>一些docker基础知识</p>
-    </div>
-    <div class="read-more">
-      <a href="/post/docker-basic/" class="read-more-link">阅读更多</a>
     </div>
   </div>
 </article>

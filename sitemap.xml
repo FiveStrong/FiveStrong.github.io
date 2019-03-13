@@ -3,6 +3,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://linuxfunk.com/post/centos7%E6%BA%90%E7%A0%81%E5%8D%87%E7%BA%A7openssl%E5%92%8Copenssh/</loc>
+    <lastmod>2019-03-13T14:15:46+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
     <loc>http://linuxfunk.com/post/zabbix-unreachable-hosts/</loc>
     <lastmod>2019-01-18T11:24:43+08:00</lastmod>
     <changefreq>weekly</changefreq>
@@ -177,7 +184,7 @@
   
   <url>
     <loc>http://linuxfunk.com/post/</loc>
-    <lastmod>2019-01-18T11:24:43+08:00</lastmod>
+    <lastmod>2019-03-13T14:15:46+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0</priority>
   </url>
@@ -247,7 +254,7 @@
   
   <url>
     <loc>http://linuxfunk.com/categories/linux/</loc>
-    <lastmod>2019-01-18T11:24:43+08:00</lastmod>
+    <lastmod>2019-03-13T14:15:46+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0</priority>
   </url>
@@ -269,6 +276,20 @@
   <url>
     <loc>http://linuxfunk.com/tags/nginx/</loc>
     <lastmod>2018-04-28T14:08:45+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://linuxfunk.com/tags/openssh/</loc>
+    <lastmod>2019-03-13T14:15:46+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://linuxfunk.com/tags/openssl/</loc>
+    <lastmod>2019-03-13T14:15:46+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0</priority>
   </url>
@@ -331,7 +352,7 @@
   
   <url>
     <loc>http://linuxfunk.com/</loc>
-    <lastmod>2019-01-18T11:24:43+08:00</lastmod>
+    <lastmod>2019-03-13T14:15:46+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0</priority>
   </url>
