@@ -52,7 +52,7 @@
 
 <meta itemprop="datePublished" content="2019-03-13T14:15:46&#43;08:00" />
 <meta itemprop="dateModified" content="2019-03-13T14:15:46&#43;08:00" />
-<meta itemprop="wordCount" content="888">
+<meta itemprop="wordCount" content="912">
 
 
 
@@ -133,7 +133,7 @@
         <div class="post-category">
             <a href="/categories/linux/"> linux </a>
             </div>
-          <span class="more-meta"> 约 888 字 </span>
+          <span class="more-meta"> 约 912 字 </span>
           <span class="more-meta"> 预计阅读 2 分钟 </span>
         <span id="busuanzi_container_page_pv" class="more-meta"> <span id="busuanzi_value_page_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次阅读 </span>
       </div>
@@ -164,7 +164,8 @@
 
 <p>这里启用telnet的原因是：</p>
 
-<p>如果通过ssh远程连接服务器后进行的版本升级操作，如果出现意外可能连接会断开并且无法再远程登录上去，如果服务器安装了iDRAC远程管理卡还有救，如果没有iDRAC远程管理卡，则需要提前开启telnet远程登录或是到机房现场进行升级操作比较妥当。</p>
+<p>如果通过ssh远程连接服务器后进行的版本升级操作，如果出现意外可能连接会断开并且无法再远程登录上去，如果服务器安装了iDRAC远程管理卡还有救，如果没有iDRAC远程管理卡，则需要提前开启telnet远程登录或是到机房现场进行升级操作比较妥当。
+注：实测不开也影响不大，但是开启比较保险。</p>
 
 <p>1、查看系统版本</p>
 <div class="highlight"><div class="chroma">
@@ -208,7 +209,7 @@
 </span><span class="lnt">22
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-shell" data-lang="shell">    yum install telnet-server
+<pre class="chroma"><code class="language-shell" data-lang="shell">    yum -y install telnet-server
     <span class="c1"># 如果是centos6 需要修改配置</span>
     vim /etc/xinetd.d/telnet
         <span class="c1"># default: on</span>
@@ -268,7 +269,7 @@
 </span></code></pre></td>
 <td class="lntd">
 <pre class="chroma"><code class="language-shell" data-lang="shell">　　openssl version -a
-　　yum install -y gcc openssl-devel pam-devel rpm-build</code></pre></td></tr></table>
+　　yum install  gcc pam-devel rpm-build</code></pre></td></tr></table>
 </div>
 </div>
 <p>2、下载安装包（查询最新安装包）</p>
@@ -306,7 +307,7 @@
 <pre class="chroma"><code class="language-shell" data-lang="shell">　　tar -xzvf openssl-1.0.2r.tar.gz
 　　<span class="nb">cd</span> openssl-1.0.2r
 　　./config --prefix<span class="o">=</span>/usr --openssldir<span class="o">=</span>/etc/ssl --shared zlib
-    make 
+    make -j <span class="m">4</span>
     make install</code></pre></td></tr></table>
 </div>
 </div>
@@ -362,7 +363,7 @@
 <td class="lntd">
 <pre class="chroma"><code class="language-shell" data-lang="shell">　　rpm -qa <span class="p">|</span>grep openssh
 　　<span class="k">for</span> i in <span class="sb">`</span>rpm -qa <span class="p">|</span>grep openssh<span class="sb">`</span><span class="p">;</span><span class="k">do</span> rpm -e <span class="nv">$i</span> --nodeps<span class="p">;</span><span class="k">done</span>
-　　rm -rf /etc/ssh  <span class="c1"># 删除操作请谨慎，最好提前看一下</span></code></pre></td></tr></table>
+　　mv /etc/ssh /tmp/  <span class="c1"># 删除操作请谨慎，最好提前看一下</span></code></pre></td></tr></table>
 </div>
 </div>
 <p>4、解压openssh安装包</p>
@@ -385,7 +386,7 @@
 </span></code></pre></td>
 <td class="lntd">
 <pre class="chroma"><code class="language-shell" data-lang="shell">    ./configure --prefix<span class="o">=</span>/usr --sysconfdir<span class="o">=</span>/etc/ssh --with-md5-passwords --with-pam --with-tcp-wrappers --without-hardening --with-zlib
-    make
+    make -j <span class="m">4</span>
     make install</code></pre></td></tr></table>
 </div>
 </div>
