@@ -52,7 +52,7 @@
 
 <meta itemprop="datePublished" content="2019-03-13T14:15:46&#43;08:00" />
 <meta itemprop="dateModified" content="2019-03-13T14:15:46&#43;08:00" />
-<meta itemprop="wordCount" content="912">
+<meta itemprop="wordCount" content="1072">
 
 
 
@@ -133,8 +133,8 @@
         <div class="post-category">
             <a href="/categories/linux/"> linux </a>
             </div>
-          <span class="more-meta"> 约 912 字 </span>
-          <span class="more-meta"> 预计阅读 2 分钟 </span>
+          <span class="more-meta"> 约 1072 字 </span>
+          <span class="more-meta"> 预计阅读 3 分钟 </span>
         <span id="busuanzi_container_page_pv" class="more-meta"> <span id="busuanzi_value_page_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次阅读 </span>
       </div>
     </header>
@@ -164,8 +164,9 @@
 
 <p>这里启用telnet的原因是：</p>
 
-<p>如果通过ssh远程连接服务器后进行的版本升级操作，如果出现意外可能连接会断开并且无法再远程登录上去，如果服务器安装了iDRAC远程管理卡还有救，如果没有iDRAC远程管理卡，则需要提前开启telnet远程登录或是到机房现场进行升级操作比较妥当。
-注：实测不开也影响不大，但是开启比较保险。</p>
+<p>如果通过ssh远程连接服务器后进行的版本升级操作，如果出现意外可能连接会断开并且无法再远程登录上去，如果服务器安装了iDRAC远程管理卡还有救，如果没有iDRAC远程管理卡，则需要提前开启telnet远程登录或是到机房现场进行升级操作比较妥当。</p>
+
+<p>注1：实测centos7不开也影响不大，centos6可能会断，所以还是开启比较保险。</p>
 
 <p>1、查看系统版本</p>
 <div class="highlight"><div class="chroma">
@@ -261,6 +262,21 @@
 </div>
 <h3 id="二-升级openssl">二、升级OpenSSL</h3>
 
+<p>深坑：OpenSSl升级到最新版后，运行系统自带的软件比如curl,wget等命令虽然能够正确但是会有报错信息</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-python" data-lang="python"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-python" data-lang="python"><span class="n">curl</span><span class="p">:</span> <span class="o">/</span><span class="n">lib64</span><span class="o">/</span><span class="n">libcrypto</span><span class="o">.</span><span class="n">so</span><span class="o">.</span><span class="mi">10</span><span class="p">:</span> <span class="n">no</span> <span class="n">version</span> <span class="n">information</span> <span class="n">available</span> <span class="p">(</span><span class="n">required</span> <span class="n">by</span> <span class="o">/</span><span class="n">lib64</span><span class="o">/</span><span class="n">libssh2</span><span class="o">.</span><span class="n">so</span><span class="o">.</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">curl</span><span class="p">:</span> <span class="o">/</span><span class="n">lib64</span><span class="o">/</span><span class="n">libssl</span><span class="o">.</span><span class="n">so</span><span class="o">.</span><span class="mi">10</span><span class="p">:</span> <span class="n">no</span> <span class="n">version</span> <span class="n">information</span> <span class="n">available</span> <span class="p">(</span><span class="n">required</span> <span class="n">by</span> <span class="o">/</span><span class="n">lib64</span><span class="o">/</span><span class="n">libldap</span><span class="o">-</span><span class="mf">2.4</span><span class="o">.</span><span class="n">so</span><span class="o">.</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">curl</span><span class="p">:</span> <span class="o">/</span><span class="n">lib64</span><span class="o">/</span><span class="n">libcrypto</span><span class="o">.</span><span class="n">so</span><span class="o">.</span><span class="mi">10</span><span class="p">:</span> <span class="n">no</span> <span class="n">version</span> <span class="n">information</span> <span class="n">available</span> <span class="p">(</span><span class="n">required</span> <span class="n">by</span> <span class="o">/</span><span class="n">lib64</span><span class="o">/</span><span class="n">libldap</span><span class="o">-</span><span class="mf">2.4</span><span class="o">.</span><span class="n">so</span><span class="o">.</span><span class="mi">2</span><span class="p">)</span></code></pre></td></tr></table>
+</div>
+</div>
+<p>可能的原因是软件版本不支持最新的openssl,所以如果有强迫症的话，可以不升级，直接升级OenpSSH。</p>
+
 <p>1、查看ssl版本及下载相关依赖包</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
@@ -311,8 +327,9 @@
     make install</code></pre></td></tr></table>
 </div>
 </div>
-<p>5、创建库文件软链接并查看版本
-　　由于OpenSSL不提供libcrypto.so.10和libssl.so.10这两个库，而yum、wget等工具又依赖此库，需要创建软连接使用</p>
+<p>5、创建库文件软链接并查看版本</p>
+
+<p>由于OpenSSL不提供libcrypto.so.10和libssl.so.10这两个库，而yum、wget等工具又依赖此库，需要创建软连接使用</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre class="chroma"><code class="language-shell" data-lang="shell"><span class="lnt">1
