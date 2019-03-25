@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-  <title>KVM-从模板镜像克隆虚拟机 - モルガンナの家</title>
+  <title>解决黑苹果重启报错问题 - モルガンナの家</title>
   <meta name="renderer" content="webkit" />
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
 
@@ -16,7 +16,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
 
 
-<meta name="author" content="Morgana" /><meta name="description" content="KVM-从模板镜像克隆虚拟机
+<meta name="author" content="Morgana" /><meta name="description" content="解决黑苹果重启报错&amp;rdquo;Couldn&amp;rsquo;t allocate runtime area&amp;rdquo;
 " /><meta name="keywords" content="Hugo, モルガンナの家" />
 
 
@@ -27,7 +27,7 @@
 <meta name="generator" content="Hugo 0.55.0-DEV with even 4.0.0" />
 
 
-<link rel="canonical" href="http://linuxfunk.com/post/kvm-%E4%BB%8E%E6%A8%A1%E6%9D%BF%E9%95%9C%E5%83%8F%E5%85%8B%E9%9A%86%E8%99%9A%E6%8B%9F%E6%9C%BA/" />
+<link rel="canonical" href="http://linuxfunk.com/post/%E8%A7%A3%E5%86%B3%E9%BB%91%E8%8B%B9%E6%9E%9C%E9%87%8D%E5%90%AF%E6%8A%A5%E9%94%99%E9%97%AE%E9%A2%98/" />
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
@@ -39,27 +39,27 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
 
 
-<meta property="og:title" content="KVM-从模板镜像克隆虚拟机" />
-<meta property="og:description" content="KVM-从模板镜像克隆虚拟机" />
+<meta property="og:title" content="解决黑苹果重启报错问题" />
+<meta property="og:description" content="解决黑苹果重启报错&rdquo;Couldn&rsquo;t allocate runtime area&rdquo;" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="http://linuxfunk.com/post/kvm-%E4%BB%8E%E6%A8%A1%E6%9D%BF%E9%95%9C%E5%83%8F%E5%85%8B%E9%9A%86%E8%99%9A%E6%8B%9F%E6%9C%BA/" />
-<meta property="article:published_time" content="2017-09-04T17:18:00&#43;00:00"/>
-<meta property="article:modified_time" content="2017-09-04T17:18:00&#43;00:00"/>
+<meta property="og:url" content="http://linuxfunk.com/post/%E8%A7%A3%E5%86%B3%E9%BB%91%E8%8B%B9%E6%9E%9C%E9%87%8D%E5%90%AF%E6%8A%A5%E9%94%99%E9%97%AE%E9%A2%98/" />
+<meta property="article:published_time" content="2019-03-25T10:18:26&#43;08:00"/>
+<meta property="article:modified_time" content="2019-03-25T10:18:26&#43;08:00"/>
 
-<meta itemprop="name" content="KVM-从模板镜像克隆虚拟机">
-<meta itemprop="description" content="KVM-从模板镜像克隆虚拟机">
-
-
-<meta itemprop="datePublished" content="2017-09-04T17:18:00&#43;00:00" />
-<meta itemprop="dateModified" content="2017-09-04T17:18:00&#43;00:00" />
-<meta itemprop="wordCount" content="401">
+<meta itemprop="name" content="解决黑苹果重启报错问题">
+<meta itemprop="description" content="解决黑苹果重启报错&rdquo;Couldn&rsquo;t allocate runtime area&rdquo;">
 
 
+<meta itemprop="datePublished" content="2019-03-25T10:18:26&#43;08:00" />
+<meta itemprop="dateModified" content="2019-03-25T10:18:26&#43;08:00" />
+<meta itemprop="wordCount" content="0">
 
-<meta itemprop="keywords" content="kvm," />
+
+
+<meta itemprop="keywords" content="hackintomac," />
 <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="KVM-从模板镜像克隆虚拟机"/>
-<meta name="twitter:description" content="KVM-从模板镜像克隆虚拟机"/>
+<meta name="twitter:title" content="解决黑苹果重启报错问题"/>
+<meta name="twitter:description" content="解决黑苹果重启报错&rdquo;Couldn&rsquo;t allocate runtime area&rdquo;"/>
 
 <!--[if lte IE 9]>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
@@ -126,15 +126,15 @@
           <article class="post">
     
     <header class="post-header">
-      <h1 class="post-title">KVM-从模板镜像克隆虚拟机</h1>
+      <h1 class="post-title">解决黑苹果重启报错问题</h1>
 
       <div class="post-meta">
-        <span class="post-time"> 2017-09-04 </span>
+        <span class="post-time"> 2019-03-25 </span>
         <div class="post-category">
-            <a href="/categories/linux/"> linux </a>
+            <a href="/categories/macos/"> macos </a>
             </div>
-          <span class="more-meta"> 约 401 字 </span>
-          <span class="more-meta"> 预计阅读 1 分钟 </span>
+          <span class="more-meta"> 约 0 字 </span>
+          <span class="more-meta"> 预计阅读 0 分钟 </span>
         <span id="busuanzi_container_page_pv" class="more-meta"> <span id="busuanzi_value_page_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次阅读 </span>
       </div>
     </header>
@@ -148,9 +148,9 @@
 <ul>
 <li>
 <ul>
-<li><a href="#1-准备工作">1.准备工作</a></li>
-<li><a href="#2-创建预定义文件和镜像模板">2.创建预定义文件和镜像模板</a></li>
-<li><a href="#3-从模板克隆新的虚拟机">3.从模板克隆新的虚拟机</a></li>
+<li><a href="#1-遇到的问题">1. 遇到的问题</a></li>
+<li><a href="#2-暂时解决方法">2. 暂时解决方法</a></li>
+<li><a href="#3-还有其他的遗留问题">3. 还有其他的遗留问题</a></li>
 </ul></li>
 </ul></li>
 </ul>
@@ -158,103 +158,44 @@
   </div>
 </div>
     <div class="post-content">
-      <p>KVM-从模板镜像克隆虚拟机</p>
+      <p>解决黑苹果重启报错&rdquo;Couldn&rsquo;t allocate runtime area&rdquo;</p>
 
-<h3 id="1-准备工作">1.准备工作</h3>
+<h3 id="1-遇到的问题">1. 遇到的问题</h3>
 
-<p>克隆虚拟机你需要以下文件:
- - 一个定义文件（用于描述内存大小，CPUs的个数等等）
- - 一个镜像模板（以安装好操作系统）</p>
-
-<h3 id="2-创建预定义文件和镜像模板">2.创建预定义文件和镜像模板</h3>
-
-<p>定义文件为一个xml格式的文件，模板是一个虚拟机disk image.通过以下方法创建:</p>
-
-<ul>
-<li>创建一个基本的虚拟机并安装好操作系统</li>
-
-<li><p>关闭该虚拟机</p>
+<p>黑苹果之后有一个问题一直困扰着我，就是每次重启都有很大概率会报错:</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code class="language-bash" data-lang="bash"><span class="lnt">1
+<pre class="chroma"><code class="language-text" data-lang="text"><span class="lnt">1
+</span><span class="lnt">2
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-bash" data-lang="bash">virsh shutdown basevm</code></pre></td></tr></table>
+<pre class="chroma"><code class="language-text" data-lang="text">Error allocating 0x* pages at (...)
+Couldn&#39;t allocate runtime area</code></pre></td></tr></table>
 </div>
-</div></li>
+</div>
+<p>需要反复重启才能解决有一次正常进入系统。</p>
 
-<li><p>导出XML格式文件，并复制基础镜像为template.qcow2</p>
+<h3 id="2-暂时解决方法">2. 暂时解决方法</h3>
+
+<p>查了很多相关资料，最后解决方案如下：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt">1
-</span><span class="lnt">2
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">virsh dumpxml basevm &gt; /var/lib/libvirt/images/template.xml
-cp /var/lib/libvirt/images/basevm.qcow2 /var/lib/libvirt/images/template.qcow2</pre></td></tr></table>
-</div>
-</div></li>
-
-<li><p>修改template.xml文件中镜像文件的指定位置</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt">1
+<pre class="chroma"><code class="language-shell" data-lang="shell"><span class="lnt">1
 </span><span class="lnt">2
 </span><span class="lnt">3
 </span><span class="lnt">4
-</span><span class="lnt">5
-</span><span class="lnt">6
-</span></pre></td>
+</span></code></pre></td>
 <td class="lntd">
-<pre class="chroma">&lt;disk type=&#39;file&#39; device=&#39;disk&#39;&gt;
-&lt;driver name=&#39;qemu&#39; type=&#39;qcow2&#39; cache=&#39;none&#39;/&gt;
-&lt;source file=&#39;/var/lib/libvirt/images/template.qcow2&#39;/&gt;
-&lt;target dev=&#39;vda&#39; bus=&#39;virtio&#39;/&gt;
-&lt;address type=&#39;pci&#39; domain=&#39;0x0000&#39; bus=&#39;0x00&#39; slot=&#39;0x04&#39; function=&#39;0x0&#39;/&gt;
-&lt;/disk&gt;</pre></td></tr></table>
+<pre class="chroma"><code class="language-shell" data-lang="shell"><span class="m">1</span>. 下载AptioMemoryFix.efi 
+https://github.com/acidanthera/AptioFixPkg/releases
+<span class="m">2</span>. 将它放在/EFI/ClOVER/drivers64UEFI目录下面，确保删除其它AptioFix相关文件。
+<span class="m">3</span>. 把目录中没用的EmuVariableUefi-64.efi文件删除，因为它只用于配置iMessage。</code></pre></td></tr></table>
 </div>
-</div></li>
+</div>
+<h3 id="3-还有其他的遗留问题">3. 还有其他的遗留问题</h3>
 
-<li><p>通过 virt-sysprep 命令处理template.qcow2
-这将重置镜像并移除SSH kesy, 为网卡创建新的MAC地址，修改udev persistent net rules, 清除log文件等</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt">1
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">virt-sysprep -a /var/lib/libvirt/images/template.qcow2</pre></td></tr></table>
-</div>
-</div></li>
-
-<li><p>【可选】如果你不再需要basevm，删除它。</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt">1
-</span><span class="lnt">2
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">virsh undefine basevm
-rm /var/lib/libvirt/images/basevm.qcow2</pre></td></tr></table>
-</div>
-</div>
-<h3 id="3-从模板克隆新的虚拟机">3.从模板克隆新的虚拟机</h3></li>
-
-<li><p>通过template.xml, template.qcow2 创建虚拟机</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span></pre></td>
-<td class="lntd">
-<pre class="chroma">virt-clone --connect qemu:///system                    \
---original-xml /var/lib/libvirt/images/template.xml  \
---name newvm                                         \
---file /var/lib/libvirt/images/newvm.qcow2</pre></td></tr></table>
-</div>
-</div></li>
-</ul>
+<p>目前还是会有小概率启动时候再次重启，但已经不是内存分配的错误。
+这个问题还有待解决。</p>
     </div>
 
     <div class="post-copyright">
@@ -265,7 +206,7 @@ rm /var/lib/libvirt/images/basevm.qcow2</pre></td></tr></table>
   <p class="copyright-item">
     <span class="item-title">上次更新</span>
     <span class="item-content">
-        2017-09-04
+        2019-03-25
         
     </span>
   </p>
@@ -277,16 +218,12 @@ rm /var/lib/libvirt/images/basevm.qcow2</pre></td></tr></table>
 </div>
 <footer class="post-footer">
       <div class="post-tags">
-          <a href="/tags/kvm/">kvm</a>
+          <a href="/tags/hackintomac/">hackintomac</a>
           </div>
       <nav class="post-nav">
-        <a class="prev" href="/post/zabbix-agent-yum-install/">
-            <i class="iconfont icon-left"></i>
-            <span class="prev-text nav-default">zabbix-agent yum install </span>
-            <span class="prev-text nav-mobile">上一篇</span>
-          </a>
-        <a class="next" href="/post/centos7-%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AEvnc/">
-            <span class="next-text nav-default">CentOS7 安装配置VNC</span>
+        
+        <a class="next" href="/post/centos7%E6%BA%90%E7%A0%81%E5%8D%87%E7%BA%A7openssl%E5%92%8Copenssh/">
+            <span class="next-text nav-default">CentOS7源码升级OpenSSL和OpenSSH</span>
             <span class="next-text nav-mobile">下一篇</span>
             <i class="iconfont icon-right"></i>
           </a>

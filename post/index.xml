@@ -6,10 +6,19 @@
     <description>Recent content in Posts on モルガンナの家</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Wed, 13 Mar 2019 14:15:46 +0800</lastBuildDate>
+    <lastBuildDate>Mon, 25 Mar 2019 10:18:26 +0800</lastBuildDate>
     
 	<atom:link href="http://linuxfunk.com/post/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>解决黑苹果重启报错问题</title>
+      <link>http://linuxfunk.com/post/%E8%A7%A3%E5%86%B3%E9%BB%91%E8%8B%B9%E6%9E%9C%E9%87%8D%E5%90%AF%E6%8A%A5%E9%94%99%E9%97%AE%E9%A2%98/</link>
+      <pubDate>Mon, 25 Mar 2019 10:18:26 +0800</pubDate>
+      
+      <guid>http://linuxfunk.com/post/%E8%A7%A3%E5%86%B3%E9%BB%91%E8%8B%B9%E6%9E%9C%E9%87%8D%E5%90%AF%E6%8A%A5%E9%94%99%E9%97%AE%E9%A2%98/</guid>
+      <description>&lt;p&gt;解决黑苹果重启报错&amp;rdquo;Couldn&amp;rsquo;t allocate runtime area&amp;rdquo;&lt;/p&gt;</description>
+    </item>
     
     <item>
       <title>CentOS7源码升级OpenSSL和OpenSSH</title>
