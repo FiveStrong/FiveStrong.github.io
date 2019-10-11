@@ -24,7 +24,7 @@
 
 
 
-<meta name="generator" content="Hugo 0.55.0-DEV with even 4.0.0" />
+<meta name="generator" content="Hugo 0.59.0-DEV with even 4.0.0" />
 
 
 <link rel="canonical" href="http://linuxfunk.com/post/zabbix-3-%E9%85%8D%E7%BD%AE%E9%82%AE%E4%BB%B6%E6%8A%A5%E8%AD%A6/" />
@@ -44,9 +44,8 @@
 我整理了一下自己配置成功之后需要注意的几点。" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="http://linuxfunk.com/post/zabbix-3-%E9%85%8D%E7%BD%AE%E9%82%AE%E4%BB%B6%E6%8A%A5%E8%AD%A6/" />
-<meta property="article:published_time" content="2017-04-05T15:58:50&#43;00:00"/>
-<meta property="article:modified_time" content="2017-04-05T15:58:50&#43;00:00"/>
-
+<meta property="article:published_time" content="2017-04-05T15:58:50+00:00" />
+<meta property="article:modified_time" content="2017-04-05T15:58:50+00:00" />
 <meta itemprop="name" content="zabbix 3 配置邮件报警">
 <meta itemprop="description" content="zabbix 配置邮件报警,其实网上有一堆教程，但是在按着他们的教程配置好了之后，或多或少有些问题，比如邮件发不出去，没内容等等。
 我整理了一下自己配置成功之后需要注意的几点。">
@@ -293,8 +292,8 @@ AlertScriptsPath=/usr/local/share/zabbix/alertscripts
 </span></pre></td>
 <td class="lntd">
 <pre class="chroma">vim sendmail.sh
-<span class="cp">#!/bin/bash
-</span><span class="cp"></span><span class="nv">file</span><span class="o">=</span>/tmp/zabbix_mail.txt
+<span class="c1">#!/bin/bash</span>
+<span class="nv">file</span><span class="o">=</span>/tmp/zabbix_mail.txt
 <span class="nb">echo</span> <span class="s2">&#34;</span><span class="nv">$3</span><span class="s2">&#34;</span> &gt; <span class="nv">$file</span>
 dos2unix -k <span class="nv">$file</span>
 /bin/mail -s <span class="s2">&#34;</span><span class="nv">$2</span><span class="s2">&#34;</span> <span class="nv">$1</span> &lt; <span class="nv">$file</span>
@@ -340,18 +339,14 @@ chmod +x /usr/local/share/zabbix/alertscripts/sendmail.sh</pre></td></tr></table
   </p>
   <p class="copyright-item">
     <span class="item-title">上次更新</span>
-    <span class="item-content">
-        2017-04-05
-        
-    </span>
+    <span class="item-content">2017-04-05</span>
   </p>
   
   <p class="copyright-item">
     <span class="item-title">许可协议</span>
     <span class="item-content"><a rel="license noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a></span>
   </p>
-</div>
-<footer class="post-footer">
+</div><footer class="post-footer">
       <div class="post-tags">
           <a href="/tags/zabbix/">zabbix</a>
           </div>

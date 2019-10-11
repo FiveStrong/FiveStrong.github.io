@@ -4,7 +4,8 @@
   <url>
     <loc>http://linuxfunk.com/categories/</loc>
     <lastmod>2019-04-03T10:16:46+08:00</lastmod>
-    <priority>0</priority>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
@@ -15,45 +16,52 @@
   </url>
   
   <url>
-    <loc>http://linuxfunk.com/post/</loc>
-    <lastmod>2019-04-03T10:16:46+08:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>http://linuxfunk.com/tags/</loc>
-    <lastmod>2019-04-03T10:16:46+08:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
     <loc>http://linuxfunk.com/tags/firefox-send/</loc>
     <lastmod>2019-04-03T10:16:46+08:00</lastmod>
-    <priority>0</priority>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
     <loc>http://linuxfunk.com/categories/linux/</loc>
     <lastmod>2019-04-03T10:16:46+08:00</lastmod>
-    <priority>0</priority>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>http://linuxfunk.com/post/</loc>
+    <lastmod>2019-04-03T10:16:46+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>http://linuxfunk.com/tags/</loc>
+    <lastmod>2019-04-03T10:16:46+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
     <loc>http://linuxfunk.com/</loc>
     <lastmod>2019-04-03T10:16:46+08:00</lastmod>
-    <priority>0</priority>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
     <loc>http://linuxfunk.com/tags/hackintomac/</loc>
     <lastmod>2019-03-25T10:18:26+08:00</lastmod>
-    <priority>0</priority>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
     <loc>http://linuxfunk.com/categories/macos/</loc>
     <lastmod>2019-03-25T10:18:26+08:00</lastmod>
-    <priority>0</priority>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
@@ -73,18 +81,13 @@
   <url>
     <loc>http://linuxfunk.com/tags/openssh/</loc>
     <lastmod>2019-03-13T14:15:46+08:00</lastmod>
-    <priority>0</priority>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
     <loc>http://linuxfunk.com/tags/openssl/</loc>
     <lastmod>2019-03-13T14:15:46+08:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>http://linuxfunk.com/post/zabbix-unreachable-hosts/</loc>
-    <lastmod>2019-01-18T11:24:43+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
@@ -92,7 +95,15 @@
   <url>
     <loc>http://linuxfunk.com/tags/zabbix/</loc>
     <lastmod>2019-01-18T11:24:43+08:00</lastmod>
-    <priority>0</priority>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>http://linuxfunk.com/post/zabbix-unreachable-hosts/</loc>
+    <lastmod>2019-01-18T11:24:43+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
@@ -105,13 +116,15 @@
   <url>
     <loc>http://linuxfunk.com/tags/nginx/</loc>
     <lastmod>2018-04-28T14:08:45+00:00</lastmod>
-    <priority>0</priority>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
     <loc>http://linuxfunk.com/tags/github/</loc>
     <lastmod>2017-11-03T15:56:46+00:00</lastmod>
-    <priority>0</priority>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
@@ -131,13 +144,15 @@
   <url>
     <loc>http://linuxfunk.com/tags/hexo/</loc>
     <lastmod>2017-11-01T12:22:52+00:00</lastmod>
-    <priority>0</priority>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
     <loc>http://linuxfunk.com/tags/v2ray/</loc>
     <lastmod>2017-10-31T14:29:14+00:00</lastmod>
-    <priority>0</priority>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
@@ -150,13 +165,15 @@
   <url>
     <loc>http://linuxfunk.com/tags/docker/</loc>
     <lastmod>2017-10-30T12:20:08+00:00</lastmod>
-    <priority>0</priority>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
     <loc>http://linuxfunk.com/tags/grafana/</loc>
     <lastmod>2017-10-30T12:20:08+00:00</lastmod>
-    <priority>0</priority>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
@@ -169,7 +186,8 @@
   <url>
     <loc>http://linuxfunk.com/tags/gitlab/</loc>
     <lastmod>2017-10-30T12:18:13+00:00</lastmod>
-    <priority>0</priority>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
@@ -208,16 +226,17 @@
   </url>
   
   <url>
-    <loc>http://linuxfunk.com/post/kvm-%E4%BB%8E%E6%A8%A1%E6%9D%BF%E9%95%9C%E5%83%8F%E5%85%8B%E9%9A%86%E8%99%9A%E6%8B%9F%E6%9C%BA/</loc>
+    <loc>http://linuxfunk.com/tags/kvm/</loc>
     <lastmod>2017-09-04T17:18:00+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>http://linuxfunk.com/tags/kvm/</loc>
+    <loc>http://linuxfunk.com/post/kvm-%E4%BB%8E%E6%A8%A1%E6%9D%BF%E9%95%9C%E5%83%8F%E5%85%8B%E9%9A%86%E8%99%9A%E6%8B%9F%E6%9C%BA/</loc>
     <lastmod>2017-09-04T17:18:00+00:00</lastmod>
-    <priority>0</priority>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
@@ -230,12 +249,20 @@
   <url>
     <loc>http://linuxfunk.com/tags/vnc/</loc>
     <lastmod>2017-08-31T13:27:11+00:00</lastmod>
-    <priority>0</priority>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
     <loc>http://linuxfunk.com/post/zabbix-3-%E9%85%8D%E7%BD%AE%E9%82%AE%E4%BB%B6%E6%8A%A5%E8%AD%A6/</loc>
     <lastmod>2017-04-05T15:58:50+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>http://linuxfunk.com/tags/postgres/</loc>
+    <lastmod>2017-03-23T16:30:33+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
@@ -248,9 +275,17 @@
   </url>
   
   <url>
-    <loc>http://linuxfunk.com/tags/postgres/</loc>
-    <lastmod>2017-03-23T16:30:33+00:00</lastmod>
-    <priority>0</priority>
+    <loc>http://linuxfunk.com/tags/dns/</loc>
+    <lastmod>2017-03-17T13:12:03+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>http://linuxfunk.com/tags/mysql/</loc>
+    <lastmod>2017-03-17T13:12:03+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
@@ -261,21 +296,10 @@
   </url>
   
   <url>
-    <loc>http://linuxfunk.com/tags/dns/</loc>
-    <lastmod>2017-03-17T13:12:03+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>http://linuxfunk.com/tags/mysql/</loc>
-    <lastmod>2017-03-17T13:12:03+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
     <loc>http://linuxfunk.com/tags/tumux/</loc>
     <lastmod>2016-06-28T14:19:36+00:00</lastmod>
-    <priority>0</priority>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
@@ -288,7 +312,8 @@
   <url>
     <loc>http://linuxfunk.com/tags/sublime-text/</loc>
     <lastmod>2016-04-09T14:14:05+00:00</lastmod>
-    <priority>0</priority>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
@@ -301,7 +326,8 @@
   <url>
     <loc>http://linuxfunk.com/tags/pyenv/</loc>
     <lastmod>2016-03-25T17:04:49+00:00</lastmod>
-    <priority>0</priority>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
@@ -314,13 +340,15 @@
   <url>
     <loc>http://linuxfunk.com/categories/python/</loc>
     <lastmod>2016-03-25T17:04:49+00:00</lastmod>
-    <priority>0</priority>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
     <loc>http://linuxfunk.com/tags/iptables/</loc>
     <lastmod>2016-03-14T14:18:35+00:00</lastmod>
-    <priority>0</priority>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
@@ -333,7 +361,8 @@
   <url>
     <loc>http://linuxfunk.com/tags/drbd/</loc>
     <lastmod>2015-12-16T20:41:38+00:00</lastmod>
-    <priority>0</priority>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
@@ -344,16 +373,17 @@
   </url>
   
   <url>
-    <loc>http://linuxfunk.com/post/nfs%E6%9C%8D%E5%8A%A1%E9%85%8D%E7%BD%AE/</loc>
+    <loc>http://linuxfunk.com/tags/nfs/</loc>
     <lastmod>2015-11-02T21:43:56+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>http://linuxfunk.com/tags/nfs/</loc>
+    <loc>http://linuxfunk.com/post/nfs%E6%9C%8D%E5%8A%A1%E9%85%8D%E7%BD%AE/</loc>
     <lastmod>2015-11-02T21:43:56+00:00</lastmod>
-    <priority>0</priority>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
