@@ -6,10 +6,19 @@
     <description>Recent content on モルガンナの家</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Wed, 03 Apr 2019 10:16:46 +0800</lastBuildDate>
+    <lastBuildDate>Fri, 11 Oct 2019 16:41:15 +0800</lastBuildDate>
     
 	<atom:link href="http://linuxfunk.com/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Centos7 编译安装python最新版</title>
+      <link>http://linuxfunk.com/post/centos7-%E7%BC%96%E8%AF%91%E5%AE%89%E8%A3%85python%E6%9C%80%E6%96%B0%E7%89%88/</link>
+      <pubDate>Fri, 11 Oct 2019 16:41:15 +0800</pubDate>
+      
+      <guid>http://linuxfunk.com/post/centos7-%E7%BC%96%E8%AF%91%E5%AE%89%E8%A3%85python%E6%9C%80%E6%96%B0%E7%89%88/</guid>
+      <description>&lt;p&gt;由于centos7 自带python版本太老，所以需要自己编译安装最新版本的python.&lt;/p&gt;</description>
+    </item>
     
     <item>
       <title>Firefox Send 临时文件分享服务本地部署</title>
