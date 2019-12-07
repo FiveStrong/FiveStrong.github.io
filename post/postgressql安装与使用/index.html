@@ -24,7 +24,7 @@
 
 
 
-<meta name="generator" content="Hugo 0.59.0-DEV with theme even" />
+<meta name="generator" content="Hugo 0.61.0-DEV with even 4.0.0" />
 
 
 <link rel="canonical" href="http://linuxfunk.com/post/postgressql%E5%AE%89%E8%A3%85%E4%B8%8E%E4%BD%BF%E7%94%A8/" />
@@ -47,16 +47,13 @@
 <meta property="article:modified_time" content="2017-03-23T16:30:33+00:00" />
 <meta itemprop="name" content="PostgresSQL安装与使用">
 <meta itemprop="description" content="PostgresSQL安装与使用">
-
-
 <meta itemprop="datePublished" content="2017-03-23T16:30:33&#43;00:00" />
 <meta itemprop="dateModified" content="2017-03-23T16:30:33&#43;00:00" />
-<meta itemprop="wordCount" content="814">
+<meta itemprop="wordCount" content="815">
 
 
 
-<meta itemprop="keywords" content="postgres," />
-<meta name="twitter:card" content="summary"/>
+<meta itemprop="keywords" content="postgres," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="PostgresSQL安装与使用"/>
 <meta name="twitter:description" content="PostgresSQL安装与使用"/>
 
@@ -132,7 +129,7 @@
         <div class="post-category">
             <a href="/categories/linux/"> linux </a>
             </div>
-          <span class="more-meta"> 约 814 字 </span>
+          <span class="more-meta"> 约 815 字 </span>
           <span class="more-meta"> 预计阅读 2 分钟 </span>
         <span id="busuanzi_container_page_pv" class="more-meta"> <span id="busuanzi_value_page_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次阅读 </span>
       </div>
@@ -142,123 +139,118 @@
   <h2 class="post-toc-title">文章目录</h2>
   <div class="post-toc-content always-active">
     <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li>
-<ul>
-<li><a href="#系统版本">系统版本</a></li>
-<li><a href="#安装官方yum源">安装官方yum源</a></li>
-<li><a href="#安装软件">安装软件</a></li>
-<li><a href="#初始化数据库">初始化数据库</a></li>
-<li><a href="#启动数据库">启动数据库</a></li>
-<li><a href="#登录数据库">登录数据库</a></li>
-<li><a href="#创建数据库">创建数据库</a></li>
-<li><a href="#创建用户">创建用户</a></li>
-<li><a href="#给用户赋予权限">给用户赋予权限</a></li>
-<li><a href="#查看用户-使用数据库">查看用户 使用数据库</a></li>
-<li><a href="#创建表">创建表</a></li>
-<li><a href="#查看表">查看表</a></li>
-<li><a href="#修改表字段自增">修改表字段自增</a></li>
-<li><a href="#插入数据">插入数据</a></li>
-<li><a href="#查询数据">查询数据</a></li>
-<li><a href="#配置允许远程登录">配置允许远程登录</a></li>
-<li><a href="#配置用户访问权限">配置用户访问权限</a></li>
-<li><a href="#命令行登录">命令行登录</a></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#heading">系统版本</a></li>
+        <li><a href="#yum">安装官方yum源</a></li>
+        <li><a href="#heading-1">安装软件</a></li>
+        <li><a href="#heading-2">初始化数据库</a></li>
+        <li><a href="#heading-3">启动数据库</a></li>
+        <li><a href="#heading-4">登录数据库</a></li>
+        <li><a href="#heading-5">创建数据库</a></li>
+        <li><a href="#heading-6">创建用户</a></li>
+        <li><a href="#heading-7">给用户赋予权限</a></li>
+        <li><a href="#-">查看用户 使用数据库</a></li>
+        <li><a href="#heading-8">创建表</a></li>
+        <li><a href="#heading-9">查看表</a></li>
+        <li><a href="#heading-10">修改表字段自增</a></li>
+        <li><a href="#heading-11">插入数据</a></li>
+        <li><a href="#heading-12">查询数据</a></li>
+        <li><a href="#heading-13">配置允许远程登录</a></li>
+        <li><a href="#heading-14">配置用户访问权限</a></li>
+        <li><a href="#heading-15">命令行登录</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
   </div>
 </div>
     <div class="post-content">
       <p>PostgresSQL安装与使用</p>
-
-<h3 id="系统版本">系统版本</h3>
-
+<h3 id="heading">系统版本</h3>
 <p>CentOS6.8</p>
-
-<h3 id="安装官方yum源">安装官方yum源</h3>
+<h3 id="yum">安装官方yum源</h3>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt">1
+<pre class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span><span class="lnt">3
-</span></pre></td>
+</span></code></pre></td>
 <td class="lntd">
-<pre class="chroma">yum install https://download.postgresql.org/pub/repos/yum/9.6/redhat/rhel-6-x86_64/pgdg-centos96-9.6-3.noarch.rpm
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">yum install https://download.postgresql.org/pub/repos/yum/9.6/redhat/rhel-6-x86_64/pgdg-centos96-9.6-3.noarch.rpm
 #查看postgres版本
-yum list postgres*</pre></td></tr></table>
+yum list postgres*
+</code></pre></td></tr></table>
 </div>
-</div>
-<h3 id="安装软件">安装软件</h3>
+</div><h3 id="heading-1">安装软件</h3>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt">1
-</span></pre></td>
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
 <td class="lntd">
-<pre class="chroma">yum install postgresql96-server postgresql96-devel</pre></td></tr></table>
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">yum install postgresql96-server postgresql96-devel
+</code></pre></td></tr></table>
 </div>
-</div>
-<h3 id="初始化数据库">初始化数据库</h3>
+</div><h3 id="heading-2">初始化数据库</h3>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt">1
+<pre class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
-</span></pre></td>
+</span></code></pre></td>
 <td class="lntd">
-<pre class="chroma">service postgresql-9.6 initdb
-这里使用默认初始化位置：/var/lib/pgsql/9.6/data/</pre></td></tr></table>
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">service postgresql-9.6 initdb
+这里使用默认初始化位置：/var/lib/pgsql/9.6/data/
+</code></pre></td></tr></table>
 </div>
-</div>
-<h3 id="启动数据库">启动数据库</h3>
+</div><h3 id="heading-3">启动数据库</h3>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt">1
+<pre class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
-</span></pre></td>
+</span></code></pre></td>
 <td class="lntd">
-<pre class="chroma">chkconfig postgresql-9.6 on #设置开机自启动，可选
-service postgresql-9.6 start</pre></td></tr></table>
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">chkconfig postgresql-9.6 on #设置开机自启动，可选
+service postgresql-9.6 start
+</code></pre></td></tr></table>
 </div>
-</div>
-<h3 id="登录数据库">登录数据库</h3>
+</div><h3 id="heading-4">登录数据库</h3>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt">1
+<pre class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
-</span></pre></td>
+</span></code></pre></td>
 <td class="lntd">
-<pre class="chroma">su postgres
-psql</pre></td></tr></table>
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">su postgres
+psql
+</code></pre></td></tr></table>
 </div>
-</div>
-<h3 id="创建数据库">创建数据库</h3>
+</div><h3 id="heading-5">创建数据库</h3>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt">1
+<pre class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
-</span></pre></td>
+</span></code></pre></td>
 <td class="lntd">
-<pre class="chroma">CREATE DATABASE villains;
-CREATE DATABASE villains ENCODING &#39;UTF-8&#39; #指定数据库编码，默认为utf-8</pre></td></tr></table>
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">CREATE DATABASE villains;
+CREATE DATABASE villains ENCODING &#39;UTF-8&#39; #指定数据库编码，默认为utf-8
+</code></pre></td></tr></table>
 </div>
-</div>
-<h3 id="创建用户">创建用户</h3>
+</div><h3 id="heading-6">创建用户</h3>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt">1
+<pre class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
-</span></pre></td>
+</span></code></pre></td>
 <td class="lntd">
-<pre class="chroma">CREATE USER batman WITH PASSWORD &#39;Extremly-Secret-Password&#39;;  
-ALTER user postgres with password &#39;foobar&#39;; ＃修改密码</pre></td></tr></table>
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">CREATE USER batman WITH PASSWORD &#39;Extremly-Secret-Password&#39;;  
+ALTER user postgres with password &#39;foobar&#39;; ＃修改密码
+</code></pre></td></tr></table>
 </div>
-</div>
-<h3 id="给用户赋予权限">给用户赋予权限</h3>
+</div><h3 id="heading-7">给用户赋予权限</h3>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt"> 1
+<pre class="chroma"><code><span class="lnt"> 1
 </span><span class="lnt"> 2
 </span><span class="lnt"> 3
 </span><span class="lnt"> 4
@@ -274,9 +266,9 @@ ALTER user postgres with password &#39;foobar&#39;; ＃修改密码</pre></td></
 </span><span class="lnt">14
 </span><span class="lnt">15
 </span><span class="lnt">16
-</span></pre></td>
+</span></code></pre></td>
 <td class="lntd">
-<pre class="chroma">ALTER DATABASE villains owner to batman;　#改变数据库所有者
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">ALTER DATABASE villains owner to batman;　#改变数据库所有者
 GRANT ALL PRIVILEGES ON DATABASE villains to batman; 
 
 GRANT SELECT ON DATABASE villains to alfred;  #或者仅赋予部分权限
@@ -291,137 +283,141 @@ TRIGGER
 CREATE
 TEMPORARY
 EXECUTE
-USAGE</pre></td></tr></table>
+USAGE
+</code></pre></td></tr></table>
 </div>
 </div><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt">1
+<pre class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
-</span></pre></td>
+</span></code></pre></td>
 <td class="lntd">
-<pre class="chroma">可以在创建数据库的时候使用一个命令给予用户(create database, create user and grant all privileges)
-CREATE DATABASE villains OWNER batman;</pre></td></tr></table>
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">可以在创建数据库的时候使用一个命令给予用户(create database, create user and grant all privileges)
+CREATE DATABASE villains OWNER batman;
+</code></pre></td></tr></table>
 </div>
-</div>
-<h3 id="查看用户-使用数据库">查看用户 使用数据库</h3>
+</div><h3 id="-">查看用户 使用数据库</h3>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt">1
+<pre class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span><span class="lnt">3
-</span></pre></td>
+</span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"># \du 查看用户
+<pre class="chroma"><code class="language-fallback" data-lang="fallback"># \du 查看用户
 # \c villains 进入数据库
-# \l 查看当前所有数据库</pre></td></tr></table>
+# \l 查看当前所有数据库
+</code></pre></td></tr></table>
 </div>
-</div>
-<h3 id="创建表">创建表</h3>
+</div><h3 id="heading-8">创建表</h3>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt">1
+<pre class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
-</span></pre></td>
+</span></code></pre></td>
 <td class="lntd">
-<pre class="chroma">CREATE TABLE super_villains (id serial PRIMARY KEY, name character varying(100), super_power character varying(100), weakness character varying(100));  
-CREATE TABLE equipment (id serial PRIMARY KEY, name character varying(100), status character varying(100), special_move character varying(100)); </pre></td></tr></table>
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">CREATE TABLE super_villains (id serial PRIMARY KEY, name character varying(100), super_power character varying(100), weakness character varying(100));  
+CREATE TABLE equipment (id serial PRIMARY KEY, name character varying(100), status character varying(100), special_move character varying(100)); 
+</code></pre></td></tr></table>
 </div>
-</div>
-<h3 id="查看表">查看表</h3>
+</div><h3 id="heading-9">查看表</h3>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt">1
+<pre class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span><span class="lnt">3
-</span></pre></td>
+</span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"># \d 查看当前数据库所有表
+<pre class="chroma"><code class="language-fallback" data-lang="fallback"># \d 查看当前数据库所有表
 # \d+ equipment; 查看具体表，以及字段
-# SELECT *  FROM information_schema.columns  WHERE table_name = &#39;equipment&#39;;  查询语句</pre></td></tr></table>
+# SELECT *  FROM information_schema.columns  WHERE table_name = &#39;equipment&#39;;  查询语句
+</code></pre></td></tr></table>
 </div>
-</div>
-<h3 id="修改表字段自增">修改表字段自增</h3>
+</div><h3 id="heading-10">修改表字段自增</h3>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt">1
+<pre class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span><span class="lnt">3
 </span><span class="lnt">4
-</span></pre></td>
+</span></code></pre></td>
 <td class="lntd">
-<pre class="chroma">#我们创建表的时候id字段添加了serial,系统会为我们自动创建两个序列表equipment_id_seq and super_villains_id_seq
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">#我们创建表的时候id字段添加了serial,系统会为我们自动创建两个序列表equipment_id_seq and super_villains_id_seq
 #我们可以将他们绑定到id字段以实现自增(应该默认就绑定了)
 #ALTER table equipment alter id set default nextval(&#39;equipment_id_seq&#39;);  
-#ALTER table super_villains alter id set default nextval(&#39;super_villains_id_seq&#39;);</pre></td></tr></table>
+#ALTER table super_villains alter id set default nextval(&#39;super_villains_id_seq&#39;);
+</code></pre></td></tr></table>
 </div>
-</div>
-<h3 id="插入数据">插入数据</h3>
+</div><h3 id="heading-11">插入数据</h3>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt">1
+<pre class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
-</span></pre></td>
+</span></code></pre></td>
 <td class="lntd">
-<pre class="chroma">INSERT INTO equipment(name, status, special_move) VALUES(&#39;Utility Belt&#39;, &#39;Nice and yellow&#39;, &#39;All kind of cool stuff in your waist&#39;); 
-INSERT INTO super_villains(name, super_power, weakness) VALUES(&#39;The Joker&#39;, &#39;Extra Crazy&#39;, &#39;Super punch&#39;); </pre></td></tr></table>
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">INSERT INTO equipment(name, status, special_move) VALUES(&#39;Utility Belt&#39;, &#39;Nice and yellow&#39;, &#39;All kind of cool stuff in your waist&#39;); 
+INSERT INTO super_villains(name, super_power, weakness) VALUES(&#39;The Joker&#39;, &#39;Extra Crazy&#39;, &#39;Super punch&#39;); 
+</code></pre></td></tr></table>
 </div>
-</div>
-<h3 id="查询数据">查询数据</h3>
+</div><h3 id="heading-12">查询数据</h3>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt">1
+<pre class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
-</span></pre></td>
+</span></code></pre></td>
 <td class="lntd">
-<pre class="chroma">SELECT * from equipment;  
-SELECT * from super_villains; </pre></td></tr></table>
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">SELECT * from equipment;  
+SELECT * from super_villains; 
+</code></pre></td></tr></table>
 </div>
-</div>
-<h3 id="配置允许远程登录">配置允许远程登录</h3>
+</div><h3 id="heading-13">配置允许远程登录</h3>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt">1
+<pre class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
-</span></pre></td>
+</span></code></pre></td>
 <td class="lntd">
-<pre class="chroma">#编辑/var/lib/pgsql/9.6/data/postgresql.conf
-#listen_addresses = &#39;localhost&#39;  替换为　listen_addresses = &#39;*&#39;  </pre></td></tr></table>
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">#编辑/var/lib/pgsql/9.6/data/postgresql.conf
+#listen_addresses = &#39;localhost&#39;  替换为　listen_addresses = &#39;*&#39;  
+</code></pre></td></tr></table>
 </div>
-</div>
-<h3 id="配置用户访问权限">配置用户访问权限</h3>
+</div><h3 id="heading-14">配置用户访问权限</h3>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt">1
+<pre class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span><span class="lnt">3
 </span><span class="lnt">4
 </span><span class="lnt">5
 </span><span class="lnt">6
 </span><span class="lnt">7
-</span></pre></td>
+</span><span class="lnt">8
+</span></code></pre></td>
 <td class="lntd">
-<pre class="chroma">在配置文件pg_hba.conf中,将peer, ident均改成md5，这样就可以像mysql一样使用用户名密码登录
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">在配置文件pg_hba.conf中,将peer, ident均改成md5，这样就可以像mysql一样使用用户名密码登录
 # &#34;local&#34; is for Unix domain socket connections only
 local   all             all                                     md5
 # IPv4 local connections:
 host    all             all             127.0.0.1/32            md5
 # IPv6 local connections:
-host    all             all             ::1/128                 md5</pre></td></tr></table>
+host    all             all             ::1/128                 md5
+
+</code></pre></td></tr></table>
 </div>
-</div>
-<h3 id="命令行登录">命令行登录</h3>
+</div><h3 id="heading-15">命令行登录</h3>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt">1
+<pre class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span><span class="lnt">3
 </span><span class="lnt">4
-</span></pre></td>
+</span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"># psql -U postgres postgres -h 127.0.0.1
+<pre class="chroma"><code class="language-fallback" data-lang="fallback"># psql -U postgres postgres -h 127.0.0.1
 -U 指定登录用户 postgres
 第二个postgres指明登录的数据库
--h 登录主机地址</pre></td></tr></table>
+-h 登录主机地址
+</code></pre></td></tr></table>
 </div>
 </div>
     </div>
@@ -433,18 +429,14 @@ host    all             all             ::1/128                 md5</pre></td></
   </p>
   <p class="copyright-item">
     <span class="item-title">上次更新</span>
-    <span class="item-content">
-        2017-03-23
-        
-    </span>
+    <span class="item-content">2017-03-23</span>
   </p>
   
   <p class="copyright-item">
     <span class="item-title">许可协议</span>
     <span class="item-content"><a rel="license noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a></span>
   </p>
-</div>
-<footer class="post-footer">
+</div><footer class="post-footer">
       <div class="post-tags">
           <a href="/tags/postgres/">postgres</a>
           </div>
@@ -464,10 +456,6 @@ host    all             all             ::1/128                 md5</pre></td></
   </article>
         </div>
         
-
-  
-
-  
 
       </div>
     </main>

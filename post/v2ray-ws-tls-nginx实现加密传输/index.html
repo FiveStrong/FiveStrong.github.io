@@ -24,7 +24,7 @@
 
 
 
-<meta name="generator" content="Hugo 0.59.0-DEV with theme even" />
+<meta name="generator" content="Hugo 0.61.0-DEV with even 4.0.0" />
 
 
 <link rel="canonical" href="http://linuxfunk.com/post/v2ray-ws-tls-nginx%E5%AE%9E%E7%8E%B0%E5%8A%A0%E5%AF%86%E4%BC%A0%E8%BE%93/" />
@@ -41,7 +41,6 @@
 
 <meta property="og:title" content="v2ray实现ws&#43;tls&#43;nginx加密传输" />
 <meta property="og:description" content="1.V2Ray加密tls原理
-
 别的代理都是直接客户端穿墙使用TCP、HTTP或自定义协议和墙外的服务器连接。
 V2Ray的这套方案则是在墙外做一个启用HTTPS的Nginx服务，使用本地的客户端和墙外的Nginx以WS协议进行连接（这就和一个真正的网站行为一模一样了）。然后在Nginx背后用代理进行内容的访问。
 这样的解决方案墙是无法分辨到底是一个代理服务器还是一个正常用户在用HTTPS访问网站，HTTPS也保证了墙无法探知流量的内容。" />
@@ -51,23 +50,18 @@ V2Ray的这套方案则是在墙外做一个启用HTTPS的Nginx服务，使用�
 <meta property="article:modified_time" content="2017-10-31T14:29:14+00:00" />
 <meta itemprop="name" content="v2ray实现ws&#43;tls&#43;nginx加密传输">
 <meta itemprop="description" content="1.V2Ray加密tls原理
-
 别的代理都是直接客户端穿墙使用TCP、HTTP或自定义协议和墙外的服务器连接。
 V2Ray的这套方案则是在墙外做一个启用HTTPS的Nginx服务，使用本地的客户端和墙外的Nginx以WS协议进行连接（这就和一个真正的网站行为一模一样了）。然后在Nginx背后用代理进行内容的访问。
 这样的解决方案墙是无法分辨到底是一个代理服务器还是一个正常用户在用HTTPS访问网站，HTTPS也保证了墙无法探知流量的内容。">
-
-
 <meta itemprop="datePublished" content="2017-10-31T14:29:14&#43;00:00" />
 <meta itemprop="dateModified" content="2017-10-31T14:29:14&#43;00:00" />
-<meta itemprop="wordCount" content="1468">
+<meta itemprop="wordCount" content="1469">
 
 
 
-<meta itemprop="keywords" content="v2ray," />
-<meta name="twitter:card" content="summary"/>
+<meta itemprop="keywords" content="v2ray," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="v2ray实现ws&#43;tls&#43;nginx加密传输"/>
 <meta name="twitter:description" content="1.V2Ray加密tls原理
-
 别的代理都是直接客户端穿墙使用TCP、HTTP或自定义协议和墙外的服务器连接。
 V2Ray的这套方案则是在墙外做一个启用HTTPS的Nginx服务，使用本地的客户端和墙外的Nginx以WS协议进行连接（这就和一个真正的网站行为一模一样了）。然后在Nginx背后用代理进行内容的访问。
 这样的解决方案墙是无法分辨到底是一个代理服务器还是一个正常用户在用HTTPS访问网站，HTTPS也保证了墙无法探知流量的内容。"/>
@@ -144,7 +138,7 @@ V2Ray的这套方案则是在墙外做一个启用HTTPS的Nginx服务，使用�
         <div class="post-category">
             <a href="/categories/linux/"> linux </a>
             </div>
-          <span class="more-meta"> 约 1468 字 </span>
+          <span class="more-meta"> 约 1469 字 </span>
           <span class="more-meta"> 预计阅读 3 分钟 </span>
         <span id="busuanzi_container_page_pv" class="more-meta"> <span id="busuanzi_value_page_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次阅读 </span>
       </div>
@@ -154,100 +148,88 @@ V2Ray的这套方案则是在墙外做一个启用HTTPS的Nginx服务，使用�
   <h2 class="post-toc-title">文章目录</h2>
   <div class="post-toc-content always-active">
     <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li>
-<ul>
-<li><a href="#1-v2ray加密tls原理">1.V2Ray加密tls原理</a></li>
-<li><a href="#2-安装">2.安装</a>
-<ul>
-<li><a href="#2-1-安装v2ray">2.1 安装v2ray</a></li>
-<li><a href="#2-2-安装nginx">2.2 安装nginx</a></li>
-<li><a href="#2-3-安装证书">2.3 安装证书</a></li>
-</ul></li>
-<li><a href="#3-配置v2ray服务器">3.配置v2ray服务器</a></li>
-<li><a href="#4-配置nginx服务">4.配置Nginx服务</a></li>
-<li><a href="#5-客户端v2ray配置">5.客户端v2ray配置</a></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#1v2raytls">1.V2Ray加密tls原理</a></li>
+        <li><a href="#2">2.安装</a></li>
+        <li><a href="#3v2ray">3.配置v2ray服务器</a></li>
+        <li><a href="#4nginx">4.配置Nginx服务</a></li>
+        <li><a href="#5v2ray">5.客户端v2ray配置</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
   </div>
 </div>
     <div class="post-content">
-      <h3 id="1-v2ray加密tls原理">1.V2Ray加密tls原理</h3>
-
+      <h3 id="1v2raytls">1.V2Ray加密tls原理</h3>
 <p>别的代理都是直接客户端穿墙使用TCP、HTTP或自定义协议和墙外的服务器连接。
 V2Ray的这套方案则是在墙外做一个启用HTTPS的Nginx服务，使用本地的客户端和墙外的Nginx以WS协议进行连接（这就和一个真正的网站行为一模一样了）。然后在Nginx背后用代理进行内容的访问。
 这样的解决方案墙是无法分辨到底是一个代理服务器还是一个正常用户在用HTTPS访问网站，HTTPS也保证了墙无法探知流量的内容。</p>
-
-<h3 id="2-安装">2.安装</h3>
-
-<h4 id="2-1-安装v2ray">2.1 安装v2ray</h4>
-
+<h3 id="2">2.安装</h3>
+<h4 id="21-v2ray">2.1 安装v2ray</h4>
 <p>centos7以及其他支持系统可以直接使用官方一键安装脚本</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt">1
-</span></pre></td>
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
 <td class="lntd">
-<pre class="chroma">bash &lt;(curl -L -s https://install.direct/go.sh)</pre></td></tr></table>
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">bash &lt;(curl -L -s https://install.direct/go.sh)
+</code></pre></td></tr></table>
 </div>
-</div>
-<p>安装信息:</p>
+</div><p>安装信息:</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt">1
+<pre class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span><span class="lnt">3
 </span><span class="lnt">4
-</span></pre></td>
+</span></code></pre></td>
 <td class="lntd">
-<pre class="chroma">bin命令：/usr/bin/v2ray/v2ray 
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">bin命令：/usr/bin/v2ray/v2ray 
 配置文件：/etc/v2ray/config.json 
 service：/lib/systemd/system/v2ray.service 
-日志指定是放在配置文件里的：log.access 和 log.error，一般放在：/var/log/v2ray/access.log 和 /var/log/v2ray/error.log</pre></td></tr></table>
+日志指定是放在配置文件里的：log.access 和 log.error，一般放在：/var/log/v2ray/access.log 和 /var/log/v2ray/error.log
+</code></pre></td></tr></table>
 </div>
-</div>
-<h4 id="2-2-安装nginx">2.2 安装nginx</h4>
+</div><h4 id="22-nginx">2.2 安装nginx</h4>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt">1
-</span></pre></td>
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
 <td class="lntd">
-<pre class="chroma">yum install nginx</pre></td></tr></table>
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">yum install nginx
+</code></pre></td></tr></table>
 </div>
-</div>
-<p>nginx配置信息</p>
+</div><p>nginx配置信息</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt">1
+<pre class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span><span class="lnt">3
-</span></pre></td>
+</span></code></pre></td>
 <td class="lntd">
-<pre class="chroma">配置路径：/etc/nginx 
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">配置路径：/etc/nginx 
 html路径：/usr/share/nginx/html/ #这里改成了常用的/var/www/html
-日志：/var/log/nginx</pre></td></tr></table>
+日志：/var/log/nginx
+</code></pre></td></tr></table>
 </div>
-</div>
-<h4 id="2-3-安装证书">2.3 安装证书</h4>
-
-<p>使用 TLS 需要证书，证书也有免费付费的，同样的这里使用免费证书，证书认证机构为 Let&rsquo;s Encrypt。 证书的生成有许多方法，这里使用的是比较简单的方法：使用 acme.sh 脚本生成.
+</div><h4 id="23-">2.3 安装证书</h4>
+<p>使用 TLS 需要证书，证书也有免费付费的，同样的这里使用免费证书，证书认证机构为 Let's Encrypt。 证书的生成有许多方法，这里使用的是比较简单的方法：使用 acme.sh 脚本生成.
 前提：一定要有效域名并且指向了VPS地址，否则证书解析会报错。</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt">1
-</span></pre></td>
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
 <td class="lntd">
-<pre class="chroma">curl  https://get.acme.sh | sh</pre></td></tr></table>
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">curl  https://get.acme.sh | sh
+</code></pre></td></tr></table>
 </div>
-</div>
-<p>如果安装报错，那么可能是因为系统缺少 acme.sh 所需要的依赖项，根据提示安装依赖之后然后重新安装一遍 acme.sh</p>
+</div><p>如果安装报错，那么可能是因为系统缺少 acme.sh 所需要的依赖项，根据提示安装依赖之后然后重新安装一遍 acme.sh</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt"> 1
+<pre class="chroma"><code><span class="lnt"> 1
 </span><span class="lnt"> 2
 </span><span class="lnt"> 3
 </span><span class="lnt"> 4
@@ -259,9 +241,9 @@ html路径：/usr/share/nginx/html/ #这里改成了常用的/var/www/html
 </span><span class="lnt">10
 </span><span class="lnt">11
 </span><span class="lnt">12
-</span></pre></td>
+</span></code></pre></td>
 <td class="lntd">
-<pre class="chroma">证书生成
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">证书生成
 acme.sh --issue -d mydomain.com --standalone -k ec-256
 # 以上的命令会临时监听 80 端口，请确保执行该命令前 80 端口没有使用，采用了ECC证书
 
@@ -272,13 +254,13 @@ acme.sh --issue -d mydomain.com --standalone -k ec-256
 证书安装
 ./acme.sh --installcert --ecc -d ${domain} \
          --keypath       /var/www/ssl/${domain}.key  \
-         --fullchainpath /var/www/ssl/${domain}.key.pem \</pre></td></tr></table>
+         --fullchainpath /var/www/ssl/${domain}.key.pem \
+</code></pre></td></tr></table>
 </div>
-</div>
-<p>修改nginx配置</p>
+</div><p>修改nginx配置</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt"> 1
+<pre class="chroma"><code><span class="lnt"> 1
 </span><span class="lnt"> 2
 </span><span class="lnt"> 3
 </span><span class="lnt"> 4
@@ -312,9 +294,9 @@ acme.sh --issue -d mydomain.com --standalone -k ec-256
 </span><span class="lnt">32
 </span><span class="lnt">33
 </span><span class="lnt">34
-</span></pre></td>
+</span></code></pre></td>
 <td class="lntd">
-<pre class="chroma">/etc/nginx/conf.d/blog.conf
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">/etc/nginx/conf.d/blog.conf
 
 server {
         listen       443 ssl http2 default_server;
@@ -347,26 +329,24 @@ server {
         error_page 500 502 503 504 /50x.html;
            location = /50x.html {
         }
-    }</pre></td></tr></table>
+    }
+</code></pre></td></tr></table>
 </div>
-</div>
-<p>使用检测工具查看安全评级：<a href="https://www.ssllabs.com/ssltest/analyze.html?d=${domain">https://www.ssllabs.com/ssltest/analyze.html?d=${domain</a>}</p>
-
+</div><p>使用检测工具查看安全评级：https://www.ssllabs.com/ssltest/analyze.html?d=${domain}</p>
 <p>使用 crontab 命令查看 acme.sh 添加的证书刷新脚本：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt">1
-</span></pre></td>
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
 <td class="lntd">
-<pre class="chroma">crontab -l</pre></td></tr></table>
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">crontab -l
+</code></pre></td></tr></table>
 </div>
-</div>
-<h3 id="3-配置v2ray服务器">3.配置v2ray服务器</h3>
-
+</div><h3 id="3v2ray">3.配置v2ray服务器</h3>
 <p>编辑配置文件/etc/v2ray/config.json：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt"> 1
+<pre class="chroma"><code><span class="lnt"> 1
 </span><span class="lnt"> 2
 </span><span class="lnt"> 3
 </span><span class="lnt"> 4
@@ -398,9 +378,9 @@ server {
 </span><span class="lnt">30
 </span><span class="lnt">31
 </span><span class="lnt">32
-</span></pre></td>
+</span></code></pre></td>
 <td class="lntd">
-<pre class="chroma">{
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">{
 &#34;log&#34;: {
       &#34;access&#34;: &#34;/var/log/v2ray/access.log&#34;,
       &#34;error&#34;: &#34;/var/log/v2ray/error.log&#34;,
@@ -431,24 +411,23 @@ server {
     &#34;protocol&#34;: &#34;freedom&#34;,
     &#34;settings&#34;: {}
   }
-}</pre></td></tr></table>
+}
+</code></pre></td></tr></table>
 </div>
-</div>
-<p>启动v2ray:</p>
+</div><p>启动v2ray:</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt">1
-</span></pre></td>
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
 <td class="lntd">
-<pre class="chroma">service v2ray start</pre></td></tr></table>
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">service v2ray start
+</code></pre></td></tr></table>
 </div>
-</div>
-<h3 id="4-配置nginx服务">4.配置Nginx服务</h3>
-
+</div><h3 id="4nginx">4.配置Nginx服务</h3>
 <p>在之前安装HTTPS更改过的nginx配置中再添加一个location：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt">1
+<pre class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span><span class="lnt">3
 </span><span class="lnt">4
@@ -456,33 +435,32 @@ server {
 </span><span class="lnt">6
 </span><span class="lnt">7
 </span><span class="lnt">8
-</span></pre></td>
+</span></code></pre></td>
 <td class="lntd">
-<pre class="chroma">location /serv/ {
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">location /serv/ {
             proxy_redirect off;
             proxy_pass http://127.0.0.1:10000;
             proxy_http_version 1.1;
             proxy_set_header Upgrade $http_upgrade;
             proxy_set_header Connection &#34;upgrade&#34;;
             proxy_set_header Host $http_host;
-        }</pre></td></tr></table>
+        }
+</code></pre></td></tr></table>
 </div>
-</div>
-<p>重启nginx:</p>
+</div><p>重启nginx:</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt">1
-</span></pre></td>
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
 <td class="lntd">
-<pre class="chroma">service nginx restart</pre></td></tr></table>
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">service nginx restart
+</code></pre></td></tr></table>
 </div>
-</div>
-<h3 id="5-客户端v2ray配置">5.客户端v2ray配置</h3>
-
+</div><h3 id="5v2ray">5.客户端v2ray配置</h3>
 <p>编辑config.json文件：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt"> 1
+<pre class="chroma"><code><span class="lnt"> 1
 </span><span class="lnt"> 2
 </span><span class="lnt"> 3
 </span><span class="lnt"> 4
@@ -550,9 +528,10 @@ server {
 </span><span class="lnt">66
 </span><span class="lnt">67
 </span><span class="lnt">68
-</span></pre></td>
+</span><span class="lnt">69
+</span></code></pre></td>
 <td class="lntd">
-<pre class="chroma">{
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">{
   &#34;log&#34;: {
            &#34;access&#34;: &#34;/home/archie/Documents/v2ray-v2.44-linux-64/log/access.log&#34;,
            &#34;error&#34;: &#34;/home/archie/Documents/v2ray-v2.44-linux-64/log/error.log&#34;,
@@ -619,7 +598,9 @@ server {
       ]
     }
   }
-}</pre></td></tr></table>
+}
+
+</code></pre></td></tr></table>
 </div>
 </div>
     </div>
@@ -631,18 +612,14 @@ server {
   </p>
   <p class="copyright-item">
     <span class="item-title">上次更新</span>
-    <span class="item-content">
-        2017-10-31
-        
-    </span>
+    <span class="item-content">2017-10-31</span>
   </p>
   
   <p class="copyright-item">
     <span class="item-title">许可协议</span>
     <span class="item-content"><a rel="license noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a></span>
   </p>
-</div>
-<footer class="post-footer">
+</div><footer class="post-footer">
       <div class="post-tags">
           <a href="/tags/v2ray/">v2ray</a>
           </div>
@@ -662,10 +639,6 @@ server {
   </article>
         </div>
         
-
-  
-
-  
 
       </div>
     </main>

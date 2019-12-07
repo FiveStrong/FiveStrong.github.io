@@ -24,7 +24,7 @@
 
 
 
-<meta name="generator" content="Hugo 0.59.0-DEV with theme even" />
+<meta name="generator" content="Hugo 0.61.0-DEV with even 4.0.0" />
 
 
 <link rel="canonical" href="http://linuxfunk.com/post/%E4%BD%BF%E7%94%A8docker%E6%9C%8D%E5%8A%A1%E9%85%8D%E7%BD%AEzabbix-grafana%E7%9B%91%E6%8E%A7/" />
@@ -49,16 +49,13 @@
 <meta itemprop="name" content="使用docker服务配置Zabbix&#43;Grafana监控">
 <meta itemprop="description" content="使用docker服务配置Zabbix&#43;Grafana监控
 纯命令行启动">
-
-
 <meta itemprop="datePublished" content="2017-10-30T12:20:08&#43;00:00" />
 <meta itemprop="dateModified" content="2017-10-30T12:20:08&#43;00:00" />
 <meta itemprop="wordCount" content="216">
 
 
 
-<meta itemprop="keywords" content="zabbix,docker,grafana," />
-<meta name="twitter:card" content="summary"/>
+<meta itemprop="keywords" content="zabbix,docker,grafana," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="使用docker服务配置Zabbix&#43;Grafana监控"/>
 <meta name="twitter:description" content="使用docker服务配置Zabbix&#43;Grafana监控
 纯命令行启动"/>
@@ -144,16 +141,15 @@
     <div class="post-toc" id="post-toc">
   <h2 class="post-toc-title">文章目录</h2>
   <div class="post-toc-content always-active">
-    
+    <nav id="TableOfContents"></nav>
   </div>
 </div>
     <div class="post-content">
       <p>使用docker服务配置Zabbix+Grafana监控
 纯命令行启动</p>
-
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt"> 1
+<pre class="chroma"><code><span class="lnt"> 1
 </span><span class="lnt"> 2
 </span><span class="lnt"> 3
 </span><span class="lnt"> 4
@@ -193,9 +189,9 @@
 </span><span class="lnt">38
 </span><span class="lnt">39
 </span><span class="lnt">40
-</span></pre></td>
+</span></code></pre></td>
 <td class="lntd">
-<pre class="chroma">1. Start empty MySQL server instance
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">1. Start empty MySQL server instance
 
 docker run --name zabbix-mysql -t \
       --restart=always \
@@ -234,10 +230,10 @@ docker run --name zabbix-web -t \
       --link zabbix-mysql:zabbix-mysql \
       --link zabbix-server:zabbix-server \
       -p 80:80 \
-      -d zabbix/zabbix-web-nginx-mysql</pre></td></tr></table>
+      -d zabbix/zabbix-web-nginx-mysql
+</code></pre></td></tr></table>
 </div>
-</div>
-<p>docker-compose file
+</div><p>docker-compose file
 <a href="https://github.com/fivestrong/zabbix-grafana-docker">https://github.com/fivestrong/zabbix-grafana-docker</a></p>
     </div>
 
@@ -248,18 +244,14 @@ docker run --name zabbix-web -t \
   </p>
   <p class="copyright-item">
     <span class="item-title">上次更新</span>
-    <span class="item-content">
-        2017-10-30
-        
-    </span>
+    <span class="item-content">2017-10-30</span>
   </p>
   
   <p class="copyright-item">
     <span class="item-title">许可协议</span>
     <span class="item-content"><a rel="license noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a></span>
   </p>
-</div>
-<footer class="post-footer">
+</div><footer class="post-footer">
       <div class="post-tags">
           <a href="/tags/zabbix/">zabbix</a>
           <a href="/tags/docker/">docker</a>
@@ -281,10 +273,6 @@ docker run --name zabbix-web -t \
   </article>
         </div>
         
-
-  
-
-  
 
       </div>
     </main>

@@ -24,7 +24,7 @@
 
 
 
-<meta name="generator" content="Hugo 0.59.0-DEV with theme even" />
+<meta name="generator" content="Hugo 0.61.0-DEV with even 4.0.0" />
 
 
 <link rel="canonical" href="http://linuxfunk.com/post/docker-%E5%AE%B9%E5%99%A8%E7%AE%A1%E7%90%86/" />
@@ -47,16 +47,13 @@
 <meta property="article:modified_time" content="2017-10-30T12:17:03+00:00" />
 <meta itemprop="name" content="Docker 容器管理">
 <meta itemprop="description" content="docker 常用命令纪录">
-
-
 <meta itemprop="datePublished" content="2017-10-30T12:17:03&#43;00:00" />
 <meta itemprop="dateModified" content="2017-10-30T12:17:03&#43;00:00" />
-<meta itemprop="wordCount" content="605">
+<meta itemprop="wordCount" content="606">
 
 
 
-<meta itemprop="keywords" content="docker," />
-<meta name="twitter:card" content="summary"/>
+<meta itemprop="keywords" content="docker," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Docker 容器管理"/>
 <meta name="twitter:description" content="docker 常用命令纪录"/>
 
@@ -132,7 +129,7 @@
         <div class="post-category">
             <a href="/categories/linux/"> linux </a>
             </div>
-          <span class="more-meta"> 约 605 字 </span>
+          <span class="more-meta"> 约 606 字 </span>
           <span class="more-meta"> 预计阅读 2 分钟 </span>
         <span id="busuanzi_container_page_pv" class="more-meta"> <span id="busuanzi_value_page_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次阅读 </span>
       </div>
@@ -142,26 +139,23 @@
   <h2 class="post-toc-title">文章目录</h2>
   <div class="post-toc-content always-active">
     <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li>
-<ul>
-<li><a href="#1-基础命令">1.基础命令</a></li>
-<li><a href="#2-docker网络以及存储">2.Docker网络以及存储</a></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#1">1.基础命令</a></li>
+        <li><a href="#2docker">2.Docker网络以及存储</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
   </div>
 </div>
     <div class="post-content">
       <p>docker 常用命令纪录</p>
-
-<h3 id="1-基础命令">1.基础命令</h3>
+<h3 id="1">1.基础命令</h3>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt"> 1
+<pre class="chroma"><code><span class="lnt"> 1
 </span><span class="lnt"> 2
 </span><span class="lnt"> 3
 </span><span class="lnt"> 4
@@ -192,9 +186,10 @@
 </span><span class="lnt">29
 </span><span class="lnt">30
 </span><span class="lnt">31
-</span></pre></td>
+</span><span class="lnt">32
+</span></code></pre></td>
 <td class="lntd">
-<pre class="chroma">docker container ls -a    #查看所有容器
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">docker container ls -a    #查看所有容器
 docker container attach nginx-test #连接到容器，显示输出，ctrl+c退出，容器也会停止。
 docker container start nginx-test  #重启容器
 docker container attach --sig-proxy=false nginx-test #同样为连接到容器，这次退出后容器不会停止。
@@ -224,15 +219,15 @@ docker container rm -f nginx4 #强制移除指定容器
 
 docker container create --name nginx-test -p 8080:80 nginx #生成容器但不启动
 docker container port nginx-test #显示容器映射端口
-docker container diff nginx-test #查看容器更改内容</pre></td></tr></table>
-</div>
-</div>
-<h3 id="2-docker网络以及存储">2.Docker网络以及存储</h3>
+docker container diff nginx-test #查看容器更改内容
 
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="2docker">2.Docker网络以及存储</h3>
 <p>docker network &ndash;help</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt"> 1
+<pre class="chroma"><code><span class="lnt"> 1
 </span><span class="lnt"> 2
 </span><span class="lnt"> 3
 </span><span class="lnt"> 4
@@ -247,9 +242,9 @@ docker container diff nginx-test #查看容器更改内容</pre></td></tr></tabl
 </span><span class="lnt">13
 </span><span class="lnt">14
 </span><span class="lnt">15
-</span></pre></td>
+</span></code></pre></td>
 <td class="lntd">
-<pre class="chroma">Usage:  docker network COMMAND
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">Usage:  docker network COMMAND
 
 Manage networks
 
@@ -263,13 +258,13 @@ Commands:
   inspect     Display detailed information on one or more networks
   ls          List networks
   prune       Remove all unused networks
-  rm          Remove one or more networks</pre></td></tr></table>
+  rm          Remove one or more networks
+</code></pre></td></tr></table>
 </div>
-</div>
-<p>docker volume &ndash;help</p>
+</div><p>docker volume &ndash;help</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt"> 1
+<pre class="chroma"><code><span class="lnt"> 1
 </span><span class="lnt"> 2
 </span><span class="lnt"> 3
 </span><span class="lnt"> 4
@@ -282,9 +277,9 @@ Commands:
 </span><span class="lnt">11
 </span><span class="lnt">12
 </span><span class="lnt">13
-</span></pre></td>
+</span></code></pre></td>
 <td class="lntd">
-<pre class="chroma">Usage:  docker volume COMMAND
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">Usage:  docker volume COMMAND
 
 Manage volumes
 
@@ -296,7 +291,8 @@ Commands:
   inspect     Display detailed information on one or more volumes
   ls          List volumes
   prune       Remove all unused volumes
-  rm          Remove one or more volumes</pre></td></tr></table>
+  rm          Remove one or more volumes
+</code></pre></td></tr></table>
 </div>
 </div>
     </div>
@@ -308,18 +304,14 @@ Commands:
   </p>
   <p class="copyright-item">
     <span class="item-title">上次更新</span>
-    <span class="item-content">
-        2017-10-30
-        
-    </span>
+    <span class="item-content">2017-10-30</span>
   </p>
   
   <p class="copyright-item">
     <span class="item-title">许可协议</span>
     <span class="item-content"><a rel="license noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a></span>
   </p>
-</div>
-<footer class="post-footer">
+</div><footer class="post-footer">
       <div class="post-tags">
           <a href="/tags/docker/">docker</a>
           </div>
@@ -339,10 +331,6 @@ Commands:
   </article>
         </div>
         
-
-  
-
-  
 
       </div>
     </main>

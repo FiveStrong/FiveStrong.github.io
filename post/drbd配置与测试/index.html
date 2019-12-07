@@ -24,7 +24,7 @@
 
 
 
-<meta name="generator" content="Hugo 0.59.0-DEV with theme even" />
+<meta name="generator" content="Hugo 0.61.0-DEV with even 4.0.0" />
 
 
 <link rel="canonical" href="http://linuxfunk.com/post/drbd%E9%85%8D%E7%BD%AE%E4%B8%8E%E6%B5%8B%E8%AF%95/" />
@@ -47,16 +47,13 @@
 <meta property="article:modified_time" content="2015-12-16T20:41:38+00:00" />
 <meta itemprop="name" content="DRBD配置与测试">
 <meta itemprop="description" content="DRBD配置与测试">
-
-
 <meta itemprop="datePublished" content="2015-12-16T20:41:38&#43;00:00" />
 <meta itemprop="dateModified" content="2015-12-16T20:41:38&#43;00:00" />
 <meta itemprop="wordCount" content="588">
 
 
 
-<meta itemprop="keywords" content="DRBD," />
-<meta name="twitter:card" content="summary"/>
+<meta itemprop="keywords" content="DRBD," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="DRBD配置与测试"/>
 <meta name="twitter:description" content="DRBD配置与测试"/>
 
@@ -142,32 +139,29 @@
   <h2 class="post-toc-title">文章目录</h2>
   <div class="post-toc-content always-active">
     <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li>
-<ul>
-<li><a href="#一-软件安装">一、软件安装</a></li>
-</ul></li>
-<li><a href="#二-配置drbd镜像系统">二、配置DRBD镜像系统</a>
-<ul>
-<li><a href="#三-drbd的管理与维护">三、DRBD的管理与维护</a></li>
-<li><a href="#四-主备节点切换">四、主备节点切换</a></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#heading">一、软件安装</a></li>
+      </ul>
+    </li>
+    <li><a href="#drbd">二、配置DRBD镜像系统</a>
+      <ul>
+        <li><a href="#drbd-1">三、DRBD的管理与维护</a></li>
+        <li><a href="#heading-1">四、主备节点切换</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
   </div>
 </div>
     <div class="post-content">
       <p>DRBD配置与测试</p>
-
-<h3 id="一-软件安装">一、软件安装</h3>
-
+<h3 id="heading">一、软件安装</h3>
 <p>1.关闭selinux和iptables</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code class="language-shell" data-lang="shell"><span class="lnt">1
+<pre class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span><span class="lnt">3
 </span><span class="lnt">4
@@ -180,55 +174,55 @@ vi /etc/selinux/config
 <span class="nv">SELINUX</span><span class="o">=</span>permissive <span class="c1">#将这行修改成这样</span>
 iptables -F <span class="c1">#清空防火墙规则</span>
 iptables -X
-/etc/init.d/iptables save</code></pre></td></tr></table>
+/etc/init.d/iptables save
+</code></pre></td></tr></table>
 </div>
-</div>
-<p>2.下载elrepo源</p>
+</div><p>2.下载elrepo源</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code class="language-shell" data-lang="shell"><span class="lnt">1
+<pre class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-shell" data-lang="shell">rpm -Uvh http://www.elrepo.org/elrepo-release-6-6.el6.elrepo.noarch.rpm </code></pre></td></tr></table>
+<pre class="chroma"><code class="language-shell" data-lang="shell">rpm -Uvh http://www.elrepo.org/elrepo-release-6-6.el6.elrepo.noarch.rpm 
+</code></pre></td></tr></table>
 </div>
-</div>
-<p>3.yum安装DRBD</p>
+</div><p>3.yum安装DRBD</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code class="language-shell" data-lang="shell"><span class="lnt">1
+<pre class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-shell" data-lang="shell">yum -y install kmod-drbd-83 drbd83</code></pre></td></tr></table>
+<pre class="chroma"><code class="language-shell" data-lang="shell">yum -y install kmod-drbd-83 drbd83
+</code></pre></td></tr></table>
 </div>
-</div>
-<p>4.加载DRBD模块到内核</p>
+</div><p>4.加载DRBD模块到内核</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code class="language-shell" data-lang="shell"><span class="lnt">1
+<pre class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span><span class="lnt">3
 </span></code></pre></td>
 <td class="lntd">
 <pre class="chroma"><code class="language-shell" data-lang="shell">moodprobe drbd   <span class="c1">#如果遇到无法加载模块的情况，重启一下机器试试，因为它升级了内核。</span>
 lsmod <span class="p">|</span> grep -i drbd
-modprobe -l <span class="p">|</span> grep -i drbd <span class="c1">#查看drbd.ko安装路径</span></code></pre></td></tr></table>
+modprobe -l <span class="p">|</span> grep -i drbd <span class="c1">#查看drbd.ko安装路径</span>
+</code></pre></td></tr></table>
 </div>
-</div>
-<h2 id="二-配置drbd镜像系统">二、配置DRBD镜像系统</h2>
-
+</div><h2 id="drbd">二、配置DRBD镜像系统</h2>
 <p>分区</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code class="language-shell" data-lang="shell"><span class="lnt">1
+<pre class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span></code></pre></td>
 <td class="lntd">
 <pre class="chroma"><code class="language-shell" data-lang="shell">/dev/sdb1 9G
-/dev/sdb2 1G</code></pre></td></tr></table>
+/dev/sdb2 1G
+</code></pre></td></tr></table>
 </div>
 </div><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code class="language-shell" data-lang="shell"><span class="lnt"> 1
+<pre class="chroma"><code><span class="lnt"> 1
 </span><span class="lnt"> 2
 </span><span class="lnt"> 3
 </span><span class="lnt"> 4
@@ -291,119 +285,117 @@ resource r0 <span class="o">{</span>
         <span class="o">}</span>
 
     startup <span class="o">{</span>
-        wfc-timeout <span class="m">120</span><span class="p">;</span>
-        degr-wfc-timeout <span class="m">120</span><span class="p">;</span>
+        wfc-timeout 120<span class="p">;</span>
+        degr-wfc-timeout 120<span class="p">;</span>
     <span class="o">}</span>
     
         device /dev/drbd0<span class="p">;</span>
 
         on lamp01 <span class="o">{</span>
-        address <span class="m">192</span>.168.230.130:7780<span class="p">;</span>
+        address 192.168.230.130:7780<span class="p">;</span>
         disk /dev/sdb1<span class="p">;</span>
-        meta-disk /dev/sdb2<span class="o">[</span><span class="m">0</span><span class="o">]</span><span class="p">;</span>
+        meta-disk /dev/sdb2<span class="o">[</span>0<span class="o">]</span><span class="p">;</span>
         <span class="o">}</span>
         on lamp02 <span class="o">{</span>
-        address <span class="m">192</span>.168.230.131:7780<span class="p">;</span>
+        address 192.168.230.131:7780<span class="p">;</span>
         disk /dev/sdb1<span class="p">;</span>
-        meta-disk /dev/sdb2<span class="o">[</span><span class="m">0</span><span class="o">]</span><span class="p">;</span>
+        meta-disk /dev/sdb2<span class="o">[</span>0<span class="o">]</span><span class="p">;</span>
         <span class="o">}</span>
-<span class="o">}</span></code></pre></td></tr></table>
+<span class="o">}</span>
+</code></pre></td></tr></table>
 </div>
-</div>
-<h3 id="三-drbd的管理与维护">三、DRBD的管理与维护</h3>
-
+</div><h3 id="drbd-1">三、DRBD的管理与维护</h3>
 <p>1、启动DRBD</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt">1
+<pre class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span><span class="lnt">3
 </span><span class="lnt">4
 </span><span class="lnt">5
-</span></pre></td>
+</span></code></pre></td>
 <td class="lntd">
-<pre class="chroma">分别执行 drbdadm create-md r0 
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">分别执行 drbdadm create-md r0 
 或       drbdadm create-md all
 
 /etc/init.d/drbd start 
-cat /proc/drbd</pre></td></tr></table>
+cat /proc/drbd
+</code></pre></td></tr></table>
 </div>
-</div>
-<p>2、设置主用节点</p>
+</div><p>2、设置主用节点</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt">1
+<pre class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span><span class="lnt">3
-</span></pre></td>
+</span></code></pre></td>
 <td class="lntd">
-<pre class="chroma">drbdsetup /dev/drbd0 primary -o  #在主用节点主机上设置
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">drbdsetup /dev/drbd0 primary -o  #在主用节点主机上设置
 drbdadm -- --overwrite-data-of-peer primary all
-drbdadm primary r0</pre></td></tr></table>
+drbdadm primary r0
+</code></pre></td></tr></table>
 </div>
-</div>
-<p>3、脑裂解决办法</p>
+</div><p>3、脑裂解决办法</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt">1
+<pre class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span><span class="lnt">3
 </span><span class="lnt">4
-</span></pre></td>
+</span></code></pre></td>
 <td class="lntd">
-<pre class="chroma">先检查防火墙，selinux，hosts是否设置正确
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">先检查防火墙，selinux，hosts是否设置正确
 drbdadm disconnect r0   #主备份节点均断开资源
 drbdadm -- --discard-my-data connect r0   #备份节点丢弃最近更改信息从新链接资源
-drbdadm connect r0  #主节点重新连接资源</pre></td></tr></table>
+drbdadm connect r0  #主节点重新连接资源
+</code></pre></td></tr></table>
 </div>
-</div>
-<h3 id="四-主备节点切换">四、主备节点切换</h3>
-
+</div><h3 id="heading-1">四、主备节点切换</h3>
 <p>1、停止DRBD服务切换</p>
-
 <p>关闭主用节点服务，此时挂载的DRBD分区就自动在主节点卸载了</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt">1
-</span></pre></td>
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
 <td class="lntd">
-<pre class="chroma">/etc/init.d/drbd stop</pre></td></tr></table>
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">/etc/init.d/drbd stop
+</code></pre></td></tr></table>
 </div>
-</div>
-<p>在备用节点执行切换</p>
+</div><p>在备用节点执行切换</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt">1
+<pre class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span><span class="lnt">3
-</span></pre></td>
+</span></code></pre></td>
 <td class="lntd">
-<pre class="chroma">drbdadm primary all #如果报错，执行下面的命令
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">drbdadm primary all #如果报错，执行下面的命令
 drbdsetup /dev/drbd0 primary -o 
-drbdadm -- --overwrite-data-of-peer primary all</pre></td></tr></table>
+drbdadm -- --overwrite-data-of-peer primary all
+</code></pre></td></tr></table>
 </div>
-</div>
-<p>2、正常切换
+</div><p>2、正常切换
 主节点执行命令：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt">1
+<pre class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
-</span></pre></td>
+</span></code></pre></td>
 <td class="lntd">
-<pre class="chroma">umount /mnt
-drbdadm secondary all</pre></td></tr></table>
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">umount /mnt
+drbdadm secondary all
+</code></pre></td></tr></table>
 </div>
-</div>
-<p>在备用节点执行：</p>
+</div><p>在备用节点执行：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt">1
+<pre class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
-</span></pre></td>
+</span></code></pre></td>
 <td class="lntd">
-<pre class="chroma">drbdadm primary all 
-mount /dev/drbd0 /data</pre></td></tr></table>
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">drbdadm primary all 
+mount /dev/drbd0 /data
+</code></pre></td></tr></table>
 </div>
 </div>
     </div>
@@ -415,18 +407,14 @@ mount /dev/drbd0 /data</pre></td></tr></table>
   </p>
   <p class="copyright-item">
     <span class="item-title">上次更新</span>
-    <span class="item-content">
-        2015-12-16
-        
-    </span>
+    <span class="item-content">2015-12-16</span>
   </p>
   
   <p class="copyright-item">
     <span class="item-title">许可协议</span>
     <span class="item-content"><a rel="license noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a></span>
   </p>
-</div>
-<footer class="post-footer">
+</div><footer class="post-footer">
       <div class="post-tags">
           <a href="/tags/drbd/">DRBD</a>
           </div>
@@ -446,10 +434,6 @@ mount /dev/drbd0 /data</pre></td></tr></table>
   </article>
         </div>
         
-
-  
-
-  
 
       </div>
     </main>

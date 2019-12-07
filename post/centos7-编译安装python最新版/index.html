@@ -24,7 +24,7 @@
 
 
 
-<meta name="generator" content="Hugo 0.59.0-DEV with theme even" />
+<meta name="generator" content="Hugo 0.61.0-DEV with even 4.0.0" />
 
 
 <link rel="canonical" href="http://linuxfunk.com/post/centos7-%E7%BC%96%E8%AF%91%E5%AE%89%E8%A3%85python%E6%9C%80%E6%96%B0%E7%89%88/" />
@@ -47,16 +47,13 @@
 <meta property="article:modified_time" content="2019-10-11T16:41:15+08:00" />
 <meta itemprop="name" content="Centos7 编译安装python最新版">
 <meta itemprop="description" content="由于centos7 自带python版本太老，所以需要自己编译安装最新版本的python.">
-
-
 <meta itemprop="datePublished" content="2019-10-11T16:41:15&#43;08:00" />
 <meta itemprop="dateModified" content="2019-10-11T16:41:15&#43;08:00" />
 <meta itemprop="wordCount" content="144">
 
 
 
-<meta itemprop="keywords" content="python," />
-<meta name="twitter:card" content="summary"/>
+<meta itemprop="keywords" content="python," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Centos7 编译安装python最新版"/>
 <meta name="twitter:description" content="由于centos7 自带python版本太老，所以需要自己编译安装最新版本的python."/>
 
@@ -141,41 +138,43 @@
     <div class="post-toc" id="post-toc">
   <h2 class="post-toc-title">文章目录</h2>
   <div class="post-toc-content always-active">
-    
+    <nav id="TableOfContents"></nav>
   </div>
 </div>
     <div class="post-content">
       <p>由于centos7 自带python版本太老，所以需要自己编译安装最新版本的python.</p>
-
 <ol>
-<li><p>下载源代码</p>
+<li>下载源代码</li>
+</ol>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code class="language-shell" data-lang="shell"><span class="lnt">1
+<pre class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span></code></pre></td>
 <td class="lntd">
 <pre class="chroma"><code class="language-shell" data-lang="shell">wget https://www.python.org/ftp/python/3.7.4/Python-3.7.4.tar.xz
-tar -Jxvf Python-3.7.4.tar.xz</code></pre></td></tr></table>
+tar -Jxvf Python-3.7.4.tar.xz
+</code></pre></td></tr></table>
 </div>
-</div></li>
-
-<li><p>安装编译环境</p>
+</div><ol start="2">
+<li>安装编译环境</li>
+</ol>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code class="language-shell" data-lang="shell"><span class="lnt">1
+<pre class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span></code></pre></td>
 <td class="lntd">
 <pre class="chroma"><code class="language-shell" data-lang="shell">yum groupinstall <span class="s1">&#39;Development Tools&#39;</span>
-yum install openssl-devel bzip2-devel expat-devel gdbm-devel sqlite-devel libffi-devel</code></pre></td></tr></table>
+yum install openssl-devel bzip2-devel expat-devel gdbm-devel sqlite-devel libffi-devel
+</code></pre></td></tr></table>
 </div>
-</div></li>
-
-<li><p>编译安装</p>
+</div><ol start="3">
+<li>编译安装</li>
+</ol>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code class="language-shell" data-lang="shell"><span class="lnt">1
+<pre class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span><span class="lnt">3
 </span><span class="lnt">4
@@ -184,26 +183,28 @@ yum install openssl-devel bzip2-devel expat-devel gdbm-devel sqlite-devel libffi
 <pre class="chroma"><code class="language-shell" data-lang="shell"><span class="nb">cd</span> Python-3.7.4
 ./configure --prefix<span class="o">=</span>/usr/local/python3 --enable-shared <span class="nv">CFLAGS</span><span class="o">=</span>-fPIC
 make
-make install</code></pre></td></tr></table>
+make install
+</code></pre></td></tr></table>
 </div>
-</div></li>
-
-<li><p>建立软链接</p>
+</div><ol start="4">
+<li>建立软链接</li>
+</ol>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code class="language-shell" data-lang="shell"><span class="lnt">1
+<pre class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span></code></pre></td>
 <td class="lntd">
 <pre class="chroma"><code class="language-shell" data-lang="shell">ln -sv /usr/local/python3/bin/python3 /usr/bin/python3
-ln -sv /usr/local/python3/bin/pip3 /usr/bin/pip3</code></pre></td></tr></table>
+ln -sv /usr/local/python3/bin/pip3 /usr/bin/pip3
+</code></pre></td></tr></table>
 </div>
-</div></li>
-
-<li><p>添加动态库</p>
+</div><ol start="5">
+<li>添加动态库</li>
+</ol>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code class="language-shell" data-lang="shell"><span class="lnt">1
+<pre class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span><span class="lnt">3
 </span><span class="lnt">4
@@ -215,15 +216,15 @@ ln -sv /usr/local/python3/bin/pip3 /usr/bin/pip3</code></pre></td></tr></table>
 <td class="lntd">
 <pre class="chroma"><code class="language-shell" data-lang="shell">新建 /etc/ld.so.conf.d/python.conf
 添加如下内容：
-/usr/local/python3/lib
-/usr/lib
+    /usr/local/python3/lib
+    /usr/lib
 执行：
-ldconfig
+    ldconfig
 查看结果：
-ldconfig -v</code></pre></td></tr></table>
+    ldconfig -v
+</code></pre></td></tr></table>
 </div>
-</div></li>
-</ol>
+</div>
     </div>
 
     <div class="post-copyright">
@@ -233,18 +234,14 @@ ldconfig -v</code></pre></td></tr></table>
   </p>
   <p class="copyright-item">
     <span class="item-title">上次更新</span>
-    <span class="item-content">
-        2019-10-11
-        
-    </span>
+    <span class="item-content">2019-10-11</span>
   </p>
   
   <p class="copyright-item">
     <span class="item-title">许可协议</span>
     <span class="item-content"><a rel="license noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a></span>
   </p>
-</div>
-<footer class="post-footer">
+</div><footer class="post-footer">
       <div class="post-tags">
           <a href="/tags/python/">python</a>
           </div>
@@ -264,10 +261,6 @@ ldconfig -v</code></pre></td></tr></table>
   </article>
         </div>
         
-
-  
-
-  
 
       </div>
     </main>

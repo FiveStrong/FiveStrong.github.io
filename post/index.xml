@@ -44,7 +44,7 @@
       <pubDate>Mon, 25 Mar 2019 10:18:26 +0800</pubDate>
       
       <guid>http://linuxfunk.com/post/%E8%A7%A3%E5%86%B3%E9%BB%91%E8%8B%B9%E6%9E%9C%E9%87%8D%E5%90%AF%E6%8A%A5%E9%94%99%E9%97%AE%E9%A2%98/</guid>
-      <description>&lt;p&gt;解决黑苹果重启报错&amp;rdquo;Couldn&amp;rsquo;t allocate runtime area&amp;rdquo;&lt;/p&gt;</description>
+      <description>&lt;p&gt;解决黑苹果重启报错&amp;quot;Couldn&#39;t allocate runtime area&amp;rdquo;&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -90,8 +90,7 @@
       <pubDate>Wed, 01 Nov 2017 12:22:52 +0000</pubDate>
       
       <guid>http://linuxfunk.com/post/github%E5%88%86%E6%94%AF%E5%A4%87%E4%BB%BDhexo%E5%8D%9A%E5%AE%A2%E6%BA%90%E6%96%87%E4%BB%B6/</guid>
-      <description>&lt;h3 id=&#34;需求&#34;&gt;需求&lt;/h3&gt;
-
+      <description>&lt;h3 id=&#34;heading&#34;&gt;需求&lt;/h3&gt;
 &lt;p&gt;将hexo部署在GitHub Pages上，但仅同步编译好的静态文件，如果想要在多个平台写博客，hexo的源码就需要同步到云端，方便拉取部署。
 最简单的方法就是利用博客的 repo 分支（ master 分支的必须用来存放你博客网站文件）托管 Hexo 源文件和配置达到备份的目的。&lt;/p&gt;</description>
     </item>
@@ -102,8 +101,7 @@
       <pubDate>Tue, 31 Oct 2017 14:29:14 +0000</pubDate>
       
       <guid>http://linuxfunk.com/post/v2ray-ws-tls-nginx%E5%AE%9E%E7%8E%B0%E5%8A%A0%E5%AF%86%E4%BC%A0%E8%BE%93/</guid>
-      <description>&lt;h3 id=&#34;1-v2ray加密tls原理&#34;&gt;1.V2Ray加密tls原理&lt;/h3&gt;
-
+      <description>&lt;h3 id=&#34;1v2raytls&#34;&gt;1.V2Ray加密tls原理&lt;/h3&gt;
 &lt;p&gt;别的代理都是直接客户端穿墙使用TCP、HTTP或自定义协议和墙外的服务器连接。
 V2Ray的这套方案则是在墙外做一个启用HTTPS的Nginx服务，使用本地的客户端和墙外的Nginx以WS协议进行连接（这就和一个真正的网站行为一模一样了）。然后在Nginx背后用代理进行内容的访问。
 这样的解决方案墙是无法分辨到底是一个代理服务器还是一个正常用户在用HTTPS访问网站，HTTPS也保证了墙无法探知流量的内容。&lt;/p&gt;</description>
@@ -126,9 +124,7 @@ V2Ray的这套方案则是在墙外做一个启用HTTPS的Nginx服务，使用�
       
       <guid>http://linuxfunk.com/post/gitlab-%E9%80%9A%E8%BF%87docker%E9%95%9C%E5%83%8F%E8%BF%81%E7%A7%BB%E5%8D%87%E7%BA%A7/</guid>
       <description>&lt;p&gt;迁移版本:&lt;/p&gt;
-
 &lt;p&gt;旧gitlab(8.8.3)  CentOS 6.8&lt;/p&gt;
-
 &lt;p&gt;新gitlab(9.5.5) postgresql(9.6) redis(2.8.4) CentOS 7.4&lt;/p&gt;</description>
     </item>
     
@@ -147,8 +143,7 @@ V2Ray的这套方案则是在墙外做一个启用HTTPS的Nginx服务，使用�
       <pubDate>Mon, 30 Oct 2017 12:10:15 +0000</pubDate>
       
       <guid>http://linuxfunk.com/post/%E5%88%9B%E5%BB%BAdocker%E5%AE%B9%E5%99%A8%E9%95%9C%E5%83%8F/</guid>
-      <description>&lt;h3 id=&#34;1-dockerfile&#34;&gt;1.Dockerfile&lt;/h3&gt;
-
+      <description>&lt;h3 id=&#34;1dockerfile&#34;&gt;1.Dockerfile&lt;/h3&gt;
 &lt;p&gt;Dockerfile 是用户定义的一系列用来生成容器镜像的文件，通过执行来构建镜像&lt;/p&gt;</description>
     </item>
     
@@ -222,7 +217,7 @@ V2Ray的这套方案则是在墙外做一个启用HTTPS的Nginx服务，使用�
       <pubDate>Tue, 28 Jun 2016 14:19:36 +0000</pubDate>
       
       <guid>http://linuxfunk.com/post/%E7%BB%88%E7%AB%AF%E5%88%A9%E5%99%A8tmux%E5%91%BD%E4%BB%A4%E9%80%9F%E6%9F%A5/</guid>
-      <description>&lt;p&gt;配置文件：&lt;a href=&#34;https://github.com/gpakosz/.tmux&#34;&gt;https://github.com/gpakosz/.tmux&lt;/a&gt;&lt;/p&gt;</description>
+      <description>&lt;p&gt;配置文件：https://github.com/gpakosz/.tmux&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -232,7 +227,6 @@ V2Ray的这套方案则是在墙外做一个启用HTTPS的Nginx服务，使用�
       
       <guid>http://linuxfunk.com/post/%E8%A7%A3%E5%86%B3linux%E4%B8%8Bsublime-text-3%E7%9A%84%E4%B8%AD%E6%96%87%E8%BE%93%E5%85%A5%E9%97%AE%E9%A2%98/</guid>
       <description>&lt;p&gt;&lt;a href=&#34;http://c4fun.cn/blog/2013/11/30/linux-sublimetext-chinese/&#34;&gt;http://c4fun.cn/blog/2013/11/30/linux-sublimetext-chinese/&lt;/a&gt;&lt;/p&gt;
-
 &lt;p&gt;搬个链接算了，博主已经写的很详细，就不重复编写了，只是为了留个记录。
 基本方法就是这个，个别问题 可以google。&lt;/p&gt;</description>
     </item>

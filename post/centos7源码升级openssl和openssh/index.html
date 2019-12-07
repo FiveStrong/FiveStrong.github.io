@@ -24,7 +24,7 @@
 
 
 
-<meta name="generator" content="Hugo 0.59.0-DEV with theme even" />
+<meta name="generator" content="Hugo 0.61.0-DEV with even 4.0.0" />
 
 
 <link rel="canonical" href="http://linuxfunk.com/post/centos7%E6%BA%90%E7%A0%81%E5%8D%87%E7%BA%A7openssl%E5%92%8Copenssh/" />
@@ -47,16 +47,13 @@
 <meta property="article:modified_time" content="2019-03-13T14:15:46+08:00" />
 <meta itemprop="name" content="CentOS7源码升级OpenSSL和OpenSSH">
 <meta itemprop="description" content="CentOS7源码升级OpenSSL和OpenSSH">
-
-
 <meta itemprop="datePublished" content="2019-03-13T14:15:46&#43;08:00" />
 <meta itemprop="dateModified" content="2019-03-13T14:15:46&#43;08:00" />
 <meta itemprop="wordCount" content="1072">
 
 
 
-<meta itemprop="keywords" content="openssl,openssh," />
-<meta name="twitter:card" content="summary"/>
+<meta itemprop="keywords" content="openssl,openssh," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="CentOS7源码升级OpenSSL和OpenSSH"/>
 <meta name="twitter:description" content="CentOS7源码升级OpenSSL和OpenSSH"/>
 
@@ -142,35 +139,28 @@
   <h2 class="post-toc-title">文章目录</h2>
   <div class="post-toc-content always-active">
     <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li>
-<ul>
-<li><a href="#一-安装telnet">一、安装telnet</a></li>
-<li><a href="#二-升级openssl">二、升级OpenSSL</a></li>
-<li><a href="#三-升级openssh">三、升级OpenSSH</a></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#telnet">一、安装telnet</a></li>
+        <li><a href="#openssl">二、升级OpenSSL</a></li>
+        <li><a href="#openssh">三、升级OpenSSH</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
   </div>
 </div>
     <div class="post-content">
       <p>CentOS7源码升级OpenSSL和OpenSSH</p>
-
-<h3 id="一-安装telnet">一、安装telnet</h3>
-
+<h3 id="telnet">一、安装telnet</h3>
 <p>这里启用telnet的原因是：</p>
-
 <p>如果通过ssh远程连接服务器后进行的版本升级操作，如果出现意外可能连接会断开并且无法再远程登录上去，如果服务器安装了iDRAC远程管理卡还有救，如果没有iDRAC远程管理卡，则需要提前开启telnet远程登录或是到机房现场进行升级操作比较妥当。</p>
-
 <p>注1：实测centos7不开也影响不大，centos6可能会断，所以还是开启比较保险。</p>
-
 <p>1、查看系统版本</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code class="language-shell" data-lang="shell"><span class="lnt">1
+<pre class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span><span class="lnt">3
 </span><span class="lnt">4
@@ -179,13 +169,13 @@
 <pre class="chroma"><code class="language-shell" data-lang="shell">    cat /etc/centos-release 
     <span class="c1"># 临时关闭selinux</span>
     getenforce
-    setenforce <span class="m">0</span></code></pre></td></tr></table>
+    setenforce <span class="m">0</span>
+</code></pre></td></tr></table>
 </div>
-</div>
-<p>2、安装telnet</p>
+</div><p>2、安装telnet</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code class="language-shell" data-lang="shell"><span class="lnt"> 1
+<pre class="chroma"><code><span class="lnt"> 1
 </span><span class="lnt"> 2
 </span><span class="lnt"> 3
 </span><span class="lnt"> 4
@@ -230,89 +220,87 @@
     <span class="c1"># 如果是centos7</span>
     systemctl start telnet.socket
     systemctl status telnet.socket
-    ss -tnlp<span class="p">|</span>grep <span class="m">23</span></code></pre></td></tr></table>
+    ss -tnlp<span class="p">|</span>grep <span class="m">23</span>
+</code></pre></td></tr></table>
 </div>
-</div>
-<p>3、添加防火墙放行规则</p>
+</div><p>3、添加防火墙放行规则</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code class="language-shell" data-lang="shell"><span class="lnt">1
+<pre class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span><span class="lnt">3
 </span><span class="lnt">4
 </span></code></pre></td>
 <td class="lntd">
 <pre class="chroma"><code class="language-shell" data-lang="shell">    <span class="c1"># centos6 最好限制一下允许telnet登录的ip</span>
-    iptables -I INPUT -p tcp -s <span class="m">192</span>.168.1.1 --dport <span class="m">23</span> -j ACCEPT
+    iptables -I INPUT -p tcp -s 192.168.1.1 --dport <span class="m">23</span> -j ACCEPT
     <span class="c1"># centos7</span> 
-    firewall-cmd --permanent --add-rich-rule<span class="o">=</span><span class="s1">&#39;rule family=&#34;ipv4&#34; source address=&#34;192.168.56.0/24&#34; service name=&#34;telnet&#34; log prefix=&#34;telnet&#34; level=&#34;info&#34; limit value=&#34;1/m&#34; accept&#39;</span></code></pre></td></tr></table>
+    firewall-cmd --permanent --add-rich-rule<span class="o">=</span><span class="s1">&#39;rule family=&#34;ipv4&#34; source address=&#34;192.168.56.0/24&#34; service name=&#34;telnet&#34; log prefix=&#34;telnet&#34; level=&#34;info&#34; limit value=&#34;1/m&#34; accept&#39;</span>
+</code></pre></td></tr></table>
 </div>
-</div>
-<p>4、测试是否可以登录</p>
+</div><p>4、测试是否可以登录</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code class="language-shell" data-lang="shell"><span class="lnt">1
+<pre class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-shell" data-lang="shell">    telnet -l username <span class="m">192</span>.168.1.1
-    <span class="c1"># 最好在成功升级以后关闭telnet</span></code></pre></td></tr></table>
+<pre class="chroma"><code class="language-shell" data-lang="shell">    telnet -l username 192.168.1.1
+    <span class="c1"># 最好在成功升级以后关闭telnet</span>
+</code></pre></td></tr></table>
 </div>
-</div>
-<h3 id="二-升级openssl">二、升级OpenSSL</h3>
-
+</div><h3 id="openssl">二、升级OpenSSL</h3>
 <p>深坑：OpenSSl升级到最新版后，运行系统自带的软件比如curl,wget等命令虽然能够正确但是会有报错信息</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code class="language-python" data-lang="python"><span class="lnt">1
+<pre class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span><span class="lnt">3
 </span></code></pre></td>
 <td class="lntd">
 <pre class="chroma"><code class="language-python" data-lang="python"><span class="n">curl</span><span class="p">:</span> <span class="o">/</span><span class="n">lib64</span><span class="o">/</span><span class="n">libcrypto</span><span class="o">.</span><span class="n">so</span><span class="o">.</span><span class="mi">10</span><span class="p">:</span> <span class="n">no</span> <span class="n">version</span> <span class="n">information</span> <span class="n">available</span> <span class="p">(</span><span class="n">required</span> <span class="n">by</span> <span class="o">/</span><span class="n">lib64</span><span class="o">/</span><span class="n">libssh2</span><span class="o">.</span><span class="n">so</span><span class="o">.</span><span class="mi">1</span><span class="p">)</span>
 <span class="n">curl</span><span class="p">:</span> <span class="o">/</span><span class="n">lib64</span><span class="o">/</span><span class="n">libssl</span><span class="o">.</span><span class="n">so</span><span class="o">.</span><span class="mi">10</span><span class="p">:</span> <span class="n">no</span> <span class="n">version</span> <span class="n">information</span> <span class="n">available</span> <span class="p">(</span><span class="n">required</span> <span class="n">by</span> <span class="o">/</span><span class="n">lib64</span><span class="o">/</span><span class="n">libldap</span><span class="o">-</span><span class="mf">2.4</span><span class="o">.</span><span class="n">so</span><span class="o">.</span><span class="mi">2</span><span class="p">)</span>
-<span class="n">curl</span><span class="p">:</span> <span class="o">/</span><span class="n">lib64</span><span class="o">/</span><span class="n">libcrypto</span><span class="o">.</span><span class="n">so</span><span class="o">.</span><span class="mi">10</span><span class="p">:</span> <span class="n">no</span> <span class="n">version</span> <span class="n">information</span> <span class="n">available</span> <span class="p">(</span><span class="n">required</span> <span class="n">by</span> <span class="o">/</span><span class="n">lib64</span><span class="o">/</span><span class="n">libldap</span><span class="o">-</span><span class="mf">2.4</span><span class="o">.</span><span class="n">so</span><span class="o">.</span><span class="mi">2</span><span class="p">)</span></code></pre></td></tr></table>
+<span class="n">curl</span><span class="p">:</span> <span class="o">/</span><span class="n">lib64</span><span class="o">/</span><span class="n">libcrypto</span><span class="o">.</span><span class="n">so</span><span class="o">.</span><span class="mi">10</span><span class="p">:</span> <span class="n">no</span> <span class="n">version</span> <span class="n">information</span> <span class="n">available</span> <span class="p">(</span><span class="n">required</span> <span class="n">by</span> <span class="o">/</span><span class="n">lib64</span><span class="o">/</span><span class="n">libldap</span><span class="o">-</span><span class="mf">2.4</span><span class="o">.</span><span class="n">so</span><span class="o">.</span><span class="mi">2</span><span class="p">)</span>
+</code></pre></td></tr></table>
 </div>
-</div>
-<p>可能的原因是软件版本不支持最新的openssl,所以如果有强迫症的话，可以不升级，直接升级OenpSSH。</p>
-
+</div><p>可能的原因是软件版本不支持最新的openssl,所以如果有强迫症的话，可以不升级，直接升级OenpSSH。</p>
 <p>1、查看ssl版本及下载相关依赖包</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code class="language-shell" data-lang="shell"><span class="lnt">1
+<pre class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span></code></pre></td>
 <td class="lntd">
 <pre class="chroma"><code class="language-shell" data-lang="shell">　　openssl version -a
-　　yum install  gcc pam-devel rpm-build</code></pre></td></tr></table>
+　　yum install  gcc pam-devel rpm-build
+</code></pre></td></tr></table>
 </div>
-</div>
-<p>2、下载安装包（查询最新安装包）</p>
+</div><p>2、下载安装包（查询最新安装包）</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code class="language-shell" data-lang="shell"><span class="lnt">1
+<pre class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span></code></pre></td>
 <td class="lntd">
 <pre class="chroma"><code class="language-shell" data-lang="shell">   mkdir downloads <span class="o">&amp;&amp;</span> <span class="nb">cd</span> downloads
-　　wget https://distfiles.macports.org/openssl/openssl-1.0.2r.tar.gz</code></pre></td></tr></table>
+　　wget https://distfiles.macports.org/openssl/openssl-1.0.2r.tar.gz
+</code></pre></td></tr></table>
 </div>
-</div>
-<p>3、卸载当前openssl</p>
+</div><p>3、卸载当前openssl</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code class="language-shell" data-lang="shell"><span class="lnt">1
+<pre class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span></code></pre></td>
 <td class="lntd">
 <pre class="chroma"><code class="language-shell" data-lang="shell">　　rpm -qa <span class="p">|</span> grep openssl
-　　rpm -qa <span class="p">|</span>grep openssl<span class="p">|</span>xargs -i rpm -e --nodeps <span class="o">{}</span></code></pre></td></tr></table>
+　　rpm -qa <span class="p">|</span>grep openssl<span class="p">|</span>xargs -i rpm -e --nodeps <span class="o">{</span><span class="o">}</span>
+</code></pre></td></tr></table>
 </div>
-</div>
-<p>4、解压openssl源码并编译安装</p>
+</div><p>4、解压openssl源码并编译安装</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code class="language-shell" data-lang="shell"><span class="lnt">1
+<pre class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span><span class="lnt">3
 </span><span class="lnt">4
@@ -323,15 +311,14 @@
 　　<span class="nb">cd</span> openssl-1.0.2r
 　　./config --prefix<span class="o">=</span>/usr --openssldir<span class="o">=</span>/etc/ssl --shared zlib
     make -j <span class="m">4</span>
-    make install</code></pre></td></tr></table>
+    make install
+</code></pre></td></tr></table>
 </div>
-</div>
-<p>5、创建库文件软链接并查看版本</p>
-
+</div><p>5、创建库文件软链接并查看版本</p>
 <p>由于OpenSSL不提供libcrypto.so.10和libssl.so.10这两个库，而yum、wget等工具又依赖此库，需要创建软连接使用</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code class="language-shell" data-lang="shell"><span class="lnt">1
+<pre class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span><span class="lnt">3
 </span><span class="lnt">4
@@ -344,72 +331,71 @@
     ll /usr/lib64/libcrypto.so*
     ln -s /usr/lib64/libssl.so.1.0.0  libssl.so.10
     ln -s /usr/lib64/libcrypto.so.1.0.0  libcrypto.so.10
-    openssl version -a</code></pre></td></tr></table>
+    openssl version -a
+</code></pre></td></tr></table>
 </div>
-</div>
-<h3 id="三-升级openssh">三、升级OpenSSH</h3>
-
+</div><h3 id="openssh">三、升级OpenSSH</h3>
 <p>1、查看当前ssh版本</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code class="language-shell" data-lang="shell"><span class="lnt">1
+<pre class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-shell" data-lang="shell">　　ssh -V</code></pre></td></tr></table>
+<pre class="chroma"><code class="language-shell" data-lang="shell">　　ssh -V
+</code></pre></td></tr></table>
 </div>
-</div>
-<p>2、下载安装包（查询最新安装包）</p>
+</div><p>2、下载安装包（查询最新安装包）</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code class="language-shell" data-lang="shell"><span class="lnt">1
+<pre class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span></code></pre></td>
 <td class="lntd">
 <pre class="chroma"><code class="language-shell" data-lang="shell">    <span class="nb">cd</span> downloads
-    wget http://ftp.openbsd.org/pub/OpenBSD/OpenSSH/portable/openssh-7.9p1.tar.gz</code></pre></td></tr></table>
+    wget http://ftp.openbsd.org/pub/OpenBSD/OpenSSH/portable/openssh-7.9p1.tar.gz
+</code></pre></td></tr></table>
 </div>
-</div>
-<p>3、卸载原Openssh</p>
+</div><p>3、卸载原Openssh</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code class="language-shell" data-lang="shell"><span class="lnt">1
+<pre class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span><span class="lnt">3
 </span></code></pre></td>
 <td class="lntd">
 <pre class="chroma"><code class="language-shell" data-lang="shell">　　rpm -qa <span class="p">|</span>grep openssh
 　　<span class="k">for</span> i in <span class="sb">`</span>rpm -qa <span class="p">|</span>grep openssh<span class="sb">`</span><span class="p">;</span><span class="k">do</span> rpm -e <span class="nv">$i</span> --nodeps<span class="p">;</span><span class="k">done</span>
-　　mv /etc/ssh /tmp/  <span class="c1"># 删除操作请谨慎，最好提前看一下</span></code></pre></td></tr></table>
+　　mv /etc/ssh /tmp/  <span class="c1"># 删除操作请谨慎，最好提前看一下</span>
+</code></pre></td></tr></table>
 </div>
-</div>
-<p>4、解压openssh安装包</p>
+</div><p>4、解压openssh安装包</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code class="language-shell" data-lang="shell"><span class="lnt">1
+<pre class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span></code></pre></td>
 <td class="lntd">
 <pre class="chroma"><code class="language-shell" data-lang="shell">　　tar -zxvf openssh-7.9p1.tar.gz
-　　<span class="nb">cd</span> openssh-7.9p1</code></pre></td></tr></table>
+　　<span class="nb">cd</span> openssh-7.9p1
+</code></pre></td></tr></table>
 </div>
-</div>
-<p>5、编译安装</p>
+</div><p>5、编译安装</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code class="language-shell" data-lang="shell"><span class="lnt">1
+<pre class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span><span class="lnt">3
 </span></code></pre></td>
 <td class="lntd">
 <pre class="chroma"><code class="language-shell" data-lang="shell">    ./configure --prefix<span class="o">=</span>/usr --sysconfdir<span class="o">=</span>/etc/ssh --with-md5-passwords --with-pam --with-tcp-wrappers --without-hardening --with-zlib
     make -j <span class="m">4</span>
-    make install</code></pre></td></tr></table>
+    make install
+</code></pre></td></tr></table>
 </div>
-</div>
-<p>6、安装完成，执行配置</p>
+</div><p>6、安装完成，执行配置</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code class="language-shell" data-lang="shell"><span class="lnt">1
+<pre class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span><span class="lnt">3
 </span><span class="lnt">4
@@ -428,7 +414,8 @@
     systemctl <span class="nb">enable</span> sshd
     systemctl restart sshd
     systemctl status sshd
-    ssh -V</code></pre></td></tr></table>
+    ssh -V
+</code></pre></td></tr></table>
 </div>
 </div>
     </div>
@@ -440,18 +427,14 @@
   </p>
   <p class="copyright-item">
     <span class="item-title">上次更新</span>
-    <span class="item-content">
-        2019-03-13
-        
-    </span>
+    <span class="item-content">2019-03-13</span>
   </p>
   
   <p class="copyright-item">
     <span class="item-title">许可协议</span>
     <span class="item-content"><a rel="license noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a></span>
   </p>
-</div>
-<footer class="post-footer">
+</div><footer class="post-footer">
       <div class="post-tags">
           <a href="/tags/openssl/">openssl</a>
           <a href="/tags/openssh/">openssh</a>
@@ -472,10 +455,6 @@
   </article>
         </div>
         
-
-  
-
-  
 
       </div>
     </main>

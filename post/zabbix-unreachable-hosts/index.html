@@ -24,7 +24,7 @@
 
 
 
-<meta name="generator" content="Hugo 0.59.0-DEV with theme even" />
+<meta name="generator" content="Hugo 0.61.0-DEV with even 4.0.0" />
 
 
 <link rel="canonical" href="http://linuxfunk.com/post/zabbix-unreachable-hosts/" />
@@ -47,16 +47,13 @@
 <meta property="article:modified_time" content="2019-01-18T11:24:43+08:00" />
 <meta itemprop="name" content="Zabbix Unreachable Hosts">
 <meta itemprop="description" content="解决zabbix 频繁报错主机不可用">
-
-
 <meta itemprop="datePublished" content="2019-01-18T11:24:43&#43;08:00" />
 <meta itemprop="dateModified" content="2019-01-18T11:24:43&#43;08:00" />
-<meta itemprop="wordCount" content="698">
+<meta itemprop="wordCount" content="693">
 
 
 
-<meta itemprop="keywords" content="zabbix," />
-<meta name="twitter:card" content="summary"/>
+<meta itemprop="keywords" content="zabbix," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Zabbix Unreachable Hosts"/>
 <meta name="twitter:description" content="解决zabbix 频繁报错主机不可用"/>
 
@@ -132,7 +129,7 @@
         <div class="post-category">
             <a href="/categories/linux/"> linux </a>
             </div>
-          <span class="more-meta"> 约 698 字 </span>
+          <span class="more-meta"> 约 693 字 </span>
           <span class="more-meta"> 预计阅读 2 分钟 </span>
         <span id="busuanzi_container_page_pv" class="more-meta"> <span id="busuanzi_value_page_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次阅读 </span>
       </div>
@@ -142,79 +139,68 @@
   <h2 class="post-toc-title">文章目录</h2>
   <div class="post-toc-content always-active">
     <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#遇到的问题">遇到的问题</a></li>
-<li><a href="#解决方案">解决方案</a></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#heading">遇到的问题</a></li>
+    <li><a href="#heading-1">解决方案</a></li>
+  </ul>
 </nav>
   </div>
 </div>
     <div class="post-content">
       <p>解决zabbix 频繁报错主机不可用</p>
-
-<h2 id="遇到的问题">遇到的问题</h2>
-
+<h2 id="heading">遇到的问题</h2>
 <p>最近几天有一台zabbix监控主机出现时断时续的主机不可达,具体邮件报警为：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code class="language-doc" data-lang="doc"><span class="lnt">1
+<pre class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-doc" data-lang="doc">Trigger: Zabbix agent on myhost is unreachable for 5 minutes
-Trigger status: PROBLEM</code></pre></td></tr></table>
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">Trigger: Zabbix agent on myhost is unreachable for 5 minutes
+Trigger status: PROBLEM
+</code></pre></td></tr></table>
 </div>
-</div>
-<p>server端日志报警如下：</p>
+</div><p>server端日志报警如下：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code class="language-doc" data-lang="doc"><span class="lnt">1
+<pre class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span><span class="lnt">3
 </span><span class="lnt">4
 </span><span class="lnt">5
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-doc" data-lang="doc">2019-01-18T03:11:20.287075137Z    144:20190118:111120.286 resuming Zabbix agent checks on host &#34;PublicDns1&#34;: connection restored
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">2019-01-18T03:11:20.287075137Z    144:20190118:111120.286 resuming Zabbix agent checks on host &#34;PublicDns1&#34;: connection restored
 2019-01-18T03:11:35.323093142Z    144:20190118:111135.322 Zabbix agent item &#34;net.dns[x.x.x.x,www.xxx.com,A,1,3]&#34; on host &#34;PublicDns1&#34; failed: first network error, wait for 15 seconds
 2019-01-18T03:12:05.357013294Z    144:20190118:111205.356 Zabbix agent item &#34;net.dns[x.x.x.x,www.xxx.com,A,1,3]&#34; on host &#34;PublicDns1&#34; failed: another network error, wait for 15 seconds
 2019-01-18T03:12:35.396894778Z    144:20190118:111235.396 temporarily disabling Zabbix agent checks on host &#34;PublicDns1&#34;: host unavailable
-2019-01-18T03:13:35.449995264Z    144:20190118:111335.449 enabling Zabbix agent checks on host &#34;PublicDns1&#34;: host became available</code></pre></td></tr></table>
+2019-01-18T03:13:35.449995264Z    144:20190118:111335.449 enabling Zabbix agent checks on host &#34;PublicDns1&#34;: host became available
+</code></pre></td></tr></table>
 </div>
-</div>
-<p>为了排查出现这种现象的原因，我重新配置了agent端的主动检测模式和被动检测模式，分别排除查看是否是检测模式造成的原因。</p>
-
+</div><p>为了排查出现这种现象的原因，我重新配置了agent端的主动检测模式和被动检测模式，分别排除查看是否是检测模式造成的原因。</p>
 <p>zabbix web 时断时续显示错误为 &ldquo;Get value from agent failed. Error: ZBX_TCP_READ() failed&rdquo;, 我以为是网络问题，于是分别检测了丢包率，server端10051，agent 10050 端口开放情况，以及通过zabbix_get 检测server端是否可以向agent发送请求，结果都没问题。</p>
-
 <p>后来查看了<a href="https://www.zabbix.com/documentation/4.0/manual/appendix/items/unreachability">官网文档</a></p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code class="language-doc" data-lang="doc"><span class="lnt">1
+<pre class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span><span class="lnt">3
 </span><span class="lnt">4
 </span><span class="lnt">5
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-doc" data-lang="doc">A host is treated as unreachable after a failed agent check (network error, timeout).
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">A host is treated as unreachable after a failed agent check (network error, timeout).
 
 …
 
-After the UnreachablePeriod ends and the host has not reappeared, the host is treated as unavailable.</code></pre></td></tr></table>
+After the UnreachablePeriod ends and the host has not reappeared, the host is treated as unavailable.
+</code></pre></td></tr></table>
 </div>
-</div>
-<p>翻译成人话就是：当一条命令检测失败，整个主机就会被认为是&rdquo;unavailable&rdquo;状态，并且将不在被监控。</p>
-
-<p>通过server端日志我们可以看到 &lsquo;Zabbix agent item &ldquo;net.dns[x.x.x.x,www.xxx.com,A,1,3]&ldquo;&lsquo;这条命令有两次network error。</p>
-
-<p>在这条命令检测成功之前，主机一直会被判定为&rdquo;host unavailable&rdquo;。然后看日志，一分钟之后主机状态成了&rdquo;host became available&rdquo;,这时监控又生效了,
+</div><p>翻译成人话就是：当一条命令检测失败，整个主机就会被认为是&quot;unavailable&quot;状态，并且将不在被监控。</p>
+<p>通过server端日志我们可以看到 &lsquo;Zabbix agent item &ldquo;net.dns[x.x.x.x,www.xxx.com,A,1,3]&quot;&lsquo;这条命令有两次network error。</p>
+<p>在这条命令检测成功之前，主机一直会被判定为&quot;host unavailable&rdquo;。然后看日志，一分钟之后主机状态成了&quot;host became available&rdquo;,这时监控又生效了,
 这也就造成了zabbix一直报警。</p>
-
-<h2 id="解决方案">解决方案</h2>
-
+<h2 id="heading-1">解决方案</h2>
 <ol>
 <li>关闭这个监控项目，不再使用</li>
 <li>调整命令参数，排查出现该现象的原因。</li>
@@ -228,18 +214,14 @@ After the UnreachablePeriod ends and the host has not reappeared, the host is tr
   </p>
   <p class="copyright-item">
     <span class="item-title">上次更新</span>
-    <span class="item-content">
-        2019-01-18
-        
-    </span>
+    <span class="item-content">2019-01-18</span>
   </p>
   
   <p class="copyright-item">
     <span class="item-title">许可协议</span>
     <span class="item-content"><a rel="license noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a></span>
   </p>
-</div>
-<footer class="post-footer">
+</div><footer class="post-footer">
       <div class="post-tags">
           <a href="/tags/zabbix/">zabbix</a>
           </div>
@@ -259,10 +241,6 @@ After the UnreachablePeriod ends and the host has not reappeared, the host is tr
   </article>
         </div>
         
-
-  
-
-  
 
       </div>
     </main>

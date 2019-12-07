@@ -24,7 +24,7 @@
 
 
 
-<meta name="generator" content="Hugo 0.59.0-DEV with theme even" />
+<meta name="generator" content="Hugo 0.61.0-DEV with even 4.0.0" />
 
 
 <link rel="canonical" href="http://linuxfunk.com/post/centos7%E5%AE%89%E8%A3%85%E6%9C%80%E6%96%B0%E7%89%88supervisor/" />
@@ -47,16 +47,13 @@
 <meta property="article:modified_time" content="2019-10-11T17:27:19+08:00" />
 <meta itemprop="name" content="Centos7安装最新版supervisor">
 <meta itemprop="description" content="由于centos7 yum安装supervisor版本太老，所以需要自己通过pip安装最新版本的supervisor.">
-
-
 <meta itemprop="datePublished" content="2019-10-11T17:27:19&#43;08:00" />
 <meta itemprop="dateModified" content="2019-10-11T17:27:19&#43;08:00" />
 <meta itemprop="wordCount" content="1038">
 
 
 
-<meta itemprop="keywords" content="supervisor," />
-<meta name="twitter:card" content="summary"/>
+<meta itemprop="keywords" content="supervisor," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Centos7安装最新版supervisor"/>
 <meta name="twitter:description" content="由于centos7 yum安装supervisor版本太老，所以需要自己通过pip安装最新版本的supervisor."/>
 
@@ -142,88 +139,83 @@
   <h2 class="post-toc-title">文章目录</h2>
   <div class="post-toc-content always-active">
     <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li>
-<ul>
-<li><a href="#1-安装supervisor">1.安装supervisor</a></li>
-<li><a href="#2-配置supervisor">2.配置supervisor</a></li>
-<li><a href="#3-配置开机自启动">3.配置开机自启动</a></li>
-<li><a href="#4-编辑监控程序文件">4. 编辑监控程序文件</a></li>
-<li><a href="#5-启动supervisor">5. 启动supervisor</a></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#1supervisor">1.安装supervisor</a></li>
+        <li><a href="#2supervisor">2.配置supervisor</a></li>
+        <li><a href="#3">3.配置开机自启动</a></li>
+        <li><a href="#4-">4. 编辑监控程序文件</a></li>
+        <li><a href="#5-supervisor">5. 启动supervisor</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
   </div>
 </div>
     <div class="post-content">
       <p>由于centos7 yum安装supervisor版本太老，所以需要自己通过pip安装最新版本的supervisor.</p>
-
-<h3 id="1-安装supervisor">1.安装supervisor</h3>
-
+<h3 id="1supervisor">1.安装supervisor</h3>
 <p>centos7 系统yum安装的supervisor是3.*.*版本，需要使用python的pip安装最新版本</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code class="language-shell" data-lang="shell"><span class="lnt">1
+<pre class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-shell" data-lang="shell">pip3 install supervisor</code></pre></td></tr></table>
+<pre class="chroma"><code class="language-shell" data-lang="shell">pip3 install supervisor
+</code></pre></td></tr></table>
 </div>
-</div>
-<p>由于本机python是编译安装，所以supervisor安装后所在目录为:</p>
+</div><p>由于本机python是编译安装，所以supervisor安装后所在目录为:</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code class="language-shell" data-lang="shell"><span class="lnt">1
+<pre class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span><span class="lnt">3
 </span></code></pre></td>
 <td class="lntd">
 <pre class="chroma"><code class="language-shell" data-lang="shell">/usr/local/python3/bin/supervisorctl  <span class="o">(</span>客户端（用于和守护进程通信，发送管理进程的指令）<span class="o">)</span>
-/usr/local/python3/bin/supervisord  <span class="o">(</span>是supervisor的守护进程服务（用于接收进程管理命令<span class="o">))</span>
-/usr/local/python3/bin/echo_supervisord_conf <span class="o">(</span>生成初始配置文件程序<span class="o">)</span></code></pre></td></tr></table>
+/usr/local/python3/bin/supervisord  <span class="o">(</span>是supervisor的守护进程服务（用于接收进程管理命令<span class="o">)</span><span class="o">)</span>
+/usr/local/python3/bin/echo_supervisord_conf <span class="o">(</span>生成初始配置文件程序<span class="o">)</span>
+</code></pre></td></tr></table>
 </div>
-</div>
-<p>添加路径到环境变量</p>
+</div><p>添加路径到环境变量</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code class="language-shell" data-lang="shell"><span class="lnt">1
+<pre class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span></code></pre></td>
 <td class="lntd">
 <pre class="chroma"><code class="language-shell" data-lang="shell">将 <span class="nv">PATH</span><span class="o">=</span><span class="nv">$PATH</span>:<span class="nv">$HOME</span>/bin:/usr/local/python3/bin
-添加到用户目录文件 .bash_profile 里面, 其他能够执行环境变量初始化的文件也可以。</code></pre></td></tr></table>
+添加到用户目录文件 .bash_profile 里面, 其他能够执行环境变量初始化的文件也可以。
+</code></pre></td></tr></table>
 </div>
-</div>
-<h3 id="2-配置supervisor">2.配置supervisor</h3>
-
+</div><h3 id="2supervisor">2.配置supervisor</h3>
 <p>生成配置文件:</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code class="language-shell" data-lang="shell"><span class="lnt">1
+<pre class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span></code></pre></td>
 <td class="lntd">
 <pre class="chroma"><code class="language-shell" data-lang="shell">mkdir -p /etc/supervisor/conf.d/
-echo_supervisord_conf &gt; /etc/supervisor/supervisord.conf</code></pre></td></tr></table>
+echo_supervisord_conf &gt; /etc/supervisor/supervisord.conf
+</code></pre></td></tr></table>
 </div>
-</div>
-<p>在/etc/supervisor/supervisord.conf 的[include]下添加:</p>
+</div><p>在/etc/supervisor/supervisord.conf 的[include]下添加:</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code class="language-shell" data-lang="shell"><span class="lnt">1
+<pre class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span></code></pre></td>
 <td class="lntd">
 <pre class="chroma"><code class="language-shell" data-lang="shell"><span class="o">[</span>include<span class="o">]</span>
-<span class="nv">files</span> <span class="o">=</span> /etc/supervisor/conf.d/*.conf</code></pre></td></tr></table>
+<span class="nv">files</span> <span class="o">=</span> /etc/supervisor/conf.d/*.conf
+</code></pre></td></tr></table>
 </div>
-</div>
-<p>修改 /etc/supervisor/supervisord.conf 配置文件路径/tmp为其他，防止pid sock文件被系统清除。</p>
+</div><p>修改 /etc/supervisor/supervisord.conf 配置文件路径/tmp为其他，防止pid sock文件被系统清除。</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code class="language-shell" data-lang="shell"><span class="lnt">1
+<pre class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span><span class="lnt">3
 </span><span class="lnt">4
@@ -232,29 +224,28 @@ echo_supervisord_conf &gt; /etc/supervisor/supervisord.conf</code></pre></td></t
 <pre class="chroma"><code class="language-shell" data-lang="shell"><span class="nv">logfile</span><span class="o">=</span>/var/log/supervisord.log
 <span class="nv">file</span><span class="o">=</span>/var/run/supervisor.sock
 <span class="nv">pidfile</span><span class="o">=</span>/var/run/supervisord.pid
-<span class="nv">serverurl</span><span class="o">=</span>unix:///var/run/supervisor.sock</code></pre></td></tr></table>
+<span class="nv">serverurl</span><span class="o">=</span>unix:///var/run/supervisor.sock
+</code></pre></td></tr></table>
 </div>
-</div>
-<h3 id="3-配置开机自启动">3.配置开机自启动</h3>
-
+</div><h3 id="3">3.配置开机自启动</h3>
 <ol>
-<li><p>官方脚本</p>
+<li>官方脚本</li>
+</ol>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code class="language-shell" data-lang="shell"><span class="lnt">1
+<pre class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-shell" data-lang="shell">wget -O /usr/lib/systemd/system/supervisord.service  https://github.com/Supervisor/initscripts/raw/master/centos-systemd-etcs</code></pre></td></tr></table>
+<pre class="chroma"><code class="language-shell" data-lang="shell">wget -O /usr/lib/systemd/system/supervisord.service  https://github.com/Supervisor/initscripts/raw/master/centos-systemd-etcs
+</code></pre></td></tr></table>
 </div>
-</div></li>
-
-<li><p>手动编写</p></li>
+</div><ol start="2">
+<li>手动编写</li>
 </ol>
-
 <p>创建 /usr/lib/systemd/system/supervisord.service, 内容根据自己安装程序的位置进行修改。</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt"> 1
+<pre class="chroma"><code><span class="lnt"> 1
 </span><span class="lnt"> 2
 </span><span class="lnt"> 3
 </span><span class="lnt"> 4
@@ -269,9 +260,9 @@ echo_supervisord_conf &gt; /etc/supervisor/supervisord.conf</code></pre></td></t
 </span><span class="lnt">13
 </span><span class="lnt">14
 </span><span class="lnt">15
-</span></pre></td>
+</span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"># supervisord service for systemd (CentOS 7.0+)
+<pre class="chroma"><code class="language-fallback" data-lang="fallback"># supervisord service for systemd (CentOS 7.0+)
 [Unit]
 Description=Supervisor daemon
 
@@ -285,32 +276,31 @@ Restart=on-failure
 RestartSec=42s
 
 [Install]
-WantedBy=multi-user.target</pre></td></tr></table>
+WantedBy=multi-user.target
+</code></pre></td></tr></table>
 </div>
-</div>
-<p>设置开机子启动</p>
+</div><p>设置开机子启动</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt">1
+<pre class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span><span class="lnt">3
 </span><span class="lnt">4
 </span><span class="lnt">5
-</span></pre></td>
+</span></code></pre></td>
 <td class="lntd">
-<pre class="chroma">systemctl enable supervisord.service
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">systemctl enable supervisord.service
 systemctl daemon-reload 
 systemctl list-unit-files|grep enabled #查看是否开启成功
 
-chmod 766 supervisord.service # 修改文件权限</pre></td></tr></table>
+chmod 766 supervisord.service # 修改文件权限
+</code></pre></td></tr></table>
 </div>
-</div>
-<h3 id="4-编辑监控程序文件">4. 编辑监控程序文件</h3>
-
+</div><h3 id="4-">4. 编辑监控程序文件</h3>
 <p>在/etc/supervisor/conf.d 下新建程序文件，比如cmd.conf</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code class="language-text" data-lang="text"><span class="lnt"> 1
+<pre class="chroma"><code><span class="lnt"> 1
 </span><span class="lnt"> 2
 </span><span class="lnt"> 3
 </span><span class="lnt"> 4
@@ -333,13 +323,13 @@ user=nfuser
 redirect_stderr=true
 stdout_logfile=/var/log/cmd-stdout.log
 stdout_logfile_maxbytes=10MB
-stdout_logfile_backups=20</code></pre></td></tr></table>
+stdout_logfile_backups=20
+</code></pre></td></tr></table>
 </div>
-</div>
-<p>如果有多个程序，可以配置为组:</p>
+</div><p>如果有多个程序，可以配置为组:</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code class="language-shell" data-lang="shell"><span class="lnt">1
+<pre class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span><span class="lnt">3
 </span><span class="lnt">4
@@ -354,30 +344,31 @@ stdout_logfile_backups=20</code></pre></td></tr></table>
 
 <span class="p">;</span><span class="o">[</span>group:thegroupname<span class="o">]</span>
 <span class="p">;</span><span class="nv">programs</span><span class="o">=</span>php-fpm,nginx,redis,mysql  <span class="p">;</span> 定义该组有哪些程序，程序之间用逗号分隔，注意，这些程序必须在前面用“<span class="o">[</span>program:theprogramname<span class="o">]</span>”模块定义过。
-<span class="p">;</span><span class="nv">priority</span><span class="o">=</span><span class="m">999</span>                        <span class="p">;</span> 启动优先级，假设有多个组，每个组一个优先级，越小越优先执行 <span class="o">(</span>默认 <span class="m">999</span><span class="o">)</span></code></pre></td></tr></table>
+<span class="p">;</span><span class="nv">priority</span><span class="o">=</span><span class="m">999</span>                        <span class="p">;</span> 启动优先级，假设有多个组，每个组一个优先级，越小越优先执行 <span class="o">(</span>默认 999<span class="o">)</span>
+</code></pre></td></tr></table>
 </div>
-</div>
-<h3 id="5-启动supervisor">5. 启动supervisor</h3>
-
+</div><h3 id="5-supervisor">5. 启动supervisor</h3>
 <ol>
-<li><p>手动启动supervisor</p>
+<li>手动启动supervisor</li>
+</ol>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code class="language-shell" data-lang="shell"><span class="lnt">1
+<pre class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span><span class="lnt">3
 </span></code></pre></td>
 <td class="lntd">
 <pre class="chroma"><code class="language-shell" data-lang="shell">supervisord -c /etc/supervisor/supervisord.conf
 ps -ef <span class="p">|</span> grep supervisord <span class="c1"># 查看服务是否已启动</span>
-cat /var/log/cmd-stdout.log <span class="c1"># 通过日志查看</span></code></pre></td></tr></table>
+cat /var/log/cmd-stdout.log <span class="c1"># 通过日志查看</span>
+</code></pre></td></tr></table>
 </div>
-</div></li>
-
-<li><p>通过systemd命令启动</p>
+</div><ol start="2">
+<li>通过systemd命令启动</li>
+</ol>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code class="language-shell" data-lang="shell"><span class="lnt">1
+<pre class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span><span class="lnt">3
 </span><span class="lnt">4
@@ -386,38 +377,41 @@ cat /var/log/cmd-stdout.log <span class="c1"># 通过日志查看</span></code><
 <pre class="chroma"><code class="language-shell" data-lang="shell">systemctl status supervisord <span class="c1"># 查看supervisord状态</span>
 systemctl start supervisord
 systemctl restart supervisord
-systemctl stop supervisord</code></pre></td></tr></table>
+systemctl stop supervisord
+</code></pre></td></tr></table>
 </div>
-</div></li>
-
-<li><p>修改cmd配置文件后重新载入</p>
+</div><ol start="3">
+<li>修改cmd配置文件后重新载入</li>
+</ol>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code class="language-shell" data-lang="shell"><span class="lnt">1
+<pre class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span><span class="lnt">3
 </span></code></pre></td>
 <td class="lntd">
 <pre class="chroma"><code class="language-shell" data-lang="shell">supervisorctl reread
 supervisorctl update
-supervisorctl restart somecmd</code></pre></td></tr></table>
+supervisorctl restart somecmd
+</code></pre></td></tr></table>
 </div>
-</div></li>
-
-<li><p>修改/etc/supervisor/supervisord.conf后重新载入</p>
+</div><ol start="4">
+<li>修改/etc/supervisor/supervisord.conf后重新载入</li>
+</ol>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code class="language-shell" data-lang="shell"><span class="lnt">1
+<pre class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-shell" data-lang="shell">supervisorctl reload</code></pre></td></tr></table>
+<pre class="chroma"><code class="language-shell" data-lang="shell">supervisorctl reload
+</code></pre></td></tr></table>
 </div>
-</div></li>
-
-<li><p>一些其他可能用到的命令</p>
+</div><ol start="5">
+<li>一些其他可能用到的命令</li>
+</ol>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code class="language-shell" data-lang="shell"><span class="lnt">1
+<pre class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span><span class="lnt">3
 </span><span class="lnt">4
@@ -432,10 +426,10 @@ supervisorctl restart programname    重启某个进程
 supervisorctl start all     启动全部进程
 supervisorctl stop all      停止全部进程，注：start、restart、stop都不会载入最新的配置文件。
 supervisorctl status        查看状态
-supervisorctl shutdown      关闭supervisor</code></pre></td></tr></table>
+supervisorctl shutdown      关闭supervisor
+</code></pre></td></tr></table>
 </div>
-</div></li>
-</ol>
+</div>
     </div>
 
     <div class="post-copyright">
@@ -445,18 +439,14 @@ supervisorctl shutdown      关闭supervisor</code></pre></td></tr></table>
   </p>
   <p class="copyright-item">
     <span class="item-title">上次更新</span>
-    <span class="item-content">
-        2019-10-11
-        
-    </span>
+    <span class="item-content">2019-10-11</span>
   </p>
   
   <p class="copyright-item">
     <span class="item-title">许可协议</span>
     <span class="item-content"><a rel="license noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a></span>
   </p>
-</div>
-<footer class="post-footer">
+</div><footer class="post-footer">
       <div class="post-tags">
           <a href="/tags/supervisor/">supervisor</a>
           </div>
@@ -472,10 +462,6 @@ supervisorctl shutdown      关闭supervisor</code></pre></td></tr></table>
   </article>
         </div>
         
-
-  
-
-  
 
       </div>
     </main>

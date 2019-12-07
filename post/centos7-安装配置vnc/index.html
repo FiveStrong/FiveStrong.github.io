@@ -24,7 +24,7 @@
 
 
 
-<meta name="generator" content="Hugo 0.59.0-DEV with theme even" />
+<meta name="generator" content="Hugo 0.61.0-DEV with even 4.0.0" />
 
 
 <link rel="canonical" href="http://linuxfunk.com/post/centos7-%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AEvnc/" />
@@ -47,16 +47,13 @@
 <meta property="article:modified_time" content="2017-08-31T13:27:11+00:00" />
 <meta itemprop="name" content="CentOS7 安装配置VNC">
 <meta itemprop="description" content="CentOS7 安装配置VNC">
-
-
 <meta itemprop="datePublished" content="2017-08-31T13:27:11&#43;00:00" />
 <meta itemprop="dateModified" content="2017-08-31T13:27:11&#43;00:00" />
-<meta itemprop="wordCount" content="580">
+<meta itemprop="wordCount" content="581">
 
 
 
-<meta itemprop="keywords" content="vnc," />
-<meta name="twitter:card" content="summary"/>
+<meta itemprop="keywords" content="vnc," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="CentOS7 安装配置VNC"/>
 <meta name="twitter:description" content="CentOS7 安装配置VNC"/>
 
@@ -132,7 +129,7 @@
         <div class="post-category">
             <a href="/categories/linux/"> linux </a>
             </div>
-          <span class="more-meta"> 约 580 字 </span>
+          <span class="more-meta"> 约 581 字 </span>
           <span class="more-meta"> 预计阅读 2 分钟 </span>
         <span id="busuanzi_container_page_pv" class="more-meta"> <span id="busuanzi_value_page_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次阅读 </span>
       </div>
@@ -142,82 +139,80 @@
   <h2 class="post-toc-title">文章目录</h2>
   <div class="post-toc-content always-active">
     <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li>
-<ul>
-<li><a href="#1-安装图形化界面">1. 安装图形化界面</a></li>
-<li><a href="#2-安装-tigervnc-server-and-x11-fonts">2.安装 tigervnc server and X11 fonts</a></li>
-<li><a href="#3-配置启动vncserver">3. 配置启动vncserver</a></li>
-</ul></li>
-</ul></li>
-</ul>
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#1-">1. 安装图形化界面</a></li>
+        <li><a href="#2-tigervnc-server-and-x11-fonts">2.安装 tigervnc server and X11 fonts</a></li>
+        <li><a href="#3-vncserver">3. 配置启动vncserver</a></li>
+      </ul>
+    </li>
+  </ul>
 </nav>
   </div>
 </div>
     <div class="post-content">
       <p>CentOS7 安装配置VNC</p>
-
-<h3 id="1-安装图形化界面">1. 安装图形化界面</h3>
+<h3 id="1-">1. 安装图形化界面</h3>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt">1
+<pre class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span><span class="lnt">3
-</span></pre></td>
+</span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"># yum check-update
+<pre class="chroma"><code class="language-fallback" data-lang="fallback"># yum check-update
 # yum groupinstall &#34;X Window System&#34;
-# yum install gnome-classic-session gnome-terminal nautilus-open-terminal control-center liberation-mono-fonts</pre></td></tr></table>
+# yum install gnome-classic-session gnome-terminal nautilus-open-terminal control-center liberation-mono-fonts
+</code></pre></td></tr></table>
 </div>
-</div>
-<p>或者直接</p>
+</div><p>或者直接</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt">1
-</span></pre></td>
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
 <td class="lntd">
-<pre class="chroma">yum groupinstall &#34;GNOME Desktop&#34; &#34;Graphical Administration Tools&#34;</pre></td></tr></table>
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">yum groupinstall &#34;GNOME Desktop&#34; &#34;Graphical Administration Tools&#34;
+</code></pre></td></tr></table>
 </div>
 </div><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt">1
+<pre class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span><span class="lnt">3
 </span><span class="lnt">4
-</span></pre></td>
+</span></code></pre></td>
 <td class="lntd">
-<pre class="chroma">### 设置默认启动图形界面
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">### 设置默认启动图形界面
 # unlink /etc/systemd/system/default.target
 # ln -sf /lib/systemd/system/graphical.target /etc/systemd/system/default.target
-# reboot</pre></td></tr></table>
+# reboot
+</code></pre></td></tr></table>
 </div>
-</div>
-<h3 id="2-安装-tigervnc-server-and-x11-fonts">2.安装 tigervnc server and X11 fonts</h3>
+</div><h3 id="2-tigervnc-server-and-x11-fonts">2.安装 tigervnc server and X11 fonts</h3>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt">1
-</span></pre></td>
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
 <td class="lntd">
-<pre class="chroma">yum install tigervnc-server xorg-x11-fonts-Type1</pre></td></tr></table>
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">yum install tigervnc-server xorg-x11-fonts-Type1
+</code></pre></td></tr></table>
 </div>
-</div>
-<p>拷贝VNC server configuration 文件到 /etc/systemd/system 下进行配置。VNC默认端口为5900，你可以直接通过5900端口登录VNC，也可以自己设置一个子端口。比如，我将子端口设成5，那么登录的端口就是5905,你可以通过ipaddress:sub-port(192.168.1.1:5或者192.168.1.1:5905)来登录。</p>
+</div><p>拷贝VNC server configuration 文件到 /etc/systemd/system 下进行配置。VNC默认端口为5900，你可以直接通过5900端口登录VNC，也可以自己设置一个子端口。比如，我将子端口设成5，那么登录的端口就是5905,你可以通过ipaddress:sub-port(192.168.1.1:5或者192.168.1.1:5905)来登录。</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt">1
+<pre class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
-</span></pre></td>
+</span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"># cp /lib/systemd/system/vncserver@.service /etc/systemd/system/vncserver@:5.service
-# vi /etc/systemd/system/vncserver@:5.service</pre></td></tr></table>
+<pre class="chroma"><code class="language-fallback" data-lang="fallback"># cp /lib/systemd/system/vncserver@.service /etc/systemd/system/vncserver@:5.service
+# vi /etc/systemd/system/vncserver@:5.service
+</code></pre></td></tr></table>
 </div>
-</div>
-<p>默认配置文件的内容</p>
+</div><p>默认配置文件的内容</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt"> 1
+<pre class="chroma"><code><span class="lnt"> 1
 </span><span class="lnt"> 2
 </span><span class="lnt"> 3
 </span><span class="lnt"> 4
@@ -229,9 +224,9 @@
 </span><span class="lnt">10
 </span><span class="lnt">11
 </span><span class="lnt">12
-</span></pre></td>
+</span></code></pre></td>
 <td class="lntd">
-<pre class="chroma">[Unit]
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">[Unit]
 Description=Remote desktop service (VNC)
 After=syslog.target network.target
 [Service]
@@ -242,13 +237,13 @@ ExecStart=/sbin/runuser -l &lt;USER&gt; -c &#34;/usr/bin/vncserver %i&#34;
 PIDFile=/home/&lt;USER&gt;/.vnc/%H%i.pid
 ExecStop=/bin/sh -c &#39;/usr/bin/vncserver -kill %i &gt; /dev/null 2&gt;&amp;1 || :&#39;
 [Install]
-WantedBy=multi-user.target</pre></td></tr></table>
+WantedBy=multi-user.target
+</code></pre></td></tr></table>
 </div>
-</div>
-<p>将<USER>替换成你的用户名字，例如 archie</p>
+</div><p>将<!-- raw HTML omitted -->替换成你的用户名字，例如 archie</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt"> 1
+<pre class="chroma"><code><span class="lnt"> 1
 </span><span class="lnt"> 2
 </span><span class="lnt"> 3
 </span><span class="lnt"> 4
@@ -260,9 +255,9 @@ WantedBy=multi-user.target</pre></td></tr></table>
 </span><span class="lnt">10
 </span><span class="lnt">11
 </span><span class="lnt">12
-</span></pre></td>
+</span></code></pre></td>
 <td class="lntd">
-<pre class="chroma">[Unit]
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">[Unit]
 Description=Remote desktop service (VNC)
 After=syslog.target network.target
 [Service]
@@ -273,26 +268,25 @@ ExecStart=/sbin/runuser -l archie-c &#34;/usr/bin/vncserver %i&#34;
 PIDFile=/home/archie/.vnc/%H%i.pid
 ExecStop=/bin/sh -c &#39;/usr/bin/vncserver -kill %i &gt; /dev/null 2&gt;&amp;1 || :&#39;
 [Install]
-WantedBy=multi-user.target</pre></td></tr></table>
+WantedBy=multi-user.target
+</code></pre></td></tr></table>
 </div>
-</div>
-<p>添加防火墙规则</p>
+</div><p>添加防火墙规则</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt">1
+<pre class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
-</span></pre></td>
+</span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"># firewall-cmd --permanent --zone=public --add-port=5905/tcp
-# firewall-cmd --reload</pre></td></tr></table>
+<pre class="chroma"><code class="language-fallback" data-lang="fallback"># firewall-cmd --permanent --zone=public --add-port=5905/tcp
+# firewall-cmd --reload
+</code></pre></td></tr></table>
 </div>
-</div>
-<h3 id="3-配置启动vncserver">3. 配置启动vncserver</h3>
-
+</div><h3 id="3-vncserver">3. 配置启动vncserver</h3>
 <p>切换到archie用户, 启动vncserver 并配置密码</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><span class="lnt"> 1
+<pre class="chroma"><code><span class="lnt"> 1
 </span><span class="lnt"> 2
 </span><span class="lnt"> 3
 </span><span class="lnt"> 4
@@ -304,9 +298,10 @@ WantedBy=multi-user.target</pre></td></tr></table>
 </span><span class="lnt">10
 </span><span class="lnt">11
 </span><span class="lnt">12
-</span></pre></td>
+</span><span class="lnt">13
+</span></code></pre></td>
 <td class="lntd">
-<pre class="chroma">[archlie@server ~]$ vncserver
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">[archlie@server ~]$ vncserver
 You will require a password to access your desktops.
 
 Password:
@@ -317,23 +312,24 @@ New &#39;localhost.localdomain:1 (raj)&#39; desktop is server.itzgeek.com:1
 
 Creating default startup script /home/archie/.vnc/xstartup
 Starting applications specified in /home/archie/.vnc/xstartup
-Log file is /home/archie/.vnc/server.itzgeek.com:1.log</pre></td></tr></table>
+Log file is /home/archie/.vnc/server.itzgeek.com:1.log
+
+</code></pre></td></tr></table>
 </div>
-</div>
-<p>切换到root用户，重启systemctl daemon,启动vncserver</p>
+</div><p>切换到root用户，重启systemctl daemon,启动vncserver</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code class="language-bash" data-lang="bash"><span class="lnt">1
+<pre class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span><span class="lnt">3
 </span></code></pre></td>
 <td class="lntd">
 <pre class="chroma"><code class="language-bash" data-lang="bash">systemctl daemon-reload
 systemctl start vncserver@:5.service
-systemctl <span class="nb">enable</span> vncserver@:5.service</code></pre></td></tr></table>
+systemctl <span class="nb">enable</span> vncserver@:5.service
+</code></pre></td></tr></table>
 </div>
-</div>
-<p>然后通过ipaddress:5905 or ipaddress:5登录远程服务器</p>
+</div><p>然后通过ipaddress:5905 or ipaddress:5登录远程服务器</p>
     </div>
 
     <div class="post-copyright">
@@ -343,18 +339,14 @@ systemctl <span class="nb">enable</span> vncserver@:5.service</code></pre></td><
   </p>
   <p class="copyright-item">
     <span class="item-title">上次更新</span>
-    <span class="item-content">
-        2017-08-31
-        
-    </span>
+    <span class="item-content">2017-08-31</span>
   </p>
   
   <p class="copyright-item">
     <span class="item-title">许可协议</span>
     <span class="item-content"><a rel="license noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a></span>
   </p>
-</div>
-<footer class="post-footer">
+</div><footer class="post-footer">
       <div class="post-tags">
           <a href="/tags/vnc/">vnc</a>
           </div>
@@ -374,10 +366,6 @@ systemctl <span class="nb">enable</span> vncserver@:5.service</code></pre></td><
   </article>
         </div>
         
-
-  
-
-  
 
       </div>
     </main>
