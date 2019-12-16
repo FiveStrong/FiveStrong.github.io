@@ -1,2 +1,8 @@
 User-agent: *
 Sitemap: http://linuxfunk.com/sitemap.xml
+
+User-agent: Baiduspider
+Disallow: /
+
+User-agent: baiduspider
+Disallow: /
