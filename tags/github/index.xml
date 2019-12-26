@@ -13,20 +13,20 @@
     
     <item>
       <title>用git hooks将静态文件部署到VPS</title>
-      <link>http://linuxfunk.com/post/%E7%94%A8git-hooks%E5%B0%86%E9%9D%99%E6%80%81%E6%96%87%E4%BB%B6%E9%83%A8%E7%BD%B2%E5%88%B0vps/</link>
+      <link>http://linuxfunk.com/post/linux/%E7%94%A8git-hooks%E5%B0%86%E9%9D%99%E6%80%81%E6%96%87%E4%BB%B6%E9%83%A8%E7%BD%B2%E5%88%B0vps/</link>
       <pubDate>Fri, 03 Nov 2017 15:56:46 +0000</pubDate>
       
-      <guid>http://linuxfunk.com/post/%E7%94%A8git-hooks%E5%B0%86%E9%9D%99%E6%80%81%E6%96%87%E4%BB%B6%E9%83%A8%E7%BD%B2%E5%88%B0vps/</guid>
+      <guid>http://linuxfunk.com/post/linux/%E7%94%A8git-hooks%E5%B0%86%E9%9D%99%E6%80%81%E6%96%87%E4%BB%B6%E9%83%A8%E7%BD%B2%E5%88%B0vps/</guid>
       <description>&lt;p&gt;Hexo 静态部署博客默认使用的是github提供的gitpages,如果你有自己的域名以及VPS的话，可以将博客同步一份到主机上并且在gitpage上保留一份副本。
 下面简单介绍一下通过git hook,同步文章的部署步骤，这样以后更换写作平台，以及VPS主机平台都方便回来查找。&lt;/p&gt;</description>
     </item>
     
     <item>
       <title>Github分支备份Hexo博客源文件</title>
-      <link>http://linuxfunk.com/post/github%E5%88%86%E6%94%AF%E5%A4%87%E4%BB%BDhexo%E5%8D%9A%E5%AE%A2%E6%BA%90%E6%96%87%E4%BB%B6/</link>
+      <link>http://linuxfunk.com/post/linux/github%E5%88%86%E6%94%AF%E5%A4%87%E4%BB%BDhexo%E5%8D%9A%E5%AE%A2%E6%BA%90%E6%96%87%E4%BB%B6/</link>
       <pubDate>Wed, 01 Nov 2017 12:22:52 +0000</pubDate>
       
-      <guid>http://linuxfunk.com/post/github%E5%88%86%E6%94%AF%E5%A4%87%E4%BB%BDhexo%E5%8D%9A%E5%AE%A2%E6%BA%90%E6%96%87%E4%BB%B6/</guid>
+      <guid>http://linuxfunk.com/post/linux/github%E5%88%86%E6%94%AF%E5%A4%87%E4%BB%BDhexo%E5%8D%9A%E5%AE%A2%E6%BA%90%E6%96%87%E4%BB%B6/</guid>
       <description>&lt;h3 id=&#34;heading&#34;&gt;需求&lt;/h3&gt;
 &lt;p&gt;将hexo部署在GitHub Pages上，但仅同步编译好的静态文件，如果想要在多个平台写博客，hexo的源码就需要同步到云端，方便拉取部署。
 最简单的方法就是利用博客的 repo 分支（ master 分支的必须用来存放你博客网站文件）托管 Hexo 源文件和配置达到备份的目的。&lt;/p&gt;</description>

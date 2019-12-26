@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>解决Linux下Sublime text 3的中文输入问题  - モルガンナの家</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="Morgana" /><meta name="description" content="http://c4fun.cn/blog/2013/11/30/linux-sublimetext-chinese/
+搬个链接算了，博主已经写的很详细，就不重复编写了，只是为了留个记录。 基本方法就是这个，个别问题 可以google。
+" /><meta name="keywords" content="Hugo, モルガンナの家" />
+
+
+<meta name="robots" content="">
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.61.0 with even 4.0.0" />
+
+
+<link rel="canonical" href="http://linuxfunk.com/post/linux/%E8%A7%A3%E5%86%B3linux%E4%B8%8Bsublime-text-3%E7%9A%84%E4%B8%AD%E6%96%87%E8%BE%93%E5%85%A5%E9%97%AE%E9%A2%98/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<link href="/dist/even.58b28b82.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="解决Linux下Sublime text 3的中文输入问题 " />
+<meta property="og:description" content="http://c4fun.cn/blog/2013/11/30/linux-sublimetext-chinese/
+搬个链接算了，博主已经写的很详细，就不重复编写了，只是为了留个记录。
+基本方法就是这个，个别问题 可以google。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://linuxfunk.com/post/linux/%E8%A7%A3%E5%86%B3linux%E4%B8%8Bsublime-text-3%E7%9A%84%E4%B8%AD%E6%96%87%E8%BE%93%E5%85%A5%E9%97%AE%E9%A2%98/" />
+<meta property="article:published_time" content="2016-04-09T14:14:05+00:00" />
+<meta property="article:modified_time" content="2016-04-09T14:14:05+00:00" />
+<meta itemprop="name" content="解决Linux下Sublime text 3的中文输入问题 ">
+<meta itemprop="description" content="http://c4fun.cn/blog/2013/11/30/linux-sublimetext-chinese/
+搬个链接算了，博主已经写的很详细，就不重复编写了，只是为了留个记录。
+基本方法就是这个，个别问题 可以google。">
+<meta itemprop="datePublished" content="2016-04-09T14:14:05&#43;00:00" />
+<meta itemprop="dateModified" content="2016-04-09T14:14:05&#43;00:00" />
+<meta itemprop="wordCount" content="512">
+
+
+
+<meta itemprop="keywords" content="sublime text," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="解决Linux下Sublime text 3的中文输入问题 "/>
+<meta name="twitter:description" content="http://c4fun.cn/blog/2013/11/30/linux-sublimetext-chinese/
+搬个链接算了，博主已经写的很详细，就不重复编写了，只是为了留个记录。
+基本方法就是这个，个别问题 可以google。"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">モルガンナの家</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">About</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">モルガンナの家</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">Categories</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">About</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">解决Linux下Sublime text 3的中文输入问题 </h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2016-04-09 </span>
+        <div class="post-category">
+            <a href="/categories/linux/"> linux </a>
+            </div>
+          <span class="more-meta"> 约 512 字 </span>
+          <span class="more-meta"> 预计阅读 2 分钟 </span>
+        <span id="busuanzi_container_page_pv" class="more-meta"> <span id="busuanzi_value_page_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次阅读 </span>
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#heading">更新方法（编译部分与博主相同，懒得点的看下面）</a></li>
+        <li><a href="#archlinux-sublime-text-3-">该方法在archlinux下 sublime_text 3 测试成功</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <p><a href="http://c4fun.cn/blog/2013/11/30/linux-sublimetext-chinese/">http://c4fun.cn/blog/2013/11/30/linux-sublimetext-chinese/</a></p>
+<p>搬个链接算了，博主已经写的很详细，就不重复编写了，只是为了留个记录。
+基本方法就是这个，个别问题 可以google。</p>
+<hr>
+<h3 id="heading">更新方法（编译部分与博主相同，懒得点的看下面）</h3>
+<p>新建文件sub-fcitx.c，建议放在Sublime Text的所在目录下，将下面的代码复制进去</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-python" data-lang="python">
+<span class="o">/</span><span class="o">*</span><span class="n">sublime</span><span class="o">-</span><span class="n">imfix</span><span class="o">.</span><span class="n">cUse</span> <span class="n">LD_PRELOAD</span> <span class="n">to</span> <span class="n">interpose</span> <span class="n">some</span> <span class="n">function</span> <span class="n">to</span> <span class="n">fix</span> <span class="n">sublime</span> <span class="nb">input</span> <span class="n">method</span> <span class="n">support</span> <span class="k">for</span> <span class="n">linux</span><span class="o">.</span><span class="n">By</span> <span class="n">Cjacker</span> <span class="n">Huang</span> <span class="n">gcc</span> <span class="o">-</span><span class="n">shared</span> <span class="o">-</span><span class="n">o</span> <span class="n">libsublime</span><span class="o">-</span><span class="n">imfix</span><span class="o">.</span><span class="n">so</span> <span class="n">sublime</span><span class="o">-</span><span class="n">imfix</span><span class="o">.</span><span class="n">c</span> <span class="sb">`pkg-config --libs --cflags gtk+-2.0`</span> <span class="o">-</span><span class="n">fPICLD_PRELOAD</span><span class="o">=</span><span class="o">.</span><span class="o">/</span><span class="n">libsublime</span><span class="o">-</span><span class="n">imfix</span><span class="o">.</span><span class="n">so</span> <span class="n">subl</span><span class="o">*</span><span class="o">/</span><span class="c1">#include &lt;gtk/gtk.h&gt;#include &lt;gdk/gdkx.h&gt;typedef GdkSegment GdkRegionBox; struct _GdkRegion{ long size; long numRects; GdkRegionBox *rects; GdkRegionBox extents;}; GtkIMContext *local_context; voidgdk_region_get_clipbox (const GdkRegion *region, GdkRectangle *rectangle){ g_return_if_fail (region != NULL); g_return_if_fail (rectangle != NULL);  rectangle-&gt;x = region-&gt;extents.x1; rectangle-&gt;y = region-&gt;extents.y1; rectangle-&gt;width = region-&gt;extents.x2 - region-&gt;extents.x1; rectangle-&gt;height = region-&gt;extents.y2 - region-&gt;extents.y1; GdkRectangle rect; rect.x = rectangle-&gt;x; rect.y = rectangle-&gt;y; rect.width = 0; rect.height = rectangle-&gt;height; //The caret width is 2; //Maybe sometimes we will make a mistake, but for most of the time, it should be the caret. if(rectangle-&gt;width == 2 &amp;&amp; GTK_IS_IM_CONTEXT(local_context)) { gtk_im_context_set_cursor_location(local_context, rectangle); }} //this is needed, for example, if you input something in file dialog and return back the edit area//context will lost, so here we set it again. static GdkFilterReturn event_filter (GdkXEvent *xevent, GdkEvent *event, gpointer im_context){ XEvent *xev = (XEvent *)xevent; if(xev-&gt;type == KeyRelease &amp;&amp; GTK_IS_IM_CONTEXT(im_context)) { GdkWindow * win = g_object_get_data(G_OBJECT(im_context),&#34;window&#34;); if(GDK_IS_WINDOW(win)) gtk_im_context_set_client_window(im_context, win); } return GDK_FILTER_CONTINUE;} void gtk_im_context_set_client_window (GtkIMContext *context, GdkWindow *window){ GtkIMContextClass *klass; g_return_if_fail (GTK_IS_IM_CONTEXT (context)); klass = GTK_IM_CONTEXT_GET_CLASS (context); if (klass-&gt;set_client_window) klass-&gt;set_client_window (context, window);  if(!GDK_IS_WINDOW (window)) return; g_object_set_data(G_OBJECT(context),&#34;window&#34;,window); int width = gdk_window_get_width(window); int height = gdk_window_get_height(window); if(width != 0 &amp;&amp; height !=0) { gtk_im_context_focus_in(context); local_context = context; } gdk_window_add_filter (window, event_filter, context);}</span>
+</code></pre></td></tr></table>
+</div>
+</div><h4 id="heading-1">可能需要的模块</h4>
+<pre><code> build-essential  libgtk2.0-dev
+</code></pre>
+<p>切换到sub-fcitx.c，所在目录，编译生成so文件</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">gcc -shared -o libsublime-imfix.so sub-fcitx.c `pkg-config --libs --cflags gtk+-2.0` -fPIC
+</code></pre></td></tr></table>
+</div>
+</div><hr>
+<h3 id="archlinux-sublime-text-3-">该方法在archlinux下 sublime_text 3 测试成功</h3>
+<p>编译好模块后，只要将原来的/usr/bin/subl3软链接删除或者改成一个脚本</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash"><span class="cp">#!/bin/sh
+</span><span class="cp"></span><span class="nv">LD_PRELOAD</span><span class="o">=</span>/opt/sublime_text_3/libsublime-imfix.so <span class="nb">exec</span>     /opt/sublime_text_3/sublime_text <span class="s2">&#34;</span><span class="nv">$@</span><span class="s2">&#34;</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>模块以及软件目录根据自己的实际情况替换，即可实现从命令行以及桌面启动均能实现中文输入。</p>
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">
+      <a href="http://linuxfunk.com/">Morgana</a>
+    </span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">初次发布</span>
+    <span class="item-content">
+        2016-04-09
+    </span>
+  </p>
+  
+  <p class="copyright-item">
+    <span class="item-title">永久链接</span>
+    <span class="item-content">
+        <a href="http://linuxfunk.com/post/linux/%E8%A7%A3%E5%86%B3linux%E4%B8%8Bsublime-text-3%E7%9A%84%E4%B8%AD%E6%96%87%E8%BE%93%E5%85%A5%E9%97%AE%E9%A2%98/">http://linuxfunk.com/post/linux/%E8%A7%A3%E5%86%B3linux%E4%B8%8Bsublime-text-3%E7%9A%84%E4%B8%AD%E6%96%87%E8%BE%93%E5%85%A5%E9%97%AE%E9%A2%98/</a>
+    </span>
+  </p>
+  
+  <p class="copyright-item">
+    <span class="item-title">许可协议</span>
+    <span class="item-content"><a rel="license noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a></span>
+  </p>
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/sublime-text/">sublime text</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/post/linux/%E7%BB%88%E7%AB%AF%E5%88%A9%E5%99%A8tmux%E5%91%BD%E4%BB%A4%E9%80%9F%E6%9F%A5/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">终端利器tmux命令速查</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        <a class="next" href="/post/python/pyenv-python%E5%A4%9A%E7%89%88%E6%9C%AC%E6%8E%A7%E5%88%B6%E5%B7%A5%E5%85%B7/">
+            <span class="next-text nav-default">pyenv python多版本控制工具</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:fivestrong@live.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://github.com/fivestrong" class="iconfont icon-github" title="github"></a>
+  <a href="http://linuxfunk.com/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  <div class="busuanzi-footer">
+    <span id="busuanzi_container_site_pv"> 本站总访问量 <span id="busuanzi_value_site_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次 </span>
+      <span class="division">|</span>
+    <span id="busuanzi_container_site_uv"> 本站总访客数 <span id="busuanzi_value_site_uv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 人 </span>
+  </div>
+
+  <span class="copyright-year">
+    &copy; 
+    2015 - 
+    2019
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">Morgana</span>
+  </span>
+</div>
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/dist/even.26188efa.min.js"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

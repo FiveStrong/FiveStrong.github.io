@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>CentOS7 安装配置VNC - モルガンナの家</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="Morgana" /><meta name="description" content="CentOS7 安装配置VNC
+" /><meta name="keywords" content="Hugo, モルガンナの家" />
+
+
+<meta name="robots" content="">
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.61.0 with even 4.0.0" />
+
+
+<link rel="canonical" href="http://linuxfunk.com/post/linux/centos7-%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AEvnc/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<link href="/dist/even.58b28b82.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="CentOS7 安装配置VNC" />
+<meta property="og:description" content="CentOS7 安装配置VNC" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://linuxfunk.com/post/linux/centos7-%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AEvnc/" />
+<meta property="article:published_time" content="2017-08-31T13:27:11+00:00" />
+<meta property="article:modified_time" content="2017-08-31T13:27:11+00:00" />
+<meta itemprop="name" content="CentOS7 安装配置VNC">
+<meta itemprop="description" content="CentOS7 安装配置VNC">
+<meta itemprop="datePublished" content="2017-08-31T13:27:11&#43;00:00" />
+<meta itemprop="dateModified" content="2017-08-31T13:27:11&#43;00:00" />
+<meta itemprop="wordCount" content="581">
+
+
+
+<meta itemprop="keywords" content="vnc," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="CentOS7 安装配置VNC"/>
+<meta name="twitter:description" content="CentOS7 安装配置VNC"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">モルガンナの家</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">About</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">モルガンナの家</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">Categories</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">About</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">CentOS7 安装配置VNC</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2017-08-31 </span>
+        <div class="post-category">
+            <a href="/categories/linux/"> linux </a>
+            </div>
+          <span class="more-meta"> 约 581 字 </span>
+          <span class="more-meta"> 预计阅读 2 分钟 </span>
+        <span id="busuanzi_container_page_pv" class="more-meta"> <span id="busuanzi_value_page_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次阅读 </span>
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#1-">1. 安装图形化界面</a></li>
+        <li><a href="#2-tigervnc-server-and-x11-fonts">2.安装 tigervnc server and X11 fonts</a></li>
+        <li><a href="#3-vncserver">3. 配置启动vncserver</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <p>CentOS7 安装配置VNC</p>
+<h3 id="1-">1. 安装图形化界面</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback"># yum check-update
+# yum groupinstall &#34;X Window System&#34;
+# yum install gnome-classic-session gnome-terminal nautilus-open-terminal control-center liberation-mono-fonts
+</code></pre></td></tr></table>
+</div>
+</div><p>或者直接</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">yum groupinstall &#34;GNOME Desktop&#34; &#34;Graphical Administration Tools&#34;
+</code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">### 设置默认启动图形界面
+# unlink /etc/systemd/system/default.target
+# ln -sf /lib/systemd/system/graphical.target /etc/systemd/system/default.target
+# reboot
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="2-tigervnc-server-and-x11-fonts">2.安装 tigervnc server and X11 fonts</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">yum install tigervnc-server xorg-x11-fonts-Type1
+</code></pre></td></tr></table>
+</div>
+</div><p>拷贝VNC server configuration 文件到 /etc/systemd/system 下进行配置。VNC默认端口为5900，你可以直接通过5900端口登录VNC，也可以自己设置一个子端口。比如，我将子端口设成5，那么登录的端口就是5905,你可以通过ipaddress:sub-port(192.168.1.1:5或者192.168.1.1:5905)来登录。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback"># cp /lib/systemd/system/vncserver@.service /etc/systemd/system/vncserver@:5.service
+# vi /etc/systemd/system/vncserver@:5.service
+</code></pre></td></tr></table>
+</div>
+</div><p>默认配置文件的内容</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">[Unit]
+Description=Remote desktop service (VNC)
+After=syslog.target network.target
+[Service]
+Type=forking
+# Clean any existing files in /tmp/.X11-unix environment
+ExecStartPre=/bin/sh -c &#39;/usr/bin/vncserver -kill %i &gt; /dev/null 2&gt;&amp;1 || :&#39;
+ExecStart=/sbin/runuser -l &lt;USER&gt; -c &#34;/usr/bin/vncserver %i&#34;
+PIDFile=/home/&lt;USER&gt;/.vnc/%H%i.pid
+ExecStop=/bin/sh -c &#39;/usr/bin/vncserver -kill %i &gt; /dev/null 2&gt;&amp;1 || :&#39;
+[Install]
+WantedBy=multi-user.target
+</code></pre></td></tr></table>
+</div>
+</div><p>将<!-- raw HTML omitted -->替换成你的用户名字，例如 archie</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">[Unit]
+Description=Remote desktop service (VNC)
+After=syslog.target network.target
+[Service]
+Type=forking
+# Clean any existing files in /tmp/.X11-unix environment
+ExecStartPre=/bin/sh -c &#39;/usr/bin/vncserver -kill %i &gt; /dev/null 2&gt;&amp;1 || :&#39;
+ExecStart=/sbin/runuser -l archie-c &#34;/usr/bin/vncserver %i&#34;
+PIDFile=/home/archie/.vnc/%H%i.pid
+ExecStop=/bin/sh -c &#39;/usr/bin/vncserver -kill %i &gt; /dev/null 2&gt;&amp;1 || :&#39;
+[Install]
+WantedBy=multi-user.target
+</code></pre></td></tr></table>
+</div>
+</div><p>添加防火墙规则</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback"># firewall-cmd --permanent --zone=public --add-port=5905/tcp
+# firewall-cmd --reload
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="3-vncserver">3. 配置启动vncserver</h3>
+<p>切换到archie用户, 启动vncserver 并配置密码</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">[archlie@server ~]$ vncserver
+You will require a password to access your desktops.
+
+Password:
+Verify:
+xauth:  file /home/archie/.Xauthority does not exist
+
+New &#39;localhost.localdomain:1 (raj)&#39; desktop is server.itzgeek.com:1
+
+Creating default startup script /home/archie/.vnc/xstartup
+Starting applications specified in /home/archie/.vnc/xstartup
+Log file is /home/archie/.vnc/server.itzgeek.com:1.log
+
+</code></pre></td></tr></table>
+</div>
+</div><p>切换到root用户，重启systemctl daemon,启动vncserver</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">systemctl daemon-reload
+systemctl start vncserver@:5.service
+systemctl <span class="nb">enable</span> vncserver@:5.service
+</code></pre></td></tr></table>
+</div>
+</div><p>然后通过ipaddress:5905 or ipaddress:5登录远程服务器</p>
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">
+      <a href="http://linuxfunk.com/">Morgana</a>
+    </span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">初次发布</span>
+    <span class="item-content">
+        2017-08-31
+    </span>
+  </p>
+  
+  <p class="copyright-item">
+    <span class="item-title">永久链接</span>
+    <span class="item-content">
+        <a href="http://linuxfunk.com/post/linux/centos7-%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AEvnc/">http://linuxfunk.com/post/linux/centos7-%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AEvnc/</a>
+    </span>
+  </p>
+  
+  <p class="copyright-item">
+    <span class="item-title">许可协议</span>
+    <span class="item-content"><a rel="license noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a></span>
+  </p>
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/vnc/">vnc</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/post/linux/kvm-%E4%BB%8E%E6%A8%A1%E6%9D%BF%E9%95%9C%E5%83%8F%E5%85%8B%E9%9A%86%E8%99%9A%E6%8B%9F%E6%9C%BA/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">KVM-从模板镜像克隆虚拟机</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        <a class="next" href="/post/linux/zabbix-3-%E9%85%8D%E7%BD%AE%E9%82%AE%E4%BB%B6%E6%8A%A5%E8%AD%A6/">
+            <span class="next-text nav-default">zabbix 3 配置邮件报警</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:fivestrong@live.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://github.com/fivestrong" class="iconfont icon-github" title="github"></a>
+  <a href="http://linuxfunk.com/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  <div class="busuanzi-footer">
+    <span id="busuanzi_container_site_pv"> 本站总访问量 <span id="busuanzi_value_site_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次 </span>
+      <span class="division">|</span>
+    <span id="busuanzi_container_site_uv"> 本站总访客数 <span id="busuanzi_value_site_uv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 人 </span>
+  </div>
+
+  <span class="copyright-year">
+    &copy; 
+    2015 - 
+    2019
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">Morgana</span>
+  </span>
+</div>
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/dist/even.26188efa.min.js"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>
