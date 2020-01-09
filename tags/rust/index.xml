@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>rust on モルガンナの家</title>
+    <link>http://linuxfunk.com/tags/rust/</link>
+    <description>Recent content in rust on モルガンナの家</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Fri, 03 Jan 2020 09:36:09 +0800</lastBuildDate>
+    
+	<atom:link href="http://linuxfunk.com/tags/rust/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Rust 语言概述</title>
+      <link>http://linuxfunk.com/post/rust/a-tour-of-the-language/</link>
+      <pubDate>Fri, 03 Jan 2020 09:36:09 +0800</pubDate>
+      
+      <guid>http://linuxfunk.com/post/rust/a-tour-of-the-language/</guid>
+      <description>原生类型 Rust 包含以下原生类型: bool: 布尔类型包含 true or false char: 字符类型，表示单个字符，比如&#39;e&amp;rsquo; Integer: 由多个bit 宽度表示的整数，Rust 最大支</description>
+    </item>
+    
+  </channel>
+</rss>
