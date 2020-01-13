@@ -13,10 +13,10 @@
     
     <item>
       <title>Rust 语言概述</title>
-      <link>http://linuxfunk.com/post/rust/a-tour-of-the-language/</link>
+      <link>http://linuxfunk.com/2020/01/03/a-tour-of-the-language/</link>
       <pubDate>Fri, 03 Jan 2020 09:36:09 +0800</pubDate>
       
-      <guid>http://linuxfunk.com/post/rust/a-tour-of-the-language/</guid>
+      <guid>http://linuxfunk.com/2020/01/03/a-tour-of-the-language/</guid>
       <description>原生类型 Rust 包含以下原生类型: bool: 布尔类型包含 true or false char: 字符类型，表示单个字符，比如&#39;e&amp;rsquo; Integer: 由多个bit 宽度表示的整数，Rust 最大支</description>
     </item>
     

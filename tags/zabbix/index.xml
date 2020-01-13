@@ -13,38 +13,38 @@
     
     <item>
       <title>Zabbix Unreachable Hosts</title>
-      <link>http://linuxfunk.com/post/linux/zabbix-unreachable-hosts/</link>
+      <link>http://linuxfunk.com/2019/01/18/zabbix-unreachable-hosts/</link>
       <pubDate>Fri, 18 Jan 2019 11:24:43 +0800</pubDate>
       
-      <guid>http://linuxfunk.com/post/linux/zabbix-unreachable-hosts/</guid>
+      <guid>http://linuxfunk.com/2019/01/18/zabbix-unreachable-hosts/</guid>
       <description>&lt;p&gt;解决zabbix 频繁报错主机不可用&lt;/p&gt;</description>
     </item>
     
     <item>
       <title>使用docker服务配置Zabbix&#43;Grafana监控</title>
-      <link>http://linuxfunk.com/post/linux/%E4%BD%BF%E7%94%A8docker%E6%9C%8D%E5%8A%A1%E9%85%8D%E7%BD%AEzabbix-grafana%E7%9B%91%E6%8E%A7/</link>
+      <link>http://linuxfunk.com/2017/10/30/%E4%BD%BF%E7%94%A8docker%E6%9C%8D%E5%8A%A1%E9%85%8D%E7%BD%AEzabbix-grafana%E7%9B%91%E6%8E%A7/</link>
       <pubDate>Mon, 30 Oct 2017 12:20:08 +0000</pubDate>
       
-      <guid>http://linuxfunk.com/post/linux/%E4%BD%BF%E7%94%A8docker%E6%9C%8D%E5%8A%A1%E9%85%8D%E7%BD%AEzabbix-grafana%E7%9B%91%E6%8E%A7/</guid>
+      <guid>http://linuxfunk.com/2017/10/30/%E4%BD%BF%E7%94%A8docker%E6%9C%8D%E5%8A%A1%E9%85%8D%E7%BD%AEzabbix-grafana%E7%9B%91%E6%8E%A7/</guid>
       <description>&lt;p&gt;使用docker服务配置Zabbix+Grafana监控
 纯命令行启动&lt;/p&gt;</description>
     </item>
     
     <item>
       <title>zabbix-agent yum install </title>
-      <link>http://linuxfunk.com/post/linux/zabbix-agent-yum-install/</link>
+      <link>http://linuxfunk.com/2017/10/17/zabbix-agent-yum-install/</link>
       <pubDate>Tue, 17 Oct 2017 08:39:53 +0000</pubDate>
       
-      <guid>http://linuxfunk.com/post/linux/zabbix-agent-yum-install/</guid>
+      <guid>http://linuxfunk.com/2017/10/17/zabbix-agent-yum-install/</guid>
       <description>&lt;p&gt;zabbix-agent yum install&lt;/p&gt;</description>
     </item>
     
     <item>
       <title>zabbix 3 配置邮件报警</title>
-      <link>http://linuxfunk.com/post/linux/zabbix-3-%E9%85%8D%E7%BD%AE%E9%82%AE%E4%BB%B6%E6%8A%A5%E8%AD%A6/</link>
+      <link>http://linuxfunk.com/2017/04/05/zabbix-3-%E9%85%8D%E7%BD%AE%E9%82%AE%E4%BB%B6%E6%8A%A5%E8%AD%A6/</link>
       <pubDate>Wed, 05 Apr 2017 15:58:50 +0000</pubDate>
       
-      <guid>http://linuxfunk.com/post/linux/zabbix-3-%E9%85%8D%E7%BD%AE%E9%82%AE%E4%BB%B6%E6%8A%A5%E8%AD%A6/</guid>
+      <guid>http://linuxfunk.com/2017/04/05/zabbix-3-%E9%85%8D%E7%BD%AE%E9%82%AE%E4%BB%B6%E6%8A%A5%E8%AD%A6/</guid>
       <description>&lt;p&gt;zabbix 配置邮件报警,其实网上有一堆教程，但是在按着他们的教程配置好了之后，或多或少有些问题，比如邮件发不出去，没内容等等。
 我整理了一下自己配置成功之后需要注意的几点。&lt;/p&gt;</description>
     </item>

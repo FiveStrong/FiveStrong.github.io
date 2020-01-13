@@ -13,10 +13,10 @@
     
     <item>
       <title>Centos7安装最新版supervisor</title>
-      <link>http://linuxfunk.com/post/linux/centos7%E5%AE%89%E8%A3%85%E6%9C%80%E6%96%B0%E7%89%88supervisor/</link>
+      <link>http://linuxfunk.com/2019/10/11/centos7%E5%AE%89%E8%A3%85%E6%9C%80%E6%96%B0%E7%89%88supervisor/</link>
       <pubDate>Fri, 11 Oct 2019 17:27:19 +0800</pubDate>
       
-      <guid>http://linuxfunk.com/post/linux/centos7%E5%AE%89%E8%A3%85%E6%9C%80%E6%96%B0%E7%89%88supervisor/</guid>
+      <guid>http://linuxfunk.com/2019/10/11/centos7%E5%AE%89%E8%A3%85%E6%9C%80%E6%96%B0%E7%89%88supervisor/</guid>
       <description>&lt;p&gt;由于centos7 yum安装supervisor版本太老，所以需要自己通过pip安装最新版本的supervisor.&lt;/p&gt;</description>
     </item>
     

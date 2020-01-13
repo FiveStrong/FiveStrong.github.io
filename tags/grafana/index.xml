@@ -13,10 +13,10 @@
     
     <item>
       <title>使用docker服务配置Zabbix&#43;Grafana监控</title>
-      <link>http://linuxfunk.com/post/linux/%E4%BD%BF%E7%94%A8docker%E6%9C%8D%E5%8A%A1%E9%85%8D%E7%BD%AEzabbix-grafana%E7%9B%91%E6%8E%A7/</link>
+      <link>http://linuxfunk.com/2017/10/30/%E4%BD%BF%E7%94%A8docker%E6%9C%8D%E5%8A%A1%E9%85%8D%E7%BD%AEzabbix-grafana%E7%9B%91%E6%8E%A7/</link>
       <pubDate>Mon, 30 Oct 2017 12:20:08 +0000</pubDate>
       
-      <guid>http://linuxfunk.com/post/linux/%E4%BD%BF%E7%94%A8docker%E6%9C%8D%E5%8A%A1%E9%85%8D%E7%BD%AEzabbix-grafana%E7%9B%91%E6%8E%A7/</guid>
+      <guid>http://linuxfunk.com/2017/10/30/%E4%BD%BF%E7%94%A8docker%E6%9C%8D%E5%8A%A1%E9%85%8D%E7%BD%AEzabbix-grafana%E7%9B%91%E6%8E%A7/</guid>
       <description>&lt;p&gt;使用docker服务配置Zabbix+Grafana监控
 纯命令行启动&lt;/p&gt;</description>
     </item>

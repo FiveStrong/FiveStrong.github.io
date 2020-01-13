@@ -13,10 +13,10 @@
     
     <item>
       <title>gitlab 通过docker镜像迁移升级</title>
-      <link>http://linuxfunk.com/post/linux/gitlab-%E9%80%9A%E8%BF%87docker%E9%95%9C%E5%83%8F%E8%BF%81%E7%A7%BB%E5%8D%87%E7%BA%A7/</link>
+      <link>http://linuxfunk.com/2017/10/30/gitlab-%E9%80%9A%E8%BF%87docker%E9%95%9C%E5%83%8F%E8%BF%81%E7%A7%BB%E5%8D%87%E7%BA%A7/</link>
       <pubDate>Mon, 30 Oct 2017 12:18:13 +0000</pubDate>
       
-      <guid>http://linuxfunk.com/post/linux/gitlab-%E9%80%9A%E8%BF%87docker%E9%95%9C%E5%83%8F%E8%BF%81%E7%A7%BB%E5%8D%87%E7%BA%A7/</guid>
+      <guid>http://linuxfunk.com/2017/10/30/gitlab-%E9%80%9A%E8%BF%87docker%E9%95%9C%E5%83%8F%E8%BF%81%E7%A7%BB%E5%8D%87%E7%BA%A7/</guid>
       <description>&lt;p&gt;迁移版本:&lt;/p&gt;
 &lt;p&gt;旧gitlab(8.8.3)  CentOS 6.8&lt;/p&gt;
 &lt;p&gt;新gitlab(9.5.5) postgresql(9.6) redis(2.8.4) CentOS 7.4&lt;/p&gt;</description>

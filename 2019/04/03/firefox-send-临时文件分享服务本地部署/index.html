@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Firefox Send 临时文件分享服务本地部署 - モルガンナの家</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="Morgana" /><meta name="description" content="火狐推出了项目Firefox Send，这里尝试通过docker镜像来本地部署临时文件共享服务。
+" /><meta name="keywords" content="Hugo, モルガンナの家" />
+
+
+<meta name="robots" content="">
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.61.0 with even 4.0.0" />
+
+
+<link rel="canonical" href="http://linuxfunk.com/2019/04/03/firefox-send-%E4%B8%B4%E6%97%B6%E6%96%87%E4%BB%B6%E5%88%86%E4%BA%AB%E6%9C%8D%E5%8A%A1%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B2/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<link href="/dist/even.84785aa1.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="Firefox Send 临时文件分享服务本地部署" />
+<meta property="og:description" content="火狐推出了项目Firefox Send，这里尝试通过docker镜像来本地部署临时文件共享服务。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://linuxfunk.com/2019/04/03/firefox-send-%E4%B8%B4%E6%97%B6%E6%96%87%E4%BB%B6%E5%88%86%E4%BA%AB%E6%9C%8D%E5%8A%A1%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B2/" />
+<meta property="article:published_time" content="2019-04-03T10:16:46+08:00" />
+<meta property="article:modified_time" content="2019-04-03T10:16:46+08:00" />
+<meta itemprop="name" content="Firefox Send 临时文件分享服务本地部署">
+<meta itemprop="description" content="火狐推出了项目Firefox Send，这里尝试通过docker镜像来本地部署临时文件共享服务。">
+<meta itemprop="datePublished" content="2019-04-03T10:16:46&#43;08:00" />
+<meta itemprop="dateModified" content="2019-04-03T10:16:46&#43;08:00" />
+<meta itemprop="wordCount" content="838">
+
+
+
+<meta itemprop="keywords" content="firefox-send," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Firefox Send 临时文件分享服务本地部署"/>
+<meta name="twitter:description" content="火狐推出了项目Firefox Send，这里尝试通过docker镜像来本地部署临时文件共享服务。"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">モルガンナの家</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">About</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">モルガンナの家</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">Categories</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">About</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">Firefox Send 临时文件分享服务本地部署</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2019-04-03 </span>
+        <div class="post-category">
+            <a href="/categories/linux/"> linux </a>
+            </div>
+          <span class="more-meta"> 约 838 字 </span>
+          <span class="more-meta"> 预计阅读 2 分钟 </span>
+        <span id="busuanzi_container_page_pv" class="more-meta"> <span id="busuanzi_value_page_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次阅读 </span>
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li></li>
+        <li><a href="#heading-2">注意事项</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <p>火狐推出了项目Firefox Send，这里尝试通过docker镜像来本地部署临时文件共享服务。</p>
+<h4 id="docker">一、通过官方源代码制作docker镜像</h4>
+<p>安装nodejs 以及其他编译环境</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell"><span class="c1">#centos</span>
+curl --silent --location https://rpm.nodesource.com/setup_10.x <span class="p">|</span> bash -
+yum -y install nodejs
+
+<span class="c1">#centos</span>
+yum install screen
+yum -y groupinstall <span class="s2">&#34;Development Tools&#34;</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>获取源代码并生成项目</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell"><span class="c1"># 编译项目</span>
+git clone https://github.com/mozilla/send.git
+<span class="nb">cd</span> send
+npm install
+npm run build
+<span class="c1"># 制作docker镜像</span>
+docker build -t firefox-send  .
+</code></pre></td></tr></table>
+</div>
+</div><p>编写docker-compose文件</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-python" data-lang="python"><span class="n">version</span><span class="p">:</span> <span class="sa"></span><span class="s2">&#34;</span><span class="s2">3</span><span class="s2">&#34;</span>
+<span class="n">services</span><span class="p">:</span>
+  <span class="n">web</span><span class="p">:</span>
+    <span class="n">image</span><span class="p">:</span> <span class="n">firefox</span><span class="o">-</span><span class="n">send</span>
+    <span class="n">container_name</span><span class="p">:</span> <span class="n">firefox</span><span class="o">-</span><span class="n">send</span>
+    <span class="n">links</span><span class="p">:</span>
+      <span class="o">-</span> <span class="n">redis</span>
+    <span class="n">ports</span><span class="p">:</span>
+      <span class="o">-</span> <span class="sa"></span><span class="s2">&#34;</span><span class="s2">127.0.0.1:1443:1443</span><span class="s2">&#34;</span>
+    <span class="n">environment</span><span class="p">:</span>
+      <span class="o">-</span> <span class="n">REDIS_HOST</span><span class="o">=</span><span class="n">redis</span>
+      <span class="o">-</span> <span class="n">NODE_ENV</span><span class="o">=</span><span class="n">production</span>
+    <span class="n">restart</span><span class="p">:</span> <span class="n">unless</span><span class="o">-</span><span class="n">stopped</span>
+  <span class="n">redis</span><span class="p">:</span>
+    <span class="n">image</span><span class="p">:</span> <span class="n">redis</span><span class="p">:</span><span class="n">alpine</span>
+    <span class="n">container_name</span><span class="p">:</span> <span class="n">redis</span>
+    <span class="n">restart</span><span class="p">:</span> <span class="n">unless</span><span class="o">-</span><span class="n">stopped</span>
+</code></pre></td></tr></table>
+</div>
+</div><h4 id="heading">二、运行</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">docker-compose up -d 
+<span class="c1"># 访问http://127.0.0.1:1443, 一切正常就可以访问到页面了</span>
+<span class="c1"># 如果想提供给其他机器访问，请将&#34;127.0.0.1:1443:1443&#34; 更改为&#34;0.0.0.0:1443:1443&#34;</span>
+</code></pre></td></tr></table>
+</div>
+</div><h4 id="heading-1">三、绑定域名</h4>
+<p>如果有自己的域名，需要绑定服务的话，可以使用nginx进行反向代理</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell"><span class="c1"># nginx配置文件</span>
+<span class="c1"># 这里使用了强制跳转https，证书生成，或者自签名证书的方法请自行搜索。</span>
+
+server <span class="o">{</span>
+    listen  80<span class="p">;</span>
+    server_name localhost<span class="p">;</span>
+    rewrite ^/<span class="o">(</span>.*<span class="o">)</span>$ https://202.112.4.58/ permanent<span class="p">;</span>
+<span class="o">}</span>
+server <span class="o">{</span>
+        listen <span class="m">443</span> ssl http2<span class="p">;</span>
+        server_name localhost<span class="p">;</span>
+        ssl on<span class="p">;</span>
+        ssl_certificate /etc/ssl/certs/nginx-selfsigned.crt<span class="p">;</span>
+        ssl_certificate_key /etc/ssl/private/nginx-selfsigned.key<span class="p">;</span>
+        ssl_session_timeout 5m<span class="p">;</span>
+        ssl_protocols TLSv1 TLSv1.1 TLSv1.2<span class="p">;</span>
+        ssl_prefer_server_ciphers on<span class="p">;</span>
+        ssl_ciphers <span class="s2">&#34;EECDH+CHACHA20:EECDH+CHACHA20-draft:EECDH+AES128:RSA+AES128:EECDH+AES256:RSA+AES256:EECDH+3DES:RSA+3DES:!MD5&#34;</span><span class="p">;</span>
+        ssl_session_cache builtin:1000 shared:SSL:10m<span class="p">;</span>
+
+       location /api/ws <span class="o">{</span>
+                proxy_redirect off<span class="p">;</span>
+                proxy_pass http://127.0.0.1:1443<span class="p">;</span>
+                proxy_http_version 1.1<span class="p">;</span>
+                proxy_set_header Upgrade <span class="nv">$http_upgrade</span><span class="p">;</span>
+               proxy_set_header Connection <span class="s2">&#34;upgrade&#34;</span><span class="p">;</span>
+                proxy_set_header Host <span class="nv">$http_host</span><span class="p">;</span>
+           <span class="o">}</span>
+
+       location / <span class="o">{</span>
+            proxy_pass       http://127.0.0.1:1443<span class="p">;</span>
+            proxy_set_header Host      <span class="nv">$host</span><span class="p">;</span>
+            proxy_set_header X-Real-IP <span class="nv">$remote_addr</span><span class="p">;</span>
+            proxy_set_header X-Forwarded-For <span class="nv">$proxy_add_x_forwarded_for</span><span class="p">;</span>
+       <span class="o">}</span>
+
+<span class="o">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="heading-2">注意事项</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">1. 进行反向代理的时候，还需要代理/api/ws这个路径，因为firefox-send文件上传使用的是websocket协议.
+2. 完全可以不做成docker镜像，直接npm start就可以访问，这时候的访问端口为8080，ws协议的端口为8081,反向代理的时候注意修改。
+可以用screen -S send 起一个screen窗口，这样npm start 就可以一直在窗口内跑，退出终端也不会断。
+3. 之所以用docker是因为centos服务器上编译node会报各种各样的错，可以在自己机器上编译好docker镜像，传到docker hub上，这样服务器端就可以使用docker-compose配置直接启动镜像了。
+</code></pre></td></tr></table>
+</div>
+</div>
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">
+      <a href="http://linuxfunk.com/">Morgana</a>
+    </span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">初次发布</span>
+    <span class="item-content">
+        2019-04-03
+    </span>
+  </p>
+  
+  
+  
+  <p class="copyright-item">
+    <span class="item-title">许可协议</span>
+    <span class="item-content"><a rel="license noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a></span>
+  </p>
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/firefox-send/">firefox-send</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/2019/10/11/centos7-%E7%BC%96%E8%AF%91%E5%AE%89%E8%A3%85python%E6%9C%80%E6%96%B0%E7%89%88/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">Centos7 编译安装python最新版</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        <a class="next" href="/2019/03/25/%E8%A7%A3%E5%86%B3%E9%BB%91%E8%8B%B9%E6%9E%9C%E9%87%8D%E5%90%AF%E6%8A%A5%E9%94%99%E9%97%AE%E9%A2%98/">
+            <span class="next-text nav-default">解决黑苹果重启报错问题</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:fivestrong@live.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://github.com/fivestrong" class="iconfont icon-github" title="github"></a>
+  <a href="http://linuxfunk.com/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  <div class="busuanzi-footer">
+    <span id="busuanzi_container_site_pv"> 本站总访问量 <span id="busuanzi_value_site_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次 </span>
+      <span class="division">|</span>
+    <span id="busuanzi_container_site_uv"> 本站总访客数 <span id="busuanzi_value_site_uv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 人 </span>
+  </div>
+
+  <span class="copyright-year">
+    &copy; 
+    2015 - 
+    2020
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">Morgana</span>
+  </span>
+</div>
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/dist/even.2139186b.min.js"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>
