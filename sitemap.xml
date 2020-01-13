@@ -16,14 +16,14 @@
   </url>
   
   <url>
-    <loc>http://linuxfunk.com/categories/rust/</loc>
+    <loc>http://linuxfunk.com/tags/rust/</loc>
     <lastmod>2020-01-03T09:36:09+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>http://linuxfunk.com/tags/rust/</loc>
+    <loc>http://linuxfunk.com/categories/rust/</loc>
     <lastmod>2020-01-03T09:36:09+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
