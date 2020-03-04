@@ -52,7 +52,7 @@
 <meta itemprop="description" content="由于centos7 yum安装supervisor版本太老，所以需要自己通过pip安装最新版本的supervisor.">
 <meta itemprop="datePublished" content="2019-10-11T17:27:19&#43;08:00" />
 <meta itemprop="dateModified" content="2019-10-11T17:27:19&#43;08:00" />
-<meta itemprop="wordCount" content="1038">
+<meta itemprop="wordCount" content="1040">
 
 
 
@@ -128,7 +128,7 @@
         <div class="post-category">
             <a href="/categories/linux/"> linux </a>
             </div>
-          <span class="more-meta"> 约 1038 字 </span>
+          <span class="more-meta"> 约 1040 字 </span>
           <span class="more-meta"> 预计阅读 3 分钟 </span>
         <span id="busuanzi_container_page_pv" class="more-meta"> <span id="busuanzi_value_page_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次阅读 </span>
       </div>
@@ -259,11 +259,13 @@ echo_supervisord_conf &gt; /etc/supervisor/supervisord.conf
 </span><span class="lnt">13
 </span><span class="lnt">14
 </span><span class="lnt">15
+</span><span class="lnt">16
 </span></code></pre></td>
 <td class="lntd">
 <pre class="chroma"><code class="language-fallback" data-lang="fallback"># supervisord service for systemd (CentOS 7.0+)
 [Unit]
 Description=Supervisor daemon
+After=network.target
 
 [Service]
 Type=forking
