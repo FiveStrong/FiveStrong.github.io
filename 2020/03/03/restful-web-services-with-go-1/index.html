@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Restful Web Services With Go (1) - モルガンナの家</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="Morgana" /><meta name="description" content="web 服务的类型 web服务在不断的演变过程中出现了很多服务类型: Simple Object Access Protocol(SOAP) 简单对象访问协议 Universal Description, Discovery, and Integration(UDDI) 统一描述、发现和集成，基于XML Web Services Description Language (WSDL) We" /><meta name="keywords" content="Hugo, モルガンナの家" />
+
+
+<meta name="robots" content="">
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.61.0 with even 4.0.0" />
+
+
+<link rel="canonical" href="http://linuxfunk.com/2020/03/03/restful-web-services-with-go-1/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<link href="/dist/even.84785aa1.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="Restful Web Services With Go (1)" />
+<meta property="og:description" content="web 服务的类型 web服务在不断的演变过程中出现了很多服务类型: Simple Object Access Protocol(SOAP) 简单对象访问协议 Universal Description, Discovery, and Integration(UDDI) 统一描述、发现和集成，基于XML Web Services Description Language (WSDL) We" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://linuxfunk.com/2020/03/03/restful-web-services-with-go-1/" />
+<meta property="article:published_time" content="2020-03-03T15:40:49+08:00" />
+<meta property="article:modified_time" content="2020-03-03T15:40:49+08:00" />
+<meta itemprop="name" content="Restful Web Services With Go (1)">
+<meta itemprop="description" content="web 服务的类型 web服务在不断的演变过程中出现了很多服务类型: Simple Object Access Protocol(SOAP) 简单对象访问协议 Universal Description, Discovery, and Integration(UDDI) 统一描述、发现和集成，基于XML Web Services Description Language (WSDL) We">
+<meta itemprop="datePublished" content="2020-03-03T15:40:49&#43;08:00" />
+<meta itemprop="dateModified" content="2020-03-03T15:40:49&#43;08:00" />
+<meta itemprop="wordCount" content="1771">
+
+
+
+<meta itemprop="keywords" content="restful," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Restful Web Services With Go (1)"/>
+<meta name="twitter:description" content="web 服务的类型 web服务在不断的演变过程中出现了很多服务类型: Simple Object Access Protocol(SOAP) 简单对象访问协议 Universal Description, Discovery, and Integration(UDDI) 统一描述、发现和集成，基于XML Web Services Description Language (WSDL) We"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">モルガンナの家</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">About</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">モルガンナの家</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">Categories</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">About</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">Restful Web Services With Go (1)</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2020-03-03 </span>
+        <div class="post-category">
+            <a href="/categories/golang/"> golang </a>
+            </div>
+          <span class="more-meta"> 约 1771 字 </span>
+          <span class="more-meta"> 预计阅读 4 分钟 </span>
+        <span id="busuanzi_container_page_pv" class="more-meta"> <span id="busuanzi_value_page_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次阅读 </span>
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#web-">web 服务的类型</a></li>
+        <li><a href="#rest-">REST 请求以及状态码</a></li>
+        <li><a href="#spas">日渐流行的单页应用(SPAs)</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <h3 id="web-">web 服务的类型</h3>
+<p>web服务在不断的演变过程中出现了很多服务类型:</p>
+<ul>
+<li>Simple Object Access Protocol(SOAP) 简单对象访问协议</li>
+<li>Universal Description, Discovery, and Integration(UDDI) 统一描述、发现和集成，基于XML</li>
+<li>Web Services Description Language (WSDL) Web服务描述语言</li>
+<li>Representational State Transfer (REST) 表现层状态转换</li>
+</ul>
+<h4 id="rest-api">REST API</h4>
+<p>相交于基于XML传输臃肿的SOAP协议，REST更加的轻量级。REST形式使得多终端通过HTTP进行互相通信成为可能。</p>
+<h4 id="rest-services-">REST services 的特性</h4>
+<ul>
+<li>基于客户端架构</li>
+<li>无状态</li>
+<li>可缓存</li>
+<li>以资源方式表现</li>
+<li>实现方式多种多样</li>
+</ul>
+<h3 id="rest-">REST 请求以及状态码</h3>
+<p>rest 常用请求方式</p>
+<table>
+<thead>
+<tr>
+<th>REST Verb</th>
+<th>Action</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>GET</td>
+<td>Fetches a record or set of resources from the server</td>
+</tr>
+<tr>
+<td>OPTIONS</td>
+<td>Fetches all available REST operations</td>
+</tr>
+<tr>
+<td>POST</td>
+<td>Creates a resource or a new set of resources</td>
+</tr>
+<tr>
+<td>PUT</td>
+<td>Updates or replaces the given record</td>
+</tr>
+<tr>
+<td>PATCH</td>
+<td>Modifies the given record</td>
+</tr>
+<tr>
+<td>DELETE</td>
+<td>Delete the given resource</td>
+</tr>
+</tbody>
+</table>
+<p>http常见响应状态码</p>
+<table>
+<thead>
+<tr>
+<th>Status Code Type</th>
+<th>Number Range</th>
+<th>Action</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Success</td>
+<td>200-226</td>
+<td>The 2xx family is used for successful responses.</td>
+</tr>
+<tr>
+<td>Error</td>
+<td>400-499(client), 500-599(server)</td>
+<td>The 4xx family is used for indicating client errors.The 5xx is for server failures to process the request.</td>
+</tr>
+<tr>
+<td>Redirect</td>
+<td>300-308</td>
+<td>The 3xx family is for URL redirection.</td>
+</tr>
+</tbody>
+</table>
+<p>REST API URI 标准格式</p>
+<p>http://HostName/APIEndpoint/?key=value(optianal)</p>
+<h4 id="heading">请求方式详解</h4>
+<p><strong>GET</strong></p>
+<p>GET方法用于请求服务器资源，该请求可以使用以下两种请求参数方法：</p>
+<ul>
+<li>Query parameters</li>
+<li>Path-based parameters</li>
+</ul>
+<p><strong>路径参数举例</strong></p>
+<p>PayPal是国外常使用的支付方式，它提供用户REST API操作交易信息。</p>
+<p>通过GET获取 billing agreement 信息的URI为：/v1/payments/billing-agreements/agreement_id.</p>
+<p>这里的agreement_id就是一个关于用户的路径请求参数.服务器根据id信息去billing-agreements下面查找信息。</p>
+<p>GET也可以获取一个资源列表，比如获取paypal的交易信息，/v1/payments/billing-agreements/transactions.</p>
+<p><strong>请求参数举例</strong></p>
+<p>请求参数通过关键字来操作匹配资源，比如获取一本书出版日期2020，目录为fiction的书：/v1/books/?category=fiction&amp;publish_date=2020</p>
+<p><em>建议</em>：当需要获取基于参数的多个资源，可以使用请求参数来进行特定过滤；当需要特定URI的单个资源可以使用路径参数。（Use Path parameters for a single resource and Query parameters for multiple resources in a GET request.）</p>
+<p><strong>POST, PUT, and PATCH</strong></p>
+<p>POST用于创建资源，比如在书籍API中，通过给定信息创建一本书，/v1/books.</p>
+<p>POST请求的JSON 格式为</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-json" data-lang="json"><span class="p">{</span><span class="nt">&#34;name&#34;</span><span class="p">:</span> <span class="s2">&#34;射雕英雄传&#34;</span><span class="p">,</span> <span class="nt">&#34;year&#34;</span><span class="p">:</span> <span class="mi">1954</span><span class="p">,</span> <span class="nt">&#34;author&#34;</span><span class="p">:</span> <span class="s2">&#34;金庸&#34;</span><span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>POST会在数据库中写入并提供ID，这样我们就能通过ID来GET数据。事实上 射雕英雄传 出版日期为1957年，如果我们想要更新数据，就要用到PUT请求。</p>
+<p>PUT跟POST用法类似，它用于更新已存在资源。假如书的API为/v1/books/1234,PUT提交更新的JSON格式为：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-json" data-lang="json"><span class="p">{</span><span class="nt">&#34;name&#34;</span><span class="p">:</span> <span class="s2">&#34;射雕英雄传&#34;</span><span class="p">,</span> <span class="nt">&#34;year&#34;</span><span class="p">:</span> <span class="mi">1957</span><span class="p">,</span> <span class="nt">&#34;author&#34;</span><span class="p">:</span> <span class="s2">&#34;金庸&#34;</span><span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>可以看到为了更新year字段，我们需要将整个ID为1234书的信息全部更新替换，如果是一个数据量很大的信息，这样更新的效率并不高，于是就有了PATCH请求。</p>
+<p>PATCH可以更新现有列数据或者添加新的列数据，比如向ID为1234的书添加ISBN信息，/v1/books/1234</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-json" data-lang="json"><span class="p">{</span><span class="nt">&#34;isbn&#34;</span><span class="p">:</span> <span class="s2">&#34;9787807310822&#34;</span><span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><p><strong>DELETE and OPTIONS</strong></p>
+<p>DELETE请求方法会从数据库删除资源，它的请求不需要任何JSON body。</p>
+<p>OPTIONS方法会获取服务器提供的所有请求方法。</p>
+<p><strong>跨域资源共享 Cross-Origin Resource Sharing(CORS)</strong></p>
+<p>OPTIONS请求的一个应用就是跨域资源共享。现代浏览器为了安全都会阻止客户端的跨域请求。比如网站www.foo.com只能请求自身域名的API，如果他要请求其他网站的信息，比如www.bar.com，那么bar.com就需要验证foo.com这个域是否有权限获取资源。</p>
+<p>具体请求过程如下：</p>
+<ol>
+<li>foo.com 向 bar.com 发送OPTIONS请求。</li>
+<li>bar.com 返回响应头信息中包含 Access-Control-Allow-Origin:http://foo.com。</li>
+<li>这样foo.com就可以通过任何方法无限制的访问bar.com的资源了。</li>
+</ol>
+<h3 id="spas">日渐流行的单页应用(SPAs)</h3>
+<p>这几年新兴的前端框架，例如 Angular,React,Vue.js 都支持将前端页面作为单独的网站入口，与后端的交互都通过REST API。</p>
+<p>SPA与传统方式数据流获取的对比：</p>
+<p>传统方式：</p>
+<ol>
+<li>客户端从服务器请求网页。</li>
+<li>服务器认证之后返回响应。</li>
+<li>之后重复请求，每一次的请求后端都将数据打包渲染之后，以响应的形式返回客户端。</li>
+</ol>
+<p>SPA：</p>
+<ol>
+<li>向后端发送请求，获取整个HTML网页。</li>
+<li>触发当前页面JSON REST API请求，获取需要的数据。</li>
+<li>通过获取到的数据调整当前页面内容。</li>
+<li>当页面进行修改之后，客户端将改变信息通过API传回服务器端。</li>
+</ol>
+<p>两种方式分别是 Response-Oriented Architecture(ROA) / Service-Oriented Architecture(SOA)</p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">
+      <a href="http://linuxfunk.com/">Morgana</a>
+    </span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">初次发布</span>
+    <span class="item-content">
+        2020-03-03
+    </span>
+  </p>
+  
+  
+  
+  <p class="copyright-item">
+    <span class="item-title">许可协议</span>
+    <span class="item-content"><a rel="license noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a></span>
+  </p>
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/restful/">restful</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/2020/03/04/%E5%9F%BA%E4%BA%8Ecentos7%E5%8D%87%E7%BA%A7%E5%88%B0centos8/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">基于Centos7升级到Centos8</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        <a class="next" href="/2020/01/03/a-tour-of-the-language/">
+            <span class="next-text nav-default">Rust 语言概述</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+  
+  <div id="utter-container"></div>
+    <script src="https://utteranc.es/client.js"
+        repo= 'fivestrong/fivestrong.github.io'
+        issue-term= "title"
+        theme= 'github-light'
+        crossorigin= "anonymous"
+        async>
+    </script>
+
+  
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:fivestrong@live.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://github.com/fivestrong" class="iconfont icon-github" title="github"></a>
+  <a href="http://linuxfunk.com/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  <div class="busuanzi-footer">
+    <span id="busuanzi_container_site_pv"> 本站总访问量 <span id="busuanzi_value_site_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次 </span>
+      <span class="division">|</span>
+    <span id="busuanzi_container_site_uv"> 本站总访客数 <span id="busuanzi_value_site_uv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 人 </span>
+  </div>
+
+  <span class="copyright-year">
+    &copy; 
+    2015 - 
+    2020
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">Morgana</span>
+  </span>
+</div>
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/dist/even.2139186b.min.js"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>
