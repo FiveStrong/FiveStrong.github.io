@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>go on モルガンナの家</title>
+    <link>http://linuxfunk.com/tags/go/</link>
+    <description>Recent content in go on モルガンナの家</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Thu, 05 Mar 2020 15:51:39 +0800</lastBuildDate>
+    
+	<atom:link href="http://linuxfunk.com/tags/go/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Using Go Modules</title>
+      <link>http://linuxfunk.com/2020/03/05/using-go-modules/</link>
+      <pubDate>Thu, 05 Mar 2020 15:51:39 +0800</pubDate>
+      
+      <guid>http://linuxfunk.com/2020/03/05/using-go-modules/</guid>
+      <description>Go从1.11开始支持modules模式，如果当前目录不在$GOPATH/src目录下面并且当前目录或者父目录包含go.mod，Go命令行启</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -3,21 +3,49 @@
   
   <url>
     <loc>http://linuxfunk.com/categories/</loc>
-    <lastmod>2020-03-05T09:54:01+08:00</lastmod>
+    <lastmod>2020-03-05T15:51:39+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>http://linuxfunk.com/tags/go/</loc>
+    <lastmod>2020-03-05T15:51:39+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
     <loc>http://linuxfunk.com/categories/golang/</loc>
-    <lastmod>2020-03-05T09:54:01+08:00</lastmod>
+    <lastmod>2020-03-05T15:51:39+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
     <loc>http://linuxfunk.com/post/</loc>
-    <lastmod>2020-03-05T09:54:01+08:00</lastmod>
+    <lastmod>2020-03-05T15:51:39+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>http://linuxfunk.com/tags/</loc>
+    <lastmod>2020-03-05T15:51:39+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>http://linuxfunk.com/2020/03/05/using-go-modules/</loc>
+    <lastmod>2020-03-05T15:51:39+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>http://linuxfunk.com/</loc>
+    <lastmod>2020-03-05T15:51:39+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
@@ -31,20 +59,6 @@
   
   <url>
     <loc>http://linuxfunk.com/2020/03/05/restful-web-services-with-go-2/</loc>
-    <lastmod>2020-03-05T09:54:01+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>http://linuxfunk.com/tags/</loc>
-    <lastmod>2020-03-05T09:54:01+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>http://linuxfunk.com/</loc>
     <lastmod>2020-03-05T09:54:01+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>

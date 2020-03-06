@@ -1,0 +1,882 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Using Go Modules - モルガンナの家</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="Morgana" /><meta name="description" content="Go从1.11开始支持modules模式，如果当前目录不在$GOPATH/src目录下面并且当前目录或者父目录包含go.mod，Go命令行启" /><meta name="keywords" content="Hugo, モルガンナの家" />
+
+
+<meta name="robots" content="">
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.61.0 with even 4.0.0" />
+
+
+<link rel="canonical" href="http://linuxfunk.com/2020/03/05/using-go-modules/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<link href="/dist/even.84785aa1.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="Using Go Modules" />
+<meta property="og:description" content="Go从1.11开始支持modules模式，如果当前目录不在$GOPATH/src目录下面并且当前目录或者父目录包含go.mod，Go命令行启" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://linuxfunk.com/2020/03/05/using-go-modules/" />
+<meta property="article:published_time" content="2020-03-05T15:51:39+08:00" />
+<meta property="article:modified_time" content="2020-03-05T15:51:39+08:00" />
+<meta itemprop="name" content="Using Go Modules">
+<meta itemprop="description" content="Go从1.11开始支持modules模式，如果当前目录不在$GOPATH/src目录下面并且当前目录或者父目录包含go.mod，Go命令行启">
+<meta itemprop="datePublished" content="2020-03-05T15:51:39&#43;08:00" />
+<meta itemprop="dateModified" content="2020-03-05T15:51:39&#43;08:00" />
+<meta itemprop="wordCount" content="2477">
+
+
+
+<meta itemprop="keywords" content="go," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Using Go Modules"/>
+<meta name="twitter:description" content="Go从1.11开始支持modules模式，如果当前目录不在$GOPATH/src目录下面并且当前目录或者父目录包含go.mod，Go命令行启"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">モルガンナの家</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">About</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">モルガンナの家</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">Categories</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">About</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">Using Go Modules</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2020-03-05 </span>
+        <div class="post-category">
+            <a href="/categories/golang/"> golang </a>
+            </div>
+          <span class="more-meta"> 约 2477 字 </span>
+          <span class="more-meta"> 预计阅读 5 分钟 </span>
+        <span id="busuanzi_container_page_pv" class="more-meta"> <span id="busuanzi_value_page_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次阅读 </span>
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#module">创建新的module</a></li>
+        <li><a href="#heading">添加依赖</a></li>
+        <li><a href="#heading-1">更新依赖</a></li>
+        <li><a href="#heading-4">删除不使用的依赖</a></li>
+        <li><a href="#heading-5">总结</a></li>
+        <li><a href="#heading-6">相关阅读</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <p>Go从1.11开始支持modules模式，如果当前目录不在<code>$GOPATH/src</code>目录下面并且当前目录或者父目录包含go.mod，Go命令行启用modules模式；如果是在<code>$GOPATH/src</code>路径，即便发现有go.mod文件Go命令仍然使用旧的GOPATH模式。</p>
+<p>但是从1.13版本开始，在所有的开发环境下module设置为默认模式。</p>
+<p>下面记录一些<code>Go modules </code>简单的使用方法</p>
+<h3 id="module">创建新的module</h3>
+<p>在任何位置创建一个空的目录，新建源文件<code>hello.go</code></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-go" data-lang="go"><span class="kn">package</span> <span class="nx">hello</span>
+
+<span class="kd">func</span> <span class="nf">Hello</span><span class="p">(</span><span class="p">)</span> <span class="kt">string</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="s">&#34;Hello, world.&#34;</span>
+<span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>创建测试文件<code>hello_test.go</code></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-go" data-lang="go"><span class="kn">package</span> <span class="nx">hello</span>
+
+<span class="kn">import</span> <span class="s">&#34;testing&#34;</span>
+
+<span class="kd">func</span> <span class="nf">TestHello</span><span class="p">(</span><span class="nx">t</span> <span class="o">*</span><span class="nx">testing</span><span class="p">.</span><span class="nx">T</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">want</span> <span class="o">:=</span> <span class="s">&#34;Hello, world.&#34;</span>
+  <span class="k">if</span> <span class="nx">got</span> <span class="o">:=</span> <span class="nf">Hello</span><span class="p">(</span><span class="p">)</span><span class="p">;</span> <span class="nx">got</span> <span class="o">!=</span> <span class="nx">want</span> <span class="p">{</span>
+    <span class="nx">t</span><span class="p">.</span><span class="nf">Errorf</span><span class="p">(</span><span class="s">&#34;Hello() = %q, want %q&#34;</span><span class="p">,</span> <span class="nx">got</span><span class="p">,</span> <span class="nx">want</span><span class="p">)</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>因为没有go.mod文件，所以当前目录是一个包，不是模块。这时我们进入<code>/home/gopher/hello</code>并执行<code>go test</code></p>
+<p>显示结果为：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-go" data-lang="go"><span class="err">$</span> <span class="k">go</span> <span class="nx">test</span>
+<span class="nx">PASS</span>
+<span class="nx">ok</span>      <span class="nx">_</span><span class="o">/</span><span class="nx">home</span><span class="o">/</span><span class="nx">gopher</span><span class="o">/</span><span class="nx">hello</span>    <span class="mf">0.020</span><span class="nx">s</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>最后一行是测试结果汇总。因为我们不在<code>$GOPATH</code>也不在模块内，Go命令无法确定当前目录的导入路径，所以它基于当前目录名称创建了一个假的：<code>_/home/gopher/hello</code></p>
+<p>接下来以当前目录作为模块根目录，使用 <code>go mod init</code> 创建<code>go.mod</code>文件</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-go" data-lang="go"><span class="err">$</span> <span class="k">go</span> <span class="nx">mod</span> <span class="nx">init</span> <span class="nx">github</span><span class="p">.</span><span class="nx">com</span><span class="o">/</span><span class="nx">hello</span>
+<span class="k">go</span><span class="p">:</span> <span class="nx">creating</span> <span class="nx">new</span> <span class="k">go</span><span class="p">.</span><span class="nx">mod</span><span class="p">:</span> <span class="nx">module</span> <span class="nx">example</span><span class="p">.</span><span class="nx">com</span><span class="o">/</span><span class="nx">hello</span>
+<span class="err">$</span> <span class="k">go</span> <span class="nx">test</span>
+<span class="nx">PASS</span>
+<span class="nx">ok</span>      <span class="nx">github</span><span class="p">.</span><span class="nx">com</span><span class="o">/</span><span class="nx">hello</span>    <span class="mf">0.020</span><span class="nx">s</span>
+<span class="err">$</span>
+</code></pre></td></tr></table>
+</div>
+</div><p><em>go mod init</em> 写入文件的内容为:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-go" data-lang="go"><span class="nx">module</span> <span class="nx">github</span><span class="p">.</span><span class="nx">com</span><span class="o">/</span><span class="nx">hello</span>
+
+<span class="k">go</span> <span class="mf">1.14</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>go.mod 文件仅仅存在于模块的根目录下，如果子目录作为一个包需要被导入，直接以当前模块目录加包目录的形式导入就可以。比如你在hello目录下面创建了一个world包，它的导入路径就是<code>github.com/hello/world</code>。</p>
+<h3 id="heading">添加依赖</h3>
+<p>Go modules 存在的意义就是为了提高对依赖包的管理</p>
+<p>我们向<code>hello.go</code>导入 <code>rsc.io/quote</code> 作为演示</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-go" data-lang="go"><span class="kn">package</span> <span class="nx">hello</span>
+
+<span class="kn">import</span> <span class="s">&#34;rsc.io/quote&#34;</span>
+
+<span class="kd">func</span> <span class="nf">Hello</span><span class="p">(</span><span class="p">)</span> <span class="kt">string</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="nx">quote</span><span class="p">.</span><span class="nf">Hello</span><span class="p">(</span><span class="p">)</span>
+<span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>再次运行test</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-go" data-lang="go"><span class="err">#</span> <span class="k">go</span> <span class="nx">test</span>
+<span class="k">go</span><span class="p">:</span> <span class="nx">finding</span> <span class="nx">module</span> <span class="k">for</span> <span class="kn">package</span> <span class="nx">rsc</span><span class="p">.</span><span class="nx">io</span><span class="o">/</span><span class="nx">quote</span>
+<span class="k">go</span><span class="p">:</span> <span class="nx">found</span> <span class="nx">rsc</span><span class="p">.</span><span class="nx">io</span><span class="o">/</span><span class="nx">quote</span> <span class="nx">in</span> <span class="nx">rsc</span><span class="p">.</span><span class="nx">io</span><span class="o">/</span><span class="nx">quote</span> <span class="nx">v1</span><span class="mf">.5</span><span class="mf">.2</span>
+<span class="k">go</span><span class="p">:</span> <span class="nx">downloading</span> <span class="nx">golang</span><span class="p">.</span><span class="nx">org</span><span class="o">/</span><span class="nx">x</span><span class="o">/</span><span class="nx">text</span> <span class="nx">v0</span><span class="mf">.0</span><span class="mf">.0</span><span class="o">-</span><span class="mi">20170915032832</span><span class="o">-</span><span class="mi">14</span><span class="nx">c0d48ead0c</span>
+<span class="k">go</span><span class="p">:</span> <span class="nx">updating</span> <span class="k">go</span><span class="p">.</span><span class="nx">mod</span><span class="p">:</span> <span class="nx">existing</span> <span class="nx">contents</span> <span class="nx">have</span> <span class="nx">changed</span> <span class="nx">since</span> <span class="nx">last</span> <span class="nx">read</span>
+<span class="o">--</span><span class="o">-</span> <span class="nx">FAIL</span><span class="p">:</span> <span class="nf">TestHello</span> <span class="p">(</span><span class="mf">0.00</span><span class="nx">s</span><span class="p">)</span>
+    <span class="nx">hello_test</span><span class="p">.</span><span class="k">go</span><span class="p">:</span><span class="mi">8</span><span class="p">:</span> <span class="nf">Hello</span><span class="p">(</span><span class="p">)</span> <span class="p">=</span> <span class="s">&#34;你好，世界。&#34;</span><span class="p">,</span> <span class="nx">want</span> <span class="s">&#34;Hello, world.&#34;</span>
+<span class="nx">FAIL</span>
+<span class="nx">exit</span> <span class="nx">status</span> <span class="mi">1</span>
+<span class="nx">FAIL</span>	<span class="nx">github</span><span class="p">.</span><span class="nx">com</span><span class="o">/</span><span class="nx">hello</span>	<span class="mf">0.005</span><span class="nx">s</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>go 命令通过go.mod中列出的模块的相关版本来进行导入调用。当遇到go.mod中没有出现过的模块，go 命令会自动查找下载相关模块最新版本并添加到go.mod中。go.mod目录仅记录直接依赖模块，如果第三方模块还有其他的依赖，会下载但不回记录。此时go.mod文件变成：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-go" data-lang="go"><span class="nx">module</span> <span class="nx">github</span><span class="p">.</span><span class="nx">com</span><span class="o">/</span><span class="nx">hello</span>
+
+<span class="k">go</span> <span class="mf">1.14</span>
+
+<span class="nx">require</span> <span class="nx">rsc</span><span class="p">.</span><span class="nx">io</span><span class="o">/</span><span class="nx">quote</span> <span class="nx">v1</span><span class="mf">.5</span><span class="mf">.2</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>需要注意的是下载的第三方模块不存在本地，而是 <code>$GOPATH/pkg/mod </code>目录下面。</p>
+<p>下载直接依赖会引入其他依赖，通过 <code>go list -m all</code> 可以查看当前模块以及它的所有依赖</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-go" data-lang="go"><span class="nx">github</span><span class="p">.</span><span class="nx">com</span><span class="o">/</span><span class="nx">hello</span>
+<span class="nx">golang</span><span class="p">.</span><span class="nx">org</span><span class="o">/</span><span class="nx">x</span><span class="o">/</span><span class="nx">text</span> <span class="nx">v0</span><span class="mf">.0</span><span class="mf">.0</span><span class="o">-</span><span class="mi">20170915032832</span><span class="o">-</span><span class="mi">14</span><span class="nx">c0d48ead0c</span>
+<span class="nx">rsc</span><span class="p">.</span><span class="nx">io</span><span class="o">/</span><span class="nx">quote</span> <span class="nx">v1</span><span class="mf">.5</span><span class="mf">.2</span>
+<span class="nx">rsc</span><span class="p">.</span><span class="nx">io</span><span class="o">/</span><span class="nx">sampler</span> <span class="nx">v1</span><span class="mf">.3</span><span class="mf">.0</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>除了 <code>go.mod</code> 文件，go 命令还维护一个文件 <code>go.sum</code>，这个文件包含特定模块版本的哈希加密值</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-go" data-lang="go"><span class="nx">golang</span><span class="p">.</span><span class="nx">org</span><span class="o">/</span><span class="nx">x</span><span class="o">/</span><span class="nx">text</span> <span class="nx">v0</span><span class="mf">.0</span><span class="mf">.0</span><span class="o">-</span><span class="mi">20170915032832</span><span class="o">-</span><span class="mi">14</span><span class="nx">c0d48ead0c</span> <span class="nx">h1</span><span class="p">:</span><span class="nx">qgOY6WgZOaTkIIMiVjBQcw93ERBE4m30iBm00nkL0i8</span><span class="p">=</span>
+<span class="nx">golang</span><span class="p">.</span><span class="nx">org</span><span class="o">/</span><span class="nx">x</span><span class="o">/</span><span class="nx">text</span> <span class="nx">v0</span><span class="mf">.0</span><span class="mf">.0</span><span class="o">-</span><span class="mi">20170915032832</span><span class="o">-</span><span class="mi">14</span><span class="nx">c0d48ead0c</span><span class="o">/</span><span class="k">go</span><span class="p">.</span><span class="nx">mod</span> <span class="nx">h1</span><span class="p">:</span><span class="nx">NqM8EUOU14njkJ3fqMW</span><span class="o">+</span><span class="nx">pc6Ldnwhi</span><span class="o">/</span><span class="nx">IjpwHt7yyuwOQ</span><span class="p">=</span>
+<span class="nx">rsc</span><span class="p">.</span><span class="nx">io</span><span class="o">/</span><span class="nx">quote</span> <span class="nx">v1</span><span class="mf">.5</span><span class="mf">.2</span> <span class="nx">h1</span><span class="p">:</span><span class="nx">w5fcysjrx7yqtD</span><span class="o">/</span><span class="nx">aO</span><span class="o">+</span><span class="nx">QwRjYZOKnaM9Uh2b40tElTs3Y</span><span class="p">=</span>
+<span class="nx">rsc</span><span class="p">.</span><span class="nx">io</span><span class="o">/</span><span class="nx">quote</span> <span class="nx">v1</span><span class="mf">.5</span><span class="mf">.2</span><span class="o">/</span><span class="k">go</span><span class="p">.</span><span class="nx">mod</span> <span class="nx">h1</span><span class="p">:</span><span class="nx">LzX7hefJvL54yjefDEDHNONDjII0t9xZLPXsUe</span><span class="o">+</span><span class="nx">TKr0</span><span class="p">=</span>
+<span class="nx">rsc</span><span class="p">.</span><span class="nx">io</span><span class="o">/</span><span class="nx">sampler</span> <span class="nx">v1</span><span class="mf">.3</span><span class="mf">.0</span> <span class="nx">h1</span><span class="p">:</span><span class="mi">7</span><span class="nx">uVkIFmeBqHfdjD</span><span class="o">+</span><span class="nx">gZwtXXI</span><span class="o">+</span><span class="nx">RODJ2Wc4O7MPEh</span><span class="o">/</span><span class="nx">QiW4</span><span class="p">=</span>
+<span class="nx">rsc</span><span class="p">.</span><span class="nx">io</span><span class="o">/</span><span class="nx">sampler</span> <span class="nx">v1</span><span class="mf">.3</span><span class="mf">.0</span><span class="o">/</span><span class="k">go</span><span class="p">.</span><span class="nx">mod</span> <span class="nx">h1</span><span class="p">:</span><span class="nx">T1hPZKmBbMNahiBKFy5HrXp6adAjACjK9JXDnKaTXpA</span><span class="p">=</span>
+</code></pre></td></tr></table>
+</div>
+</div><p><code>go.sum</code> 存在是为了确保将来再次下载这些模块的时候能和第一次下载的相同，确保模块没有被意外更改或者破坏。</p>
+<h3 id="heading-1">更新依赖</h3>
+<p><code>Go  modules</code> 版本号以语义标签的形式表示。假设版本号v0.1.2</p>
+<ul>
+<li>0：表示主要版本</li>
+<li>1：表示次要版本</li>
+<li>2：表示补丁版本</li>
+</ul>
+<p>从之前的信息我们了解到text这个包版本号很低，我们现在将它更新到最新版本。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell"><span class="c1"># go get golang.org/x/text</span>
+go: golang.org/x/text <span class="nv">upgrade</span> <span class="o">=</span>&gt; v0.3.2
+go: downloading golang.org/x/text v0.3.2
+<span class="c1"># go test</span>
+PASS
+ok  	github.com/hello	0.005s
+</code></pre></td></tr></table>
+</div>
+</div><p>更新后测试一切正常，再看一下<code> go list -m all</code> 和 <code>go.mod </code>的输出</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell"><span class="c1"># go list -m all</span> 
+github.gom/hello
+golang.org/x/text v0.3.2
+golang.org/x/tools v0.0.0-20180917221912-90fa682c2a6e
+rsc.io/quote v1.5.2
+rsc.io/sampler v1.3.0
+<span class="c1"># cat go.mod</span>
+module github.com/hello
+
+go 1.14
+
+require <span class="o">(</span>
+	golang.org/x/text v0.3.2 // indirect
+	rsc.io/quote v1.5.2
+<span class="o">)</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>可见<code>go.mod</code>文件也被更新了，注释中的 <code>indirect</code> 表示text包没有直接被当前包引用，而是被其他包直接引用。</p>
+<p>再更新一下<code> rsc.io/sampler</code> 试试</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell"><span class="c1"># go get rsc.io/sampler</span>
+go: rsc.io/sampler <span class="nv">upgrade</span> <span class="o">=</span>&gt; v1.99.99
+go: downloading rsc.io/sampler v1.99.99
+<span class="c1"># go test</span>
+--- FAIL: TestHello <span class="o">(</span>0.00s<span class="o">)</span>
+    hello_test.go:8: Hello<span class="o">(</span><span class="o">)</span> <span class="o">=</span> <span class="s2">&#34;99 bottles of beer on the wall, 99 bottles of beer, ...&#34;</span>, want <span class="s2">&#34;你好，世界。&#34;</span>
+FAIL
+<span class="nb">exit</span> status <span class="m">1</span>
+FAIL	github.com/hello	0.005s
+</code></pre></td></tr></table>
+</div>
+</div><p>test报错了，说明最新版本的<code>src.io/sampler</code> 是有问题的，我们查看一下它的所有可选版本。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell"><span class="c1"># go list -m --versions rsc.io/sampler</span>
+rsc.io/sampler v1.0.0 v1.2.0 v1.2.1 v1.3.0 v1.3.1 v1.99.99
+</code></pre></td></tr></table>
+</div>
+</div><p>降级到v1.3.1试试</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell"><span class="c1"># go get rsc.io/sampler@v1.3.1</span>
+go: downloading rsc.io/sampler v1.3.1
+<span class="c1"># go test</span>
+PASS
+ok  	github.com/hello	0.005s
+</code></pre></td></tr></table>
+</div>
+</div><p>所以说每一个通过<code>go get</code> 获取的包都能够加上版本标签，只不过一般默认情况下为<code>@latest</code></p>
+<h4 id="heading-2">添加一个新的主版本依赖</h4>
+<p>添加一个新的函数，使用quote新版本中关于 <code>Go concurrency</code> 的功能</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-go" data-lang="go"><span class="err">#</span> <span class="nx">hello</span><span class="p">.</span><span class="k">go</span>
+
+<span class="kn">package</span> <span class="nx">hello</span>
+
+<span class="kn">import</span> <span class="p">(</span>
+	<span class="s">&#34;rsc.io/quote&#34;</span>
+	<span class="nx">quoteV3</span> <span class="s">&#34;rsc.io/quote/v3&#34;</span>
+<span class="p">)</span> 
+
+
+<span class="kd">func</span> <span class="nf">Hello</span><span class="p">(</span><span class="p">)</span> <span class="kt">string</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="nx">quote</span><span class="p">.</span><span class="nf">Hello</span><span class="p">(</span><span class="p">)</span>
+<span class="p">}</span>
+
+<span class="kd">func</span> <span class="nf">Proverb</span><span class="p">(</span><span class="p">)</span> <span class="kt">string</span> <span class="p">{</span>
+	<span class="k">return</span> <span class="nx">quoteV3</span><span class="p">.</span><span class="nf">Concurrency</span><span class="p">(</span><span class="p">)</span>
+<span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-go" data-lang="go"><span class="err">#</span> <span class="nx">hello_test</span><span class="p">.</span><span class="k">go</span>
+
+<span class="kn">package</span> <span class="nx">hello</span>
+
+<span class="kn">import</span> <span class="s">&#34;testing&#34;</span>
+
+<span class="kd">func</span> <span class="nf">TestHello</span><span class="p">(</span><span class="nx">t</span> <span class="o">*</span><span class="nx">testing</span><span class="p">.</span><span class="nx">T</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">want</span> <span class="o">:=</span> <span class="s">&#34;你好，世界。&#34;</span>
+  <span class="k">if</span> <span class="nx">got</span> <span class="o">:=</span> <span class="nf">Hello</span><span class="p">(</span><span class="p">)</span><span class="p">;</span> <span class="nx">got</span> <span class="o">!=</span> <span class="nx">want</span> <span class="p">{</span>
+    <span class="nx">t</span><span class="p">.</span><span class="nf">Errorf</span><span class="p">(</span><span class="s">&#34;Hello() = %q, want %q&#34;</span><span class="p">,</span> <span class="nx">got</span><span class="p">,</span> <span class="nx">want</span><span class="p">)</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kd">func</span> <span class="nf">TestProverb</span><span class="p">(</span><span class="nx">t</span> <span class="o">*</span><span class="nx">testing</span><span class="p">.</span><span class="nx">T</span><span class="p">)</span> <span class="p">{</span>
+	<span class="nx">want</span> <span class="o">:=</span> <span class="s">&#34;Concurrency is not parallelism.&#34;</span>
+  <span class="k">if</span> <span class="nx">got</span> <span class="o">:=</span> <span class="nf">Proverb</span><span class="p">(</span><span class="p">)</span><span class="p">;</span> <span class="nx">got</span> <span class="o">!=</span> <span class="nx">want</span> <span class="p">{</span>
+    <span class="nx">t</span><span class="p">.</span><span class="nf">Errorf</span><span class="p">(</span><span class="s">&#34;Hello() = %q, want %q&#34;</span><span class="p">,</span> <span class="nx">got</span><span class="p">,</span> <span class="nx">want</span><span class="p">)</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>测试结果</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-go" data-lang="go"><span class="err">#</span> <span class="k">go</span> <span class="nx">test</span>
+
+<span class="k">go</span><span class="p">:</span> <span class="nx">finding</span> <span class="nx">rsc</span><span class="p">.</span><span class="nx">io</span><span class="o">/</span><span class="nx">quote</span><span class="o">/</span><span class="nx">v3</span> <span class="nx">v3</span><span class="mf">.1</span><span class="mf">.0</span>
+<span class="k">go</span><span class="p">:</span> <span class="nx">downloading</span> <span class="nx">rsc</span><span class="p">.</span><span class="nx">io</span><span class="o">/</span><span class="nx">quote</span><span class="o">/</span><span class="nx">v3</span> <span class="nx">v3</span><span class="mf">.1</span><span class="mf">.0</span>
+<span class="k">go</span><span class="p">:</span> <span class="nx">extracting</span> <span class="nx">rsc</span><span class="p">.</span><span class="nx">io</span><span class="o">/</span><span class="nx">quote</span><span class="o">/</span><span class="nx">v3</span> <span class="nx">v3</span><span class="mf">.1</span><span class="mf">.0</span>
+<span class="nx">PASS</span>
+<span class="nx">ok</span>      <span class="nx">github</span><span class="p">.</span><span class="nx">com</span><span class="o">/</span><span class="nx">hello</span>    <span class="mf">0.024</span><span class="nx">s</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>每Go module的一个大版本(v1,v2,&hellip;)都是用一个不同的路径，从v2版本开始，包路径最后必须添加版本号，比如rsc.io/quote的v3版本不再是r<code>sc.io/quote</code>,取而代之的是<code>rsc.io/quote/v3</code>. Go 允许同时使用多个主版本号不同的包，但是同一个大版本下面的小版本只能存在一个。</p>
+<h4 id="heading-3">将依赖直接更新到新的主版本</h4>
+<p>我们将程序中用到的 <code>rsc.io/quote</code> 直接升级到 <code>rsc.io/quote/v3</code>。因为每个大版本的升级都会伴随着各种API的调整，所以升级之前最好看看版本文档。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-go" data-lang="go"><span class="err">#</span> <span class="k">go</span> <span class="nx">doc</span> <span class="nx">rsc</span><span class="p">.</span><span class="nx">io</span><span class="o">/</span><span class="nx">quote</span><span class="o">/</span><span class="nx">v3</span>
+
+<span class="kn">package</span> <span class="nx">quote</span> <span class="c1">// import &#34;rsc.io/quote/v3&#34;
+</span><span class="c1"></span>
+<span class="nx">Package</span> <span class="nx">quote</span> <span class="nx">collects</span> <span class="nx">pithy</span> <span class="nx">sayings</span><span class="p">.</span>
+
+<span class="kd">func</span> <span class="nf">Concurrency</span><span class="p">(</span><span class="p">)</span> <span class="kt">string</span>
+<span class="kd">func</span> <span class="nf">GlassV3</span><span class="p">(</span><span class="p">)</span> <span class="kt">string</span>
+<span class="kd">func</span> <span class="nf">GoV3</span><span class="p">(</span><span class="p">)</span> <span class="kt">string</span>
+<span class="kd">func</span> <span class="nf">HelloV3</span><span class="p">(</span><span class="p">)</span> <span class="kt">string</span>
+<span class="kd">func</span> <span class="nf">OptV3</span><span class="p">(</span><span class="p">)</span> <span class="kt">string</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>可以看到<code>Hello</code>函数变成了<code>HelloV3</code>，更新代码看看结果</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-go" data-lang="go"><span class="err">#</span> <span class="nx">hello</span><span class="p">.</span><span class="k">go</span>
+
+<span class="kn">package</span> <span class="nx">hello</span>
+
+<span class="kn">import</span> <span class="p">(</span>
+	<span class="s">&#34;rsc.io/quote/v3&#34;</span>
+<span class="p">)</span> 
+
+
+<span class="kd">func</span> <span class="nf">Hello</span><span class="p">(</span><span class="p">)</span> <span class="kt">string</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="nx">quote</span><span class="p">.</span><span class="nf">HelloV3</span><span class="p">(</span><span class="p">)</span>
+<span class="p">}</span>
+
+<span class="kd">func</span> <span class="nf">Proverb</span><span class="p">(</span><span class="p">)</span> <span class="kt">string</span> <span class="p">{</span>
+	<span class="k">return</span> <span class="nx">quote</span><span class="p">.</span><span class="nf">Concurrency</span><span class="p">(</span><span class="p">)</span>
+<span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell"><span class="c1"># go test</span>
+PASS
+ok  	github.com/hello	0.008s
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="heading-4">删除不使用的依赖</h3>
+<p>我们移除了对 <code>src.io/quote</code> 的使用，但是 <code>go list -m all</code> 以及 <code>go.mod</code> 都还是显示存在。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback"># go list -m all
+github.gom/gomodule
+golang.org/x/text v0.3.2
+golang.org/x/tools v0.0.0-20180917221912-90fa682c2a6e
+rsc.io/quote v1.5.2
+rsc.io/quote/v3 v3.1.0
+rsc.io/sampler v1.3.1
+
+# cat go.mod
+module github.gom/hello
+
+go 1.14
+
+require (
+	golang.org/x/text v0.3.2 // indirect
+	rsc.io/quote v1.5.2
+	rsc.io/quote/v3 v3.1.0
+	rsc.io/sampler v1.3.1 // indirect
+)
+</code></pre></td></tr></table>
+</div>
+</div><p>这是因为无论 <code>go build</code> 还是 <code>go test</code> 都能很容易的告诉你哪些包需要安装导入，但即使包已经不再使用，为了安全，它也不会主动去删除。</p>
+<p>这时候我们需要使用 <code>go mod tidy</code> 来清除不再使用的包</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell"><span class="c1"># go mod tidy</span>
+<span class="c1"># go list -m all</span>
+github.gom/gomodule
+golang.org/x/text v0.3.2
+golang.org/x/tools v0.0.0-20180917221912-90fa682c2a6e
+rsc.io/quote/v3 v3.1.0
+rsc.io/sampler v1.3.1
+
+<span class="c1"># cat go.mod</span>
+module github.com/hello
+
+go 1.14
+
+require <span class="o">(</span>
+	golang.org/x/text v0.3.2 // indirect
+	rsc.io/quote/v3 v3.1.0
+	rsc.io/sampler v1.3.1 // indirect
+<span class="o">)</span>
+
+<span class="c1"># go test</span>
+PASS
+ok  	github.com/hello	0.008s
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="heading-5">总结</h3>
+<p>Go modules 的大概工作流程为：</p>
+<ul>
+<li><code>go mod init</code> 创建新的模块并生成go.mod文件</li>
+<li><code>go build</code>, <code>go test</code> 以及其他的编译工具会将新的依赖添加到go.mod</li>
+<li><code>go list -m all</code> 打印当前模块的所有依赖</li>
+<li><code>go get</code> 根据版本号添加或者修改依赖</li>
+<li><code>go mod tidy</code> 移除不再使用的依赖</li>
+</ul>
+<h3 id="heading-6">相关阅读</h3>
+<ul>
+<li><a href="https://blog.golang.org/using-go-modules">Using Go Modules</a></li>
+</ul>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">
+      <a href="http://linuxfunk.com/">Morgana</a>
+    </span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">初次发布</span>
+    <span class="item-content">
+        2020-03-05
+    </span>
+  </p>
+  
+  
+  
+  <p class="copyright-item">
+    <span class="item-title">许可协议</span>
+    <span class="item-content"><a rel="license noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a></span>
+  </p>
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/go/">go</a>
+          </div>
+      <nav class="post-nav">
+        
+        <a class="next" href="/2020/03/05/restful-web-services-with-go-2/">
+            <span class="next-text nav-default">Restful Web Services With Go (2)</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+  
+  <div id="utter-container"></div>
+    <script src="https://utteranc.es/client.js"
+        repo= 'fivestrong/fivestrong.github.io'
+        issue-term= "title"
+        theme= 'github-light'
+        crossorigin= "anonymous"
+        async>
+    </script>
+
+  
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:fivestrong@live.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://github.com/fivestrong" class="iconfont icon-github" title="github"></a>
+  <a href="http://linuxfunk.com/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  <div class="busuanzi-footer">
+    <span id="busuanzi_container_site_pv"> 本站总访问量 <span id="busuanzi_value_site_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次 </span>
+      <span class="division">|</span>
+    <span id="busuanzi_container_site_uv"> 本站总访客数 <span id="busuanzi_value_site_uv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 人 </span>
+  </div>
+
+  <span class="copyright-year">
+    &copy; 
+    2015 - 
+    2020
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">Morgana</span>
+  </span>
+</div>
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/dist/even.2139186b.min.js"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>
