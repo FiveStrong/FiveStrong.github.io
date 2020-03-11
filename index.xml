@@ -6,10 +6,19 @@
     <description>Recent content on モルガンナの家</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Thu, 05 Mar 2020 15:51:39 +0800</lastBuildDate>
+    <lastBuildDate>Tue, 10 Mar 2020 08:57:09 +0800</lastBuildDate>
     
 	<atom:link href="http://linuxfunk.com/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Linux 防火墙安全（1）</title>
+      <link>http://linuxfunk.com/2020/03/10/linux-%E9%98%B2%E7%81%AB%E5%A2%99%E5%AE%89%E5%85%A81/</link>
+      <pubDate>Tue, 10 Mar 2020 08:57:09 +0800</pubDate>
+      
+      <guid>http://linuxfunk.com/2020/03/10/linux-%E9%98%B2%E7%81%AB%E5%A2%99%E5%AE%89%E5%85%A81/</guid>
+      <description>防火墙概述 在工作环境中，我们可能需要多种多样的防火墙设备以满足各种各样的防护需求。 一些边界设备将互联网与内网分离，并维护路由表以提供公有IP</description>
+    </item>
     
     <item>
       <title>Using Go Modules</title>
