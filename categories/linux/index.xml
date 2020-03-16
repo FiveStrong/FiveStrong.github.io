@@ -6,10 +6,19 @@
     <description>Recent content in linux on モルガンナの家</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Tue, 10 Mar 2020 08:57:09 +0800</lastBuildDate>
+    <lastBuildDate>Wed, 11 Mar 2020 17:06:48 +0800</lastBuildDate>
     
 	<atom:link href="http://linuxfunk.com/categories/linux/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Linux 防火墙安全（2）</title>
+      <link>http://linuxfunk.com/2020/03/11/linux-%E9%98%B2%E7%81%AB%E5%A2%99%E5%AE%89%E5%85%A82/</link>
+      <pubDate>Wed, 11 Mar 2020 17:06:48 +0800</pubDate>
+      
+      <guid>http://linuxfunk.com/2020/03/11/linux-%E9%98%B2%E7%81%AB%E5%A2%99%E5%AE%89%E5%85%A82/</guid>
+      <description>nftables 概述 nftables 引入的新特证： 之前不同的网络操作需要安装特定的工具，比如 iptables, ip6tables, ebtables, arptables 等等，现在都被整合到了 nft 这一个工具包中。 nftables 采用多维树状结构展示规则集</description>
+    </item>
     
     <item>
       <title>Linux 防火墙安全（1）</title>
