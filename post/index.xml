@@ -6,10 +6,19 @@
     <description>Recent content in Posts on モルガンナの家</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Wed, 11 Mar 2020 17:06:48 +0800</lastBuildDate>
+    <lastBuildDate>Mon, 16 Mar 2020 15:03:35 +0800</lastBuildDate>
     
 	<atom:link href="http://linuxfunk.com/post/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Restful Web Services With Go (3)</title>
+      <link>http://linuxfunk.com/2020/03/16/restful-web-services-with-go-3/</link>
+      <pubDate>Mon, 16 Mar 2020 15:03:35 +0800</pubDate>
+      
+      <guid>http://linuxfunk.com/2020/03/16/restful-web-services-with-go-3/</guid>
+      <description>学习目标： 理解Go自带的 net/http 包 Go基本路由-ServeMux 轻量级 HTTP 路由 - httprouter 重量级 HTTP 路由 - gorilla/mux 构建一个短链接服务API 理解Go net/http 包 一个Web服务</description>
+    </item>
     
     <item>
       <title>Linux 防火墙安全（2）</title>

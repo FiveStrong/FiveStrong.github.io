@@ -3,7 +3,49 @@
   
   <url>
     <loc>http://linuxfunk.com/categories/</loc>
-    <lastmod>2020-03-11T17:06:48+08:00</lastmod>
+    <lastmod>2020-03-16T15:03:35+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>http://linuxfunk.com/categories/golang/</loc>
+    <lastmod>2020-03-16T15:03:35+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>http://linuxfunk.com/post/</loc>
+    <lastmod>2020-03-16T15:03:35+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>http://linuxfunk.com/tags/restful/</loc>
+    <lastmod>2020-03-16T15:03:35+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>http://linuxfunk.com/2020/03/16/restful-web-services-with-go-3/</loc>
+    <lastmod>2020-03-16T15:03:35+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>http://linuxfunk.com/tags/</loc>
+    <lastmod>2020-03-16T15:03:35+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>http://linuxfunk.com/</loc>
+    <lastmod>2020-03-16T15:03:35+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
@@ -30,27 +72,6 @@
   </url>
   
   <url>
-    <loc>http://linuxfunk.com/post/</loc>
-    <lastmod>2020-03-11T17:06:48+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>http://linuxfunk.com/tags/</loc>
-    <lastmod>2020-03-11T17:06:48+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>http://linuxfunk.com/</loc>
-    <lastmod>2020-03-11T17:06:48+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
     <loc>http://linuxfunk.com/2020/03/10/linux-%E9%98%B2%E7%81%AB%E5%A2%99%E5%AE%89%E5%85%A81/</loc>
     <lastmod>2020-03-10T08:57:09+08:00</lastmod>
     <changefreq>weekly</changefreq>
@@ -65,22 +86,8 @@
   </url>
   
   <url>
-    <loc>http://linuxfunk.com/categories/golang/</loc>
-    <lastmod>2020-03-05T15:51:39+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
     <loc>http://linuxfunk.com/2020/03/05/using-go-modules/</loc>
     <lastmod>2020-03-05T15:51:39+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>http://linuxfunk.com/tags/restful/</loc>
-    <lastmod>2020-03-05T09:54:01+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
