@@ -1,0 +1,1387 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Restful Web Services With Go (4) - モルガンナの家</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="Morgana" /><meta name="description" content="学习目标： 了解什么是 middleware 多个中间件以及链式调用 使用 Alice 进行链式调用 使用 Gorilla handlers middleware 进行日志记录 了解什么是RPC 使用Gorilla RPC 中的 JSON-RPC 中间件概述 中间" /><meta name="keywords" content="Hugo, モルガンナの家" />
+
+
+<meta name="robots" content="">
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.61.0 with even 4.0.0" />
+
+
+<link rel="canonical" href="http://linuxfunk.com/2020/03/18/restful-web-services-with-go-4/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<link href="/dist/even.84785aa1.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="Restful Web Services With Go (4)" />
+<meta property="og:description" content="学习目标： 了解什么是 middleware 多个中间件以及链式调用 使用 Alice 进行链式调用 使用 Gorilla handlers middleware 进行日志记录 了解什么是RPC 使用Gorilla RPC 中的 JSON-RPC 中间件概述 中间" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://linuxfunk.com/2020/03/18/restful-web-services-with-go-4/" />
+<meta property="article:published_time" content="2020-03-18T16:28:31+08:00" />
+<meta property="article:modified_time" content="2020-03-18T16:28:31+08:00" />
+<meta itemprop="name" content="Restful Web Services With Go (4)">
+<meta itemprop="description" content="学习目标： 了解什么是 middleware 多个中间件以及链式调用 使用 Alice 进行链式调用 使用 Gorilla handlers middleware 进行日志记录 了解什么是RPC 使用Gorilla RPC 中的 JSON-RPC 中间件概述 中间">
+<meta itemprop="datePublished" content="2020-03-18T16:28:31&#43;08:00" />
+<meta itemprop="dateModified" content="2020-03-18T16:28:31&#43;08:00" />
+<meta itemprop="wordCount" content="4980">
+
+
+
+<meta itemprop="keywords" content="restful," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Restful Web Services With Go (4)"/>
+<meta name="twitter:description" content="学习目标： 了解什么是 middleware 多个中间件以及链式调用 使用 Alice 进行链式调用 使用 Gorilla handlers middleware 进行日志记录 了解什么是RPC 使用Gorilla RPC 中的 JSON-RPC 中间件概述 中间"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">モルガンナの家</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">About</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">モルガンナの家</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">Categories</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">About</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">Restful Web Services With Go (4)</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2020-03-18 </span>
+        <div class="post-category">
+            <a href="/categories/golang/"> golang </a>
+            </div>
+          <span class="more-meta"> 约 4980 字 </span>
+          <span class="more-meta"> 预计阅读 10 分钟 </span>
+        <span id="busuanzi_container_page_pv" class="more-meta"> <span id="busuanzi_value_page_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次阅读 </span>
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#heading">中间件概述</a></li>
+    <li><a href="#heading-1">创建一个简单的中间件</a></li>
+    <li><a href="#heading-2">多个中间件以及链式调用</a></li>
+    <li><a href="#-alice-">使用 Alice 进行链式调用</a></li>
+    <li><a href="#-gorilla-handlers-">使用 Gorilla handlers 中间件实现日志功能</a></li>
+    <li><a href="#rpc">RPC概述</a>
+      <ul>
+        <li><a href="#rpc-1">创建RPC服务</a></li>
+        <li><a href="#-rpc-">创建 RPC 客户端</a></li>
+      </ul>
+    </li>
+    <li><a href="#-gorilla-rpc--json-rpc">使用 Gorilla RPC 提供的 JSON-RPC</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <p>学习目标：</p>
+<ul>
+<li>了解什么是 middleware</li>
+<li>多个中间件以及链式调用</li>
+<li>使用 Alice 进行链式调用</li>
+<li>使用 Gorilla handlers middleware 进行日志记录</li>
+<li>了解什么是RPC</li>
+<li>使用Gorilla RPC 中的 JSON-RPC</li>
+</ul>
+<h2 id="heading">中间件概述</h2>
+<p>中间件贯穿于整个服务器处理响应请求的过程，它可以在许多组件中定义。在我们之前学习定义路由和相关处理函数的时候，这个处理函数会对每一个请求执行相应的处理逻辑；而中间件作用的位置就在 请求到处理函数或者处理函数到响应之间。所以，中间件实际上做了这些事情：</p>
+<ul>
+<li>在请求到达处理函数之前进行操作</li>
+<li>将处理过相应逻辑操作的请求传送到处理函数</li>
+<li>在响应到达处理函数之前进行操作</li>
+<li>将处理过的响应返回给客户端</li>
+</ul>
+<p>整个流程大概如图所示：</p>
+<p><img src="middleware.png" alt="middleware" style="zoom: 33%;" /></p>
+<p>从图中可以看到，请求从客户端发过来之后，先经过了 AUTH MIDDLEWARE ,然后到达 FUNCTION HANDLER;响应的数据会经过 CUSTOM MIDDLEWARE,之后将处理过的响应返回给用户。如果是一个没有中间件的服务，请求直接到达 function handler 之后直接返回给客户端响应；如果配置了中间件，那么它会经过一系列的阶段，比如说 日志处理、用户认证、session 验证等等，最后才到达真正执行路由的逻辑。</p>
+<p>这些中间件的应用场景是：</p>
+<ul>
+<li>使用 logger 记录每一次请求的日志</li>
+<li>验证用户 session 保证会话连接存活</li>
+<li>认证用户信息</li>
+<li>在响应中添加附加信息</li>
+</ul>
+<p>中间件的作用就是当许多路由处理函数需要处理相同的逻辑功能时，可以把这些功能抽离封装起来。有了中间件，我们就可以适当的位置执行任何的日常操作，比如说认证功能。接下来让我们创建一个中间件并尝试更改HTTP请求。</p>
+<h2 id="heading-1">创建一个简单的中间件</h2>
+<p>中间件的创建可以基于闭包（一个闭包方法返回另外一个方法）。这就类似于JavaScript的链式方法，一个中间件返回另外一个方法，它可以是一个中间件，也可以是一个路由处理函数。我们先来举一个闭包的例子：</p>
+<ol>
+<li>
+<p>创建项目文件，初始化mod</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">mkdir closureExample
+<span class="nb">cd</span> closureExample
+touch main.go
+go mod init closure
+</code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>编辑main.go文件，其中最重要的就是generator 函数，这个函数返回一个匿名函数（没有参数，返回值为整数）。其中变量 i 定义在 generator 函数内部，会被返回的匿名函数捕获，它的状态会被记住，并在每一次调用这个匿名函数的时候被更新。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-go" data-lang="go"><span class="kn">package</span> <span class="nx">main</span>
+   
+<span class="kn">import</span> <span class="s">&#34;fmt&#34;</span>
+   
+<span class="c1">// This function returns another function
+</span><span class="c1"></span><span class="kd">func</span> <span class="nf">generator</span><span class="p">(</span><span class="p">)</span> <span class="kd">func</span> <span class="p">(</span><span class="p">)</span> <span class="kt">int</span> <span class="p">{</span>
+ <span class="kd">var</span> <span class="nx">i</span> <span class="p">=</span> <span class="mi">0</span>
+ <span class="k">return</span> <span class="kd">func</span> <span class="p">(</span><span class="p">)</span> <span class="kt">int</span> <span class="p">{</span>
+     <span class="nx">i</span><span class="o">++</span>
+     <span class="k">return</span> <span class="nx">i</span>
+ <span class="p">}</span>
+<span class="p">}</span>
+   
+<span class="kd">func</span> <span class="nf">main</span><span class="p">(</span><span class="p">)</span> <span class="p">{</span>
+ <span class="nx">numGenerator</span> <span class="o">:=</span> <span class="nf">generator</span><span class="p">(</span><span class="p">)</span>
+ <span class="k">for</span> <span class="nx">i</span> <span class="o">:=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span><span class="p">&lt;</span> <span class="mi">5</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span> <span class="p">{</span>
+     <span class="nx">fmt</span><span class="p">.</span><span class="nf">Print</span><span class="p">(</span><span class="nf">numGenerator</span><span class="p">(</span><span class="p">)</span><span class="p">,</span> <span class="s">&#34;\t&#34;</span><span class="p">)</span>
+ <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>测试执行</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-go" data-lang="go"><span class="err">➜</span>  <span class="nx">closureExample</span> <span class="k">go</span> <span class="nx">run</span> <span class="nx">main</span><span class="p">.</span><span class="k">go</span>
+<span class="mi">1</span>	<span class="mi">2</span>	<span class="mi">3</span>	<span class="mi">4</span>	<span class="mi">5</span>
+</code></pre></td></tr></table>
+</div>
+</div></li>
+</ol>
+<p>了解了闭包的工作原理之后，我们开始利用它创建中间件：任何一个生成函数（generator function），它的返回值是一个函数，并且这个函数满足接口 http.Handler ，那么它就是一个中间件。举例如下：</p>
+<ol>
+<li>
+<p>照例创建项目目录</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">mkdir customMiddleware
+<span class="nb">cd</span> customMiddleware
+touch main.go
+go mod init middleware
+</code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>编写 main.go 文件</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-go" data-lang="go"><span class="kn">package</span> <span class="nx">main</span>
+   
+<span class="kn">import</span> <span class="p">(</span>
+ <span class="s">&#34;fmt&#34;</span>
+ <span class="s">&#34;net/http&#34;</span>
+<span class="p">)</span>
+   
+<span class="kd">func</span> <span class="nf">middleware</span><span class="p">(</span><span class="nx">originalHandler</span> <span class="nx">http</span><span class="p">.</span><span class="nx">Handler</span><span class="p">)</span> <span class="nx">http</span><span class="p">.</span><span class="nx">Handler</span> <span class="p">{</span>
+ <span class="k">return</span> <span class="nx">http</span><span class="p">.</span><span class="nf">HandlerFunc</span><span class="p">(</span><span class="kd">func</span><span class="p">(</span><span class="nx">w</span> <span class="nx">http</span><span class="p">.</span><span class="nx">ResponseWriter</span><span class="p">,</span> <span class="nx">r</span> <span class="o">*</span><span class="nx">http</span><span class="p">.</span><span class="nx">Request</span><span class="p">)</span><span class="p">{</span>
+     <span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="s">&#34;Executing middleware before request phase!&#34;</span><span class="p">)</span>
+     <span class="c1">// Pass control back to the handler
+</span><span class="c1"></span>     <span class="nx">originalHandler</span><span class="p">.</span><span class="nf">ServeHTTP</span><span class="p">(</span><span class="nx">w</span><span class="p">,</span> <span class="nx">r</span><span class="p">)</span>
+     <span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="s">&#34;Executing middleware after response phase!&#34;</span><span class="p">)</span>
+ <span class="p">}</span><span class="p">)</span>
+<span class="p">}</span>
+   
+<span class="kd">func</span> <span class="nf">handle</span> <span class="p">(</span><span class="nx">w</span> <span class="nx">http</span><span class="p">.</span><span class="nx">ResponseWriter</span><span class="p">,</span> <span class="nx">r</span> <span class="o">*</span><span class="nx">http</span><span class="p">.</span><span class="nx">Request</span><span class="p">)</span><span class="p">{</span>
+ <span class="c1">// Business logic goes here
+</span><span class="c1"></span> <span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="s">&#34;Executing mainHandler....&#34;</span><span class="p">)</span>
+ <span class="nx">w</span><span class="p">.</span><span class="nf">Write</span><span class="p">(</span><span class="p">[</span><span class="p">]</span><span class="nb">byte</span><span class="p">(</span><span class="s">&#34;OK&#34;</span><span class="p">)</span><span class="p">)</span>
+<span class="p">}</span>
+   
+<span class="kd">func</span> <span class="nf">main</span><span class="p">(</span><span class="p">)</span> <span class="p">{</span>
+ <span class="c1">// HandlerFunc returns a HTTP Handler
+</span><span class="c1"></span> <span class="nx">originalHandler</span> <span class="o">:=</span> <span class="nx">http</span><span class="p">.</span><span class="nf">HandlerFunc</span><span class="p">(</span><span class="nx">handle</span><span class="p">)</span>
+ <span class="nx">http</span><span class="p">.</span><span class="nf">Handle</span><span class="p">(</span><span class="s">&#34;/&#34;</span><span class="p">,</span> <span class="nf">middleware</span><span class="p">(</span><span class="nx">originalHandler</span><span class="p">)</span><span class="p">)</span>
+ <span class="nx">http</span><span class="p">.</span><span class="nf">ListenAndServe</span><span class="p">(</span><span class="s">&#34;:8000&#34;</span><span class="p">,</span> <span class="kc">nil</span><span class="p">)</span>
+<span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>中间件函数接收一个正常的HTTP路由处理函数作为参数，它返回另外一个路由处理函数。可以看到在中间件中，仍然执行原始函数的逻辑操作，但是在它执行的前后，分别做了 middleware 函数想要做的事情，可以分别操作 request 和 response 对象。这样所有去路由函数的请求都会经过中间件的处理逻辑。</p>
+</li>
+<li>
+<p>执行结果</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-go" data-lang="go"><span class="err">➜</span>  <span class="err">~</span> <span class="nx">curl</span> <span class="nx">http</span><span class="p">:</span><span class="c1">//127.0.0.1:8000/
+</span><span class="c1"></span><span class="nx">OK</span>
+<span class="err">➜</span>  <span class="nx">closureExample</span> <span class="k">go</span> <span class="nx">run</span> <span class="nx">main</span><span class="p">.</span><span class="k">go</span>
+<span class="nx">Executing</span> <span class="nx">middleware</span> <span class="nx">before</span> <span class="nx">request</span> <span class="nx">phase</span><span class="p">!</span>
+<span class="nx">Executing</span> <span class="nx">mainHandler</span><span class="o">...</span><span class="p">.</span>
+<span class="nx">Executing</span> <span class="nx">middleware</span> <span class="nx">after</span> <span class="nx">response</span> <span class="nx">phase</span><span class="p">!</span>
+</code></pre></td></tr></table>
+</div>
+</div></li>
+</ol>
+<p>下面的流程图可以理解中间件的整个流程逻辑：</p>
+<p><img src="middleware2.png" alt="middleware2" style="zoom:33%;" /></p>
+<h2 id="heading-2">多个中间件以及链式调用</h2>
+<p>前面我们仅仅是创建了一个简单的中间件，作用是在请求到达真正的逻辑函数之前或者之后来做一些事情。有一些需求可能需要使用到大量的中间件，这就需要使用到链式结构。</p>
+<p>接下来我们创建一个 cityAPI 程序来存储城市信息。为了简单起见，API有一个 POST方法，结构有两部分：城市名称和城市大小。</p>
+<p>假设客户端仅被允许发送 JSON Content-Type 的请求到API，并且API的主要功能是返回响应并附带返回一个cookie，这个cookie 带有UTC格式的时间戳。</p>
+<p>方法有以下两个中间件：</p>
+<ul>
+<li>第一个：检查请求内容是否是JSON格式，如果不是不允许请求继续传递</li>
+<li>第二个：在响应 cookie 中添加 Server-Time(UTC)</li>
+</ul>
+<p>在实现中间件功能之前，我们先把这个 POST 请求的 API实现了</p>
+<ol>
+<li>
+<p>创建项目文件，初始化mod</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">touch cityAPI/main.go  // 其他步骤省略，请自行完成
+</code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>编写处理 POST 请求的函数。它获取请求数据中城市的名字和面积，将信息添加到结构体实例 city</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-go" data-lang="go"><span class="nx">ype</span> <span class="nx">city</span> <span class="kd">struct</span> <span class="p">{</span>
+ <span class="nx">Name</span> <span class="kt">string</span>
+ <span class="nx">Area</span> <span class="kt">uint64</span>
+<span class="p">}</span>
+   
+<span class="kd">func</span> <span class="nf">postHandler</span><span class="p">(</span><span class="nx">w</span> <span class="nx">http</span><span class="p">.</span><span class="nx">ResponseWriter</span><span class="p">,</span> <span class="nx">r</span> <span class="o">*</span><span class="nx">http</span><span class="p">.</span><span class="nx">Request</span><span class="p">)</span><span class="p">{</span>
+ <span class="k">if</span> <span class="nx">r</span><span class="p">.</span><span class="nx">Method</span> <span class="o">==</span> <span class="s">&#34;POST&#34;</span> <span class="p">{</span>
+     <span class="kd">var</span> <span class="nx">tempCity</span> <span class="nx">city</span>
+     <span class="nx">decoder</span> <span class="o">:=</span> <span class="nx">json</span><span class="p">.</span><span class="nf">NewDecoder</span><span class="p">(</span><span class="nx">r</span><span class="p">.</span><span class="nx">Body</span><span class="p">)</span> <span class="c1">//从请求body 中获取数据
+</span><span class="c1"></span>     <span class="nx">err</span> <span class="o">:=</span> <span class="nx">decoder</span><span class="p">.</span><span class="nf">Decode</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">tempCity</span><span class="p">)</span> <span class="c1">// 将数据映射到 city 实例
+</span><span class="c1"></span>   
+     <span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+         <span class="nb">panic</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+     <span class="p">}</span>
+     <span class="k">defer</span> <span class="nx">r</span><span class="p">.</span><span class="nx">Body</span><span class="p">.</span><span class="nf">Close</span><span class="p">(</span><span class="p">)</span>
+     <span class="nx">fmt</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;Got %s city with area of %d sq miles!\n&#34;</span><span class="p">,</span> <span class="nx">tempCity</span><span class="p">.</span><span class="nx">Name</span><span class="p">,</span> <span class="nx">tempCity</span><span class="p">.</span><span class="nx">Area</span><span class="p">)</span>
+   
+     <span class="nx">w</span><span class="p">.</span><span class="nf">WriteHeader</span><span class="p">(</span><span class="nx">http</span><span class="p">.</span><span class="nx">StatusOK</span><span class="p">)</span>
+     <span class="nx">w</span><span class="p">.</span><span class="nf">Write</span><span class="p">(</span><span class="p">[</span><span class="p">]</span><span class="nb">byte</span><span class="p">(</span><span class="s">&#34;201 - Created&#34;</span><span class="p">)</span><span class="p">)</span>
+ <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+     <span class="nx">w</span><span class="p">.</span><span class="nf">WriteHeader</span><span class="p">(</span><span class="nx">http</span><span class="p">.</span><span class="nx">StatusMethodNotAllowed</span><span class="p">)</span> 
+     <span class="nx">w</span><span class="p">.</span><span class="nf">Write</span><span class="p">(</span><span class="p">[</span><span class="p">]</span><span class="nb">byte</span><span class="p">(</span><span class="s">&#34;405 - Method Not Allowed&#34;</span><span class="p">)</span><span class="p">)</span>
+ <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>主逻辑</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-go" data-lang="go"><span class="kn">package</span> <span class="nx">main</span>
+   
+<span class="kn">import</span> <span class="p">(</span>
+ <span class="s">&#34;encoding/json&#34;</span>
+ <span class="s">&#34;fmt&#34;</span>
+ <span class="s">&#34;net/http&#34;</span>
+<span class="p">)</span>
+<span class="o">...</span><span class="p">.</span>
+<span class="kd">func</span> <span class="nf">main</span><span class="p">(</span><span class="p">)</span> <span class="p">{</span>
+ <span class="nx">http</span><span class="p">.</span><span class="nf">HandleFunc</span><span class="p">(</span><span class="s">&#34;/city&#34;</span><span class="p">,</span> <span class="nx">postHandler</span><span class="p">)</span>
+ <span class="nx">http</span><span class="p">.</span><span class="nf">ListenAndServe</span><span class="p">(</span><span class="s">&#34;:8000&#34;</span><span class="p">,</span> <span class="kc">nil</span><span class="p">)</span>
+<span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>运行并测试</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">go run main.go
+   
+Got New York city with area of <span class="m">304</span> sq miles!
+Got Boston city with area of <span class="m">89</span> sq miles!
+   
+➜  ~ curl -H <span class="s2">&#34;Content-Type: application/json&#34;</span> -X POST http://127.0.0.1:8000/city -d <span class="s1">&#39;{&#34;name&#34;: &#34;New York&#34;, &#34;area&#34;:304}&#39;</span>
+<span class="m">201</span> - Created                                                                                                                         ➜  ~ curl -H <span class="s2">&#34;Content-Type: application/json&#34;</span> -X POST http://127.0.0.1:8000/city -d <span class="s1">&#39;{&#34;name&#34;: &#34;Boston&#34;, &#34;area&#34;:89}&#39;</span>
+<span class="m">201</span> - Created
+</code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>接下来创建内容检测中间件，它检测请求头中的 <code>MIME</code> 字段，如果不是 JSON 就返回响应状态 <code>415 - Unsupported Media Type</code></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="nf">filterContentType</span><span class="p">(</span><span class="nx">handler</span> <span class="nx">http</span><span class="p">.</span><span class="nx">Handler</span><span class="p">)</span> <span class="nx">http</span><span class="p">.</span><span class="nx">Handler</span> <span class="p">{</span>
+ <span class="k">return</span> <span class="nx">http</span><span class="p">.</span><span class="nf">HandlerFunc</span><span class="p">(</span><span class="kd">func</span> <span class="p">(</span><span class="nx">w</span> <span class="nx">http</span><span class="p">.</span><span class="nx">Response</span><span class="p">,</span> <span class="nx">r</span> <span class="o">*</span><span class="nx">http</span><span class="p">.</span><span class="nx">Request</span><span class="p">)</span> <span class="p">{</span>
+     <span class="nx">log</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="s">&#34;Currently in the check content type middleware&#34;</span><span class="p">)</span>
+     <span class="c1">// Filtering requests by MIME type
+</span><span class="c1"></span>     <span class="k">if</span> <span class="nx">r</span><span class="p">.</span><span class="nx">Header</span><span class="p">.</span><span class="nf">Get</span><span class="p">(</span><span class="s">&#34;Content-type&#34;</span><span class="p">)</span> <span class="o">!=</span> <span class="s">&#34;application/json&#34;</span> <span class="p">{</span>
+         <span class="nx">w</span><span class="p">.</span><span class="nf">WriteHeader</span><span class="p">(</span><span class="nx">http</span><span class="p">.</span><span class="nx">StatusUnsupportedMediaType</span><span class="p">)</span>
+         <span class="nx">w</span><span class="p">.</span><span class="nf">Write</span><span class="p">(</span><span class="p">[</span><span class="p">]</span><span class="nb">byte</span><span class="p">(</span><span class="s">&#34;415 - Unsupported Media Type. Please send JSON&#34;</span><span class="p">)</span><span class="p">)</span>
+         <span class="k">return</span> 
+     <span class="p">}</span>
+     <span class="nx">handler</span><span class="p">.</span><span class="nf">ServeHTTP</span><span class="p">(</span><span class="nx">w</span><span class="p">,</span> <span class="nx">r</span><span class="p">)</span>
+ <span class="p">}</span><span class="p">)</span>
+<span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>接着是第二个中间件，当检查内容类型正确并返回响应结果时，这个中间件会添加一个叫 Server-Time(UTC)的cookie，包含服务器的时间戳</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="nf">setServerTimeCookie</span><span class="p">(</span><span class="nx">handler</span> <span class="nx">http</span><span class="p">.</span><span class="nx">Handler</span><span class="p">)</span> <span class="nx">http</span><span class="p">.</span><span class="nx">Handler</span> <span class="p">{</span>
+ <span class="k">return</span> <span class="nx">http</span><span class="p">.</span><span class="nf">HandlerFunc</span><span class="p">(</span><span class="kd">func</span> <span class="p">(</span><span class="nx">w</span> <span class="nx">http</span><span class="p">.</span><span class="nx">ResponseWriter</span><span class="p">,</span> <span class="nx">r</span> <span class="o">*</span><span class="nx">http</span><span class="p">.</span><span class="nx">Request</span><span class="p">)</span>  <span class="p">{</span>
+     <span class="nx">handler</span><span class="p">.</span><span class="nf">ServeHTTP</span><span class="p">(</span><span class="nx">w</span><span class="p">,</span> <span class="nx">r</span><span class="p">)</span>
+   		
+     <span class="c1">// Setting cookie to every API response
+</span><span class="c1"></span>     <span class="nx">cookie</span> <span class="o">:=</span> <span class="nx">http</span><span class="p">.</span><span class="nx">Cookie</span><span class="p">{</span><span class="nx">Name</span><span class="p">:</span> <span class="s">&#34;Server-Time(UTC)&#34;</span><span class="p">,</span> <span class="nx">Value</span><span class="p">:</span> <span class="nx">strconv</span><span class="p">.</span><span class="nf">FormatInt</span><span class="p">(</span><span class="nx">time</span><span class="p">.</span><span class="nf">Now</span><span class="p">(</span><span class="p">)</span><span class="p">.</span><span class="nf">Unix</span><span class="p">(</span><span class="p">)</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span><span class="p">}</span>
+     <span class="nx">http</span><span class="p">.</span><span class="nf">SetCookie</span><span class="p">(</span><span class="nx">w</span><span class="p">,</span> <span class="o">&amp;</span><span class="nx">cookie</span><span class="p">)</span>
+     <span class="nx">log</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="s">&#34;Currently in the set server time middleware&#34;</span><span class="p">)</span>
+ <span class="p">}</span><span class="p">)</span>
+<span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>主函数</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="nf">main</span><span class="p">(</span><span class="p">)</span> <span class="p">{</span>
+ <span class="nx">originalHandler</span> <span class="o">:=</span> <span class="nx">http</span><span class="p">.</span><span class="nf">HandlerFunc</span><span class="p">(</span><span class="nx">postHandler</span><span class="p">)</span>
+ <span class="nx">http</span><span class="p">.</span><span class="nf">Handle</span><span class="p">(</span><span class="s">&#34;/city&#34;</span><span class="p">,</span> <span class="nf">filterContentType</span><span class="p">(</span><span class="nf">setServerTimeCookie</span><span class="p">(</span><span class="nx">originalHandler</span><span class="p">)</span><span class="p">)</span><span class="p">)</span>
+  <span class="c1">// 一定要注意中间件嵌套的顺序
+</span><span class="c1"></span> <span class="nx">http</span><span class="p">.</span><span class="nf">ListenAndServe</span><span class="p">(</span><span class="s">&#34;:8000&#34;</span><span class="p">,</span> <span class="kc">nil</span><span class="p">)</span>
+<span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>运行检测</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">// 正确格式的请求
+➜  ~ curl -i -H <span class="s2">&#34;Content-Type: application/json&#34;</span> -X POST http://127.0.0.1:8000/city -d <span class="s1">&#39;{&#34;name&#34;: &#34;Boston&#34;, &#34;area&#34;:89}&#39;</span>
+HTTP/1.1 <span class="m">200</span> OK
+Date: Wed, <span class="m">18</span> Mar <span class="m">2020</span> 15:59:35 GMT
+Content-Length: <span class="m">13</span>
+Content-Type: text/plain<span class="p">;</span> <span class="nv">charset</span><span class="o">=</span>utf-8
+   
+<span class="m">201</span> - Created
+   
+// 错误格式的请求
+➜  ~ curl -i  -X POST http://127.0.0.1:8000/city -d <span class="s1">&#39;{&#34;name&#34;: &#34;Boston&#34;, &#34;area&#34;:89}&#39;</span>
+HTTP/1.1 <span class="m">415</span> Unsupported Media Type
+Date: Wed, <span class="m">18</span> Mar <span class="m">2020</span> 16:00:44 GMT
+Content-Length: <span class="m">46</span>
+Content-Type: text/plain<span class="p">;</span> <span class="nv">charset</span><span class="o">=</span>utf-8
+   
+<span class="m">415</span> - Unsupported Media Type. Please send JSON
+   
+// 服务器端结果
+➜  go run main.go
+2020/03/18 23:59:35 Currently in the check content <span class="nb">type</span> middleware
+Got Boston city with area of <span class="m">89</span> sq miles!
+2020/03/18 23:59:35 Currently in the <span class="nb">set</span> server <span class="nb">time</span> middleware
+2020/03/19 00:00:44 Currently in the check content <span class="nb">type</span> middleware
+</code></pre></td></tr></table>
+</div>
+</div></li>
+</ol>
+<p>当有很多中间件需要调用，像主函数那样的调用方式就很不友好了，所以这时候需要用到一个第三包 <code>alice</code>。它能够使得调用简单并且易读。</p>
+<h2 id="-alice-">使用 Alice 进行链式调用</h2>
+<p>使用 go get 安装 alice</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-go" data-lang="go"><span class="k">go</span> <span class="nx">get</span> <span class="nx">github</span><span class="p">.</span><span class="nx">com</span><span class="o">/</span><span class="nx">justinas</span><span class="o">/</span><span class="nx">alice</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>还是上面的例子，我们可以导入 alice 以替换原来的链式调用</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-go" data-lang="go"><span class="kn">import</span> <span class="p">(</span>
+  <span class="s">&#34;encoding/json&#34;</span>
+  <span class="s">&#34;github.com/justinas/alice&#34;</span>
+  <span class="s">&#34;log&#34;</span>
+  <span class="s">&#34;net/http&#34;</span>
+  <span class="s">&#34;strconv&#34;</span>
+  <span class="s">&#34;time&#34;</span>
+<span class="p">)</span>
+
+<span class="kd">func</span> <span class="nf">main</span><span class="p">(</span><span class="p">)</span><span class="p">{</span>
+  <span class="nx">originalHandler</span> <span class="o">:=</span> <span class="nx">http</span><span class="p">.</span><span class="nf">HandlerFunc</span><span class="p">(</span><span class="nx">postHandler</span><span class="p">)</span>
+  <span class="nx">chain</span> <span class="o">:=</span> <span class="nx">alice</span><span class="p">.</span><span class="nf">New</span><span class="p">(</span><span class="nx">filterContentType</span><span class="p">,</span> <span class="nx">setServerTimeCookie</span><span class="p">)</span><span class="p">.</span><span class="nf">Then</span><span class="p">(</span><span class="nx">originalHandler</span><span class="p">)</span>
+  <span class="nx">http</span><span class="p">.</span><span class="nf">Handle</span><span class="p">(</span><span class="s">&#34;/city&#34;</span><span class="p">,</span> <span class="nx">chain</span><span class="p">)</span>
+  <span class="nx">http</span><span class="p">.</span><span class="nf">ListenAndServe</span><span class="p">(</span><span class="s">&#34;:8000&#34;</span><span class="p">,</span> <span class="kc">nil</span><span class="p">)</span>
+<span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="-gorilla-handlers-">使用 Gorilla handlers 中间件实现日志功能</h2>
+<p>Gorilla handlers 包提供了已经预先实现好的很多日常用到的中间件。其中有些比较有用的：</p>
+<ul>
+<li>LoggingHandler: 以 Apache Common Log Format (CLF)为格式的日志</li>
+<li>CompressionHandler: 压缩响应包</li>
+<li>RecoveryHandler: 从不可期错误中恢复</li>
+</ul>
+<p>这里我们使用LoggingHandler 中间件实现API的日志记录功能</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">go get <span class="s2">&#34;github.com/gorilla/handlers&#34;</span>
+</code></pre></td></tr></table>
+</div>
+</div><ol>
+<li>
+<p>创建新的项目，初始化mod</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">mkdir loggingMiddleware
+<span class="nb">cd</span> loggingMiddleware
+touch main.go
+go mod init logging
+</code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>编辑 main.go</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-go" data-lang="go"><span class="kn">package</span> <span class="nx">main</span>
+   
+<span class="kn">import</span> <span class="p">(</span>
+ <span class="s">&#34;log&#34;</span>
+ <span class="s">&#34;net/http&#34;</span>
+ <span class="s">&#34;os&#34;</span>
+   
+ <span class="s">&#34;github.com/gorilla/handlers&#34;</span>
+ <span class="s">&#34;github.com/gorilla/mux&#34;</span>
+<span class="p">)</span>
+   
+<span class="kd">func</span> <span class="nf">handle</span><span class="p">(</span><span class="nx">w</span> <span class="nx">http</span><span class="p">.</span><span class="nx">ResponseWriter</span><span class="p">,</span> <span class="nx">r</span> <span class="o">*</span><span class="nx">http</span><span class="p">.</span><span class="nx">Request</span><span class="p">)</span><span class="p">{</span>
+ <span class="nx">log</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="s">&#34;Processing request!&#34;</span><span class="p">)</span>
+ <span class="nx">w</span><span class="p">.</span><span class="nf">Write</span><span class="p">(</span><span class="p">[</span><span class="p">]</span><span class="nb">byte</span><span class="p">(</span><span class="s">&#34;OK!&#34;</span><span class="p">)</span><span class="p">)</span>
+ <span class="nx">log</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="s">&#34;Finished processing request&#34;</span><span class="p">)</span>
+<span class="p">}</span>
+   
+<span class="kd">func</span> <span class="nf">main</span><span class="p">(</span><span class="p">)</span> <span class="p">{</span>
+ <span class="nx">r</span> <span class="o">:=</span> <span class="nx">mux</span><span class="p">.</span><span class="nf">NewRouter</span><span class="p">(</span><span class="p">)</span>
+ <span class="nx">r</span><span class="p">.</span><span class="nf">HandleFunc</span><span class="p">(</span><span class="s">&#34;/&#34;</span><span class="p">,</span> <span class="nx">handle</span><span class="p">)</span>
+ <span class="nx">loggedRouter</span> <span class="o">:=</span> <span class="nx">handlers</span><span class="p">.</span><span class="nf">LoggingHandler</span><span class="p">(</span><span class="nx">os</span><span class="p">.</span><span class="nx">Stdout</span><span class="p">,</span> <span class="nx">r</span><span class="p">)</span>
+ <span class="nx">http</span><span class="p">.</span><span class="nf">ListenAndServe</span><span class="p">(</span><span class="s">&#34;:8000&#34;</span><span class="p">,</span> <span class="nx">loggedRouter</span><span class="p">)</span>
+<span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><p><code>LoggingHandler</code> 函数将日志输出到标准输出上，并返回一个新的路由，以这个新的路由来作为启动的参数。</p>
+</li>
+<li>
+<p>运行并测试</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">➜  loggingMiddleware go run main.go
+2020/03/19 14:37:08 Processing request!
+2020/03/19 14:37:08 Finished processing request
+127.0.0.1 - - <span class="o">[</span>19/Mar/2020:14:37:08 +0800<span class="o">]</span> <span class="s2">&#34;GET / HTTP/1.1&#34;</span> <span class="m">200</span> <span class="m">3</span>
+   
+➜  ~ curl -i http://127.0.0.1:8000/
+</code></pre></td></tr></table>
+</div>
+</div><p>可见第三行是通过 Gorilla 的日志中间件生成的，它和我们常见的Nginx标准日志很相似。</p>
+<p>Gorilla handlers 中还有很多其他的中间件，可以尝试的去学习使用它。除此之外，Go还有很多其他类似的库可以使用，有一个可以直接在 net/http 上使用的中间件 <code>Negroni(github.com/urfave/negroni)</code>，它提供类似 alice , Gorilla LoggingHandler 类似的方法，有兴趣可以看看。</p>
+<p>有兴趣的话也可以看看 <code>go.uuid (github.com/satori/go.uuid)</code> 这个库，可以用它来构建基于cookie的认证系统中间件。</p>
+</li>
+</ol>
+<h2 id="rpc">RPC概述</h2>
+<p>RPC可以在多个分布式系统之间通过进程间通信。比如说小明的计算机可以通过特定的协议格式调用小红电脑上的函数（进程），并且获取它返回的结果。这样我们就可以通过网络请求去做一些事情，而无需在本地来实现这个功能。</p>
+<p>整个请求的过程可以分为以下几个步骤：</p>
+<ul>
+<li>客户端准备好需要发送的函数名和参数</li>
+<li>客户端通多请求连接将上面信息发送给 RPC 服务器</li>
+<li>服务端获取到方法名称和参数</li>
+<li>服务器执行这个远程进程</li>
+<li>将结果发送回客户端</li>
+<li>客户端从请求中收集信息并合理的使用</li>
+</ul>
+<p>大概执行示意图如下：</p>
+<p><img src="rpc.png" alt="rpc" style="zoom: 67%;" /></p>
+<p>Go语言提供了实现 RPC Server 和 RPC Client 的库。从上图可以看到，RPC客户端通过主机端口信息建立HTTP连接，它发送了两个东西，一个是参数，一个是应答指针。由于这是一个指针，服务端就可以更改并且将他返回，这样客户端就可以使用填充在指针中的数据。Go中RPC相关的有两个库，<code>net/rpc</code> 和 <code>net/rpc/jsonrpc</code>。</p>
+<h3 id="rpc-1">创建RPC服务</h3>
+<p>让我们来写一个简单的RPC服务，它的功能是将服务器的 UTC 时间返回给客户端。</p>
+<ol>
+<li>
+<p>创建项目，初始化mod</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">mkdir rpcServer 
+<span class="nb">cd</span> rcpServer
+touch main.go
+go mod init rpc
+</code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>我们需要创建 Args struct 以及用来接收信息的应答指针，同时还需要一个用来执行的远程函数</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">type</span> <span class="nx">Args</span> <span class="kd">struct</span> <span class="p">{</span><span class="p">}</span>
+   
+<span class="kd">type</span> <span class="nx">TimeServer</span> <span class="kt">int64</span> 
+   
+<span class="kd">func</span> <span class="p">(</span><span class="nx">t</span> <span class="o">*</span><span class="nx">TimeServer</span><span class="p">)</span> <span class="nf">GiveServerTime</span><span class="p">(</span><span class="nx">args</span> <span class="o">*</span><span class="nx">Args</span><span class="p">,</span> <span class="nx">reply</span> <span class="o">*</span><span class="kt">int64</span><span class="p">)</span> <span class="kt">error</span> <span class="p">{</span>
+ <span class="c1">// Fill reply pointer to send the data back
+</span><span class="c1"></span> <span class="o">*</span><span class="nx">reply</span> <span class="p">=</span> <span class="nx">time</span><span class="p">.</span><span class="nf">Now</span><span class="p">(</span><span class="p">)</span><span class="p">.</span><span class="nf">Unix</span><span class="p">(</span><span class="p">)</span>
+ <span class="k">return</span> <span class="kc">nil</span>
+<span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>通过 rcp.Register 来激活 TimeServer</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-go" data-lang="go"><span class="kn">import</span> <span class="p">(</span>
+ <span class="s">&#34;log&#34;</span>
+ <span class="s">&#34;net&#34;</span>
+ <span class="s">&#34;net/http&#34;</span>
+ <span class="s">&#34;net/rpc&#34;</span>
+ <span class="s">&#34;time&#34;</span>
+<span class="p">)</span>
+   
+<span class="kd">func</span> <span class="nf">main</span><span class="p">(</span><span class="p">)</span> <span class="p">{</span>
+ <span class="nx">timeserver</span> <span class="o">:=</span> <span class="nb">new</span><span class="p">(</span><span class="nx">TimeServer</span><span class="p">)</span>
+ <span class="nx">rpc</span><span class="p">.</span><span class="nf">Register</span><span class="p">(</span><span class="nx">timeserver</span><span class="p">)</span>
+ <span class="nx">rpc</span><span class="p">.</span><span class="nf">HandleHTTP</span><span class="p">(</span><span class="p">)</span>
+ <span class="c1">// Listen for requests on port 1234
+</span><span class="c1"></span> <span class="nx">l</span><span class="p">,</span> <span class="nx">e</span> <span class="o">:=</span> <span class="nx">net</span><span class="p">.</span><span class="nf">Listen</span><span class="p">(</span><span class="s">&#34;tcp&#34;</span><span class="p">,</span> <span class="s">&#34;:1234&#34;</span><span class="p">)</span>
+ <span class="k">if</span> <span class="nx">e</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+     <span class="nx">log</span><span class="p">.</span><span class="nf">Fatal</span><span class="p">(</span><span class="s">&#34;listen error:&#34;</span><span class="p">,</span> <span class="nx">e</span><span class="p">)</span>
+ <span class="p">}</span>
+ <span class="nx">http</span><span class="p">.</span><span class="nf">Serve</span><span class="p">(</span><span class="nx">l</span><span class="p">,</span> <span class="kc">nil</span><span class="p">)</span>
+<span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div></li>
+</ol>
+<p>要使用这个 RPC 服务，我们还需要实现一个 RPC 客户端。</p>
+<h3 id="-rpc-">创建 RPC 客户端</h3>
+<ol>
+<li>
+<p>创建客户端项目，初始化mod</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">mkdir rpcClient
+<span class="nb">cd</span> rpcClient
+touch main.go
+go mod init rpcclient
+</code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>与服务端连接需要用到 rpc.DialHTTP 方法。它会返回一个 client 对象，一旦连接建立成功，就可以使用 client.Call 来电泳远程函数了</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-go" data-lang="go"><span class="kn">package</span> <span class="nx">main</span>
+   
+<span class="kn">import</span> <span class="p">(</span>
+ <span class="s">&#34;log&#34;</span>
+ <span class="s">&#34;net/rpc&#34;</span>
+<span class="p">)</span>
+   
+<span class="kd">type</span> <span class="nx">Args</span> <span class="kd">struct</span> <span class="p">{</span>
+   
+<span class="p">}</span>
+   
+<span class="kd">func</span> <span class="nf">main</span><span class="p">(</span><span class="p">)</span> <span class="p">{</span>
+ <span class="kd">var</span> <span class="nx">reply</span> <span class="kt">int64</span>
+ <span class="nx">args</span> <span class="o">:=</span> <span class="nx">Args</span><span class="p">{</span><span class="p">}</span>
+   
+ <span class="nx">client</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">rpc</span><span class="p">.</span><span class="nf">DialHTTP</span><span class="p">(</span><span class="s">&#34;tcp&#34;</span><span class="p">,</span> <span class="s">&#34;localhost&#34;</span> <span class="o">+</span> <span class="s">&#34;:1234&#34;</span><span class="p">)</span>
+ <span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+     <span class="nx">log</span><span class="p">.</span><span class="nf">Fatal</span><span class="p">(</span><span class="s">&#34;dialing:&#34;</span><span class="p">,</span> <span class="nx">err</span><span class="p">)</span>
+ <span class="p">}</span>
+ <span class="nx">err</span> <span class="p">=</span> <span class="nx">client</span><span class="p">.</span><span class="nf">Call</span><span class="p">(</span><span class="s">&#34;TimeServer.GiveServerTime&#34;</span><span class="p">,</span> <span class="nx">args</span><span class="p">,</span> <span class="o">&amp;</span><span class="nx">reply</span><span class="p">)</span>
+ <span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+     <span class="nx">log</span><span class="p">.</span><span class="nf">Fatal</span><span class="p">(</span><span class="s">&#34;arith error:&#34;</span><span class="p">,</span> <span class="nx">err</span><span class="p">)</span>
+ <span class="p">}</span>
+   
+ <span class="nx">log</span><span class="p">.</span><span class="nf">Print</span><span class="p">(</span><span class="s">&#34;%d&#34;</span><span class="p">,</span> <span class="nx">reply</span><span class="p">)</span>
+   
+<span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>接下来分别启动服务端，客户端程序，见证奇迹的时刻到了</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">// 服务端
+➜  rpcServer go run main.go
+   
+// 客户端
+➜  rpcClient go run main.go
+2020/03/19 15:39:31 <span class="m">1584603571</span>
+</code></pre></td></tr></table>
+</div>
+</div></li>
+</ol>
+<p>客户端就像一个来自服务端独立运行的程序。这两个程序可以在不同机器上运行，计算结果依旧能够被共享，这便是分布式系统的核心概念。任务被分配给不同RPC服务器，最终客户端收集这些结果以便进一步使用。</p>
+<p>定制的RPC代码只有当客户端以及服务端都使用Go语言编写才能生效，因此为了让RPC服务器变得更加通用，我们定义基于 HTTP的 JSON-RPC，这样其他语言写的客户端就能发送 JSON 字符串并获取 JSON 响应结果。</p>
+<h2 id="-gorilla-rpc--json-rpc">使用 Gorilla RPC 提供的 JSON-RPC</h2>
+<p>Gorilla toolkit 给我们提供了很多有用的库，比如说之前用到的路由库 Mux， 中间件库 Handlers ，还有接下来需要学习的 gorilla/rpc。</p>
+<p>假设我们在服务器端有个一JSON文件，它包含很多书籍信息（名称，ID， 作者）。客户端通过一个HTTP请求来获取书籍信息，当RPC服务器接收到了这个请求，它从本地读取并解析文件。如果给定的ID匹配到了对应的书籍，那么服务器就会将这本书的信息通过JSON格式发送给客户端。</p>
+<ol>
+<li>
+<p>安装Gorilla RPC</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">go get github.com/gorilla/rpc
+</code></pre></td></tr></table>
+</div>
+</div><p>这个包是对标准库中的 net/rpc 的封装，但是使用的是HTTP请求而非之前的持久连接。可以在同一台服务器上建立多个解码器，通过请求头信息中的 <code>Content-Type</code>来选择对应的解码器。服务端提供的方法可以接收 http.Request 作为参数。</p>
+</li>
+<li>
+<p>创建项目，初始化mod</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">mkdir jsonRPCServer <span class="o">&amp;&amp;</span> <span class="nb">cd</span> jsonRPCServer
+touch main.go
+go mod init jsonrpc
+</code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>创建一个JSON 文件，books.json</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-json" data-lang="json"><span class="p">[</span>
+    <span class="p">{</span>
+        <span class="nt">&#34;id&#34;</span><span class="p">:</span> <span class="s2">&#34;1234&#34;</span><span class="p">,</span>
+        <span class="nt">&#34;name&#34;</span><span class="p">:</span> <span class="s2">&#34;In the sunburned country&#34;</span><span class="p">,</span>
+        <span class="nt">&#34;author&#34;</span><span class="p">:</span> <span class="s2">&#34;Bill Bryson&#34;</span>
+    <span class="p">}</span><span class="p">,</span>
+    <span class="p">{</span>
+        <span class="nt">&#34;id&#34;</span><span class="p">:</span> <span class="s2">&#34;2345&#34;</span><span class="p">,</span>
+        <span class="nt">&#34;name&#34;</span><span class="p">:</span> <span class="s2">&#34;The picture of Dorian Gray&#34;</span><span class="p">,</span>
+        <span class="nt">&#34;author&#34;</span><span class="p">:</span> <span class="s2">&#34;Oscar Wilde&#34;</span>
+    <span class="p">}</span>
+<span class="p">]</span>
+</code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>接下来定义处理RPC的逻辑，一个结构体用来定义书籍信息。JSONServer 结构体用于注册成为RPC Server。它有一个RPC action 作为方法。使用 filepath 函数来读取 JSON 文件信息。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-go" data-lang="go"><span class="c1">// Args holds arguments passed to JSON-RPC service 
+</span><span class="c1"></span><span class="kd">type</span> <span class="nx">Args</span> <span class="kd">struct</span> <span class="p">{</span>
+ <span class="nx">ID</span> <span class="kt">string</span>
+<span class="p">}</span>
+   
+<span class="c1">// Book struct holds Book JSON structure
+</span><span class="c1"></span><span class="kd">type</span> <span class="nx">Book</span> <span class="kd">struct</span> <span class="p">{</span>
+ <span class="nx">ID</span> <span class="kt">string</span> <span class="s">`</span><span class="s">json: &#34;id, omitempty&#34;</span><span class="s">`</span>
+ <span class="nx">Name</span> <span class="kt">string</span> <span class="s">`</span><span class="s">json: &#34;name, omitempty&#34;</span><span class="s">`</span>
+ <span class="nx">Author</span> <span class="kt">string</span> <span class="s">`</span><span class="s">json: &#34;author, omitempty&#34;</span><span class="s">`</span>
+<span class="p">}</span>
+   
+<span class="kd">type</span> <span class="nx">JSONServer</span> <span class="kd">struct</span> <span class="p">{</span><span class="p">}</span>
+   
+<span class="c1">// GiveBookDetail is RPC implementation
+</span><span class="c1"></span><span class="kd">func</span> <span class="p">(</span><span class="nx">t</span> <span class="o">*</span><span class="nx">JSONServer</span><span class="p">)</span> <span class="nf">GiveBookDetail</span><span class="p">(</span><span class="nx">r</span> <span class="o">*</span><span class="nx">http</span><span class="p">.</span><span class="nx">Request</span><span class="p">,</span> <span class="nx">args</span> <span class="o">*</span><span class="nx">Args</span><span class="p">,</span> <span class="nx">reply</span> <span class="o">*</span><span class="nx">Book</span><span class="p">)</span> <span class="kt">error</span> <span class="p">{</span>
+ <span class="kd">var</span> <span class="nx">books</span> <span class="p">[</span><span class="p">]</span><span class="nx">Book</span>
+   
+ <span class="c1">// Read Json file and load data
+</span><span class="c1"></span> <span class="nx">absPath</span><span class="p">,</span> <span class="nx">_</span> <span class="o">:=</span> <span class="nx">filepath</span><span class="p">.</span><span class="nf">Abs</span><span class="p">(</span><span class="s">&#34;books.json&#34;</span><span class="p">)</span>
+ <span class="nx">raw</span><span class="p">,</span> <span class="nx">readerr</span> <span class="o">:=</span> <span class="nx">ioutil</span><span class="p">.</span><span class="nf">ReadFile</span><span class="p">(</span><span class="nx">absPath</span><span class="p">)</span>
+ <span class="k">if</span> <span class="nx">readerr</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+     <span class="nx">log</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="s">&#34;error:&#34;</span><span class="p">,</span> <span class="nx">readerr</span><span class="p">)</span>
+     <span class="nx">os</span><span class="p">.</span><span class="nf">Exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+ <span class="p">}</span>
+   
+ <span class="c1">// Unmarshal JSON raw data into books array
+</span><span class="c1"></span> <span class="nx">marshalerr</span> <span class="o">:=</span> <span class="nx">jsonparse</span><span class="p">.</span><span class="nf">Unmarshal</span><span class="p">(</span><span class="nx">raw</span><span class="p">,</span> <span class="o">&amp;</span><span class="nx">books</span><span class="p">)</span>
+ <span class="k">if</span> <span class="nx">marshalerr</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+     <span class="nx">log</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="s">&#34;error:&#34;</span><span class="p">,</span> <span class="nx">marshalerr</span><span class="p">)</span>
+     <span class="nx">os</span><span class="p">.</span><span class="nf">Exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+ <span class="p">}</span>
+   
+ <span class="c1">// Iterate over each book to find the given book
+</span><span class="c1"></span> <span class="k">for</span> <span class="nx">_</span><span class="p">,</span> <span class="nx">book</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">books</span> <span class="p">{</span>
+     <span class="k">if</span> <span class="nx">book</span><span class="p">.</span><span class="nx">ID</span> <span class="o">==</span> <span class="nx">args</span><span class="p">.</span><span class="nx">ID</span> <span class="p">{</span>
+         <span class="c1">// if book found, fill reply with it
+</span><span class="c1"></span>         <span class="o">*</span><span class="nx">reply</span> <span class="p">=</span> <span class="nx">book</span>
+         <span class="k">break</span>
+     <span class="p">}</span>
+ <span class="p">}</span>
+ <span class="k">return</span> <span class="kc">nil</span> 
+<span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>这跟之前的程序类似，只不过多了对参数ID的需求。我们使用了 ioutil.ReadFile 读取文件内容并且使用 json 的 unmarshal 将它转换到 books 结构中。然后循环书目列表找到匹配条目写入到 reply 指针中。</p>
+</li>
+<li>
+<p>完成主函数内容</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-go" data-lang="go"><span class="kn">package</span> <span class="nx">main</span>
+   
+<span class="kn">import</span> <span class="p">(</span>
+ <span class="nx">jsonparse</span> <span class="s">&#34;encoding/json&#34;</span>
+ <span class="s">&#34;io/ioutil&#34;</span>
+ <span class="s">&#34;log&#34;</span>
+ <span class="s">&#34;net/http&#34;</span>
+ <span class="s">&#34;os&#34;</span>
+ <span class="s">&#34;path/filepath&#34;</span>
+   
+ <span class="s">&#34;github.com/gorilla/mux&#34;</span>
+ <span class="s">&#34;github.com/gorilla/rpc&#34;</span>
+ <span class="s">&#34;github.com/gorilla/rpc/json&#34;</span>
+<span class="p">)</span>
+   
+<span class="kd">func</span> <span class="nf">main</span><span class="p">(</span><span class="p">)</span> <span class="p">{</span>
+ <span class="c1">// Create a new RPC server
+</span><span class="c1"></span> <span class="nx">s</span> <span class="o">:=</span> <span class="nx">rpc</span><span class="p">.</span><span class="nf">NewServer</span><span class="p">(</span><span class="p">)</span>
+ <span class="c1">// Register the type of data requested as JSON
+</span><span class="c1"></span> <span class="nx">s</span><span class="p">.</span><span class="nf">RegisterCodec</span><span class="p">(</span><span class="nx">json</span><span class="p">.</span><span class="nf">NewCodec</span><span class="p">(</span><span class="p">)</span><span class="p">,</span> <span class="s">&#34;application/json&#34;</span><span class="p">)</span>
+ <span class="c1">// Register the service by creating a new JSON server
+</span><span class="c1"></span> <span class="nx">s</span><span class="p">.</span><span class="nf">RegisterService</span><span class="p">(</span><span class="nb">new</span><span class="p">(</span><span class="nx">JSONServer</span><span class="p">)</span><span class="p">,</span> <span class="s">&#34;&#34;</span><span class="p">)</span>
+     
+     
+ <span class="nx">r</span> <span class="o">:=</span> <span class="nx">mux</span><span class="p">.</span><span class="nf">NewRouter</span><span class="p">(</span><span class="p">)</span>
+ <span class="nx">r</span><span class="p">.</span><span class="nf">Handle</span><span class="p">(</span><span class="s">&#34;/rpc&#34;</span><span class="p">,</span> <span class="nx">s</span><span class="p">)</span>
+ <span class="nx">http</span><span class="p">.</span><span class="nf">ListenAndServe</span><span class="p">(</span><span class="s">&#34;:1234&#34;</span><span class="p">,</span> <span class="nx">r</span><span class="p">)</span>
+<span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>这里我们需要使用 RegisterCodec 方法来注册解码类型，我们用到的是 JSON。然后使用 RegisterService 方法注册服务，开启一个正常 的HTTP 服务。</p>
+</li>
+<li>
+<p>运行并测试程序</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">go run main.go
+   
+➜  ~ curl -X POST http://localhost:1234/rpc -H <span class="s1">&#39;cache-control: no-cache&#39;</span> -H <span class="s1">&#39;content-type: application/json&#39;</span> -d <span class="s1">&#39;{&#34;method&#34;:&#34;JSONServer.GiveBookDetail&#34;, &#34;params&#34;: [{&#34;ID&#34;: &#34;1234&#34;}], &#34;id&#34;: &#34;1&#34;}&#39;</span>
+<span class="o">{</span><span class="s2">&#34;result&#34;</span>:<span class="o">{</span><span class="s2">&#34;ID&#34;</span>:<span class="s2">&#34;1234&#34;</span>,<span class="s2">&#34;Name&#34;</span>:<span class="s2">&#34;In the sunburned country&#34;</span>,<span class="s2">&#34;Author&#34;</span>:<span class="s2">&#34;Bill Bryson&#34;</span><span class="o">}</span>,<span class="s2">&#34;error&#34;</span>:null,<span class="s2">&#34;id&#34;</span>:<span class="s2">&#34;1&#34;</span><span class="o">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>由于这个RPC server 已经可以支持通过HTTP接收请求信息，所以我们可以直接使用 curl 发送并获取信息，而不再需要独立编写一个客户端了。</p>
+</li>
+</ol>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">
+      <a href="http://linuxfunk.com/">Morgana</a>
+    </span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">初次发布</span>
+    <span class="item-content">
+        2020-03-18
+    </span>
+  </p>
+  
+  
+  
+  <p class="copyright-item">
+    <span class="item-title">许可协议</span>
+    <span class="item-content"><a rel="license noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a></span>
+  </p>
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/restful/">restful</a>
+          </div>
+      <nav class="post-nav">
+        
+        <a class="next" href="/2020/03/16/restful-web-services-with-go-3/">
+            <span class="next-text nav-default">Restful Web Services With Go (3)</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+  
+  <div id="utter-container"></div>
+    <script src="https://utteranc.es/client.js"
+        repo= 'fivestrong/fivestrong.github.io'
+        issue-term= "title"
+        theme= 'github-light'
+        crossorigin= "anonymous"
+        async>
+    </script>
+
+  
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:fivestrong@live.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://github.com/fivestrong" class="iconfont icon-github" title="github"></a>
+  <a href="http://linuxfunk.com/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  <div class="busuanzi-footer">
+    <span id="busuanzi_container_site_pv"> 本站总访问量 <span id="busuanzi_value_site_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次 </span>
+      <span class="division">|</span>
+    <span id="busuanzi_container_site_uv"> 本站总访客数 <span id="busuanzi_value_site_uv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 人 </span>
+  </div>
+
+  <span class="copyright-year">
+    &copy; 
+    2015 - 
+    2020
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">Morgana</span>
+  </span>
+</div>
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/dist/even.2139186b.min.js"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

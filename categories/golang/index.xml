@@ -6,10 +6,19 @@
     <description>Recent content in golang on モルガンナの家</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Mon, 16 Mar 2020 15:03:35 +0800</lastBuildDate>
+    <lastBuildDate>Wed, 18 Mar 2020 16:28:31 +0800</lastBuildDate>
     
 	<atom:link href="http://linuxfunk.com/categories/golang/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Restful Web Services With Go (4)</title>
+      <link>http://linuxfunk.com/2020/03/18/restful-web-services-with-go-4/</link>
+      <pubDate>Wed, 18 Mar 2020 16:28:31 +0800</pubDate>
+      
+      <guid>http://linuxfunk.com/2020/03/18/restful-web-services-with-go-4/</guid>
+      <description>学习目标： 了解什么是 middleware 多个中间件以及链式调用 使用 Alice 进行链式调用 使用 Gorilla handlers middleware 进行日志记录 了解什么是RPC 使用Gorilla RPC 中的 JSON-RPC 中间件概述 中间</description>
+    </item>
     
     <item>
       <title>Restful Web Services With Go (3)</title>
