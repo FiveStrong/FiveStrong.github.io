@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>django on モルガンナの家</title>
+    <link>http://linuxfunk.com/tags/django/</link>
+    <description>Recent content in django on モルガンナの家</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Sat, 04 Apr 2020 22:34:03 +0800</lastBuildDate>
+    
+	<atom:link href="http://linuxfunk.com/tags/django/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Django 3 博客实例</title>
+      <link>http://linuxfunk.com/2020/04/04/django-3-%E5%8D%9A%E5%AE%A2%E5%AE%9E%E4%BE%8B/</link>
+      <pubDate>Sat, 04 Apr 2020 22:34:03 +0800</pubDate>
+      
+      <guid>http://linuxfunk.com/2020/04/04/django-3-%E5%8D%9A%E5%AE%A2%E5%AE%9E%E4%BE%8B/</guid>
+      <description>学习目标： 安装 Django 创建并配置 Django 项目 创建 Django 应用 设计 models 并做数据库迁移 创建 models 管理后台 学习 QuerySets 和 managers 创建 视图(views), 模板(templates), 以</description>
+    </item>
+    
+  </channel>
+</rss>
