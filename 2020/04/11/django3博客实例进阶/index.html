@@ -1,0 +1,1302 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Django 3 博客实例进阶 - モルガンナの家</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="Morgana" /><meta name="description" content="上一篇博客中我们实现了一个基本的博客程序，现在我们给它增加一些高阶功能，使这个博客系统更加实用。 功能实现： 编写通过邮件分享文章功能 给文章添加" /><meta name="keywords" content="Hugo, モルガンナの家" />
+
+
+<meta name="robots" content="">
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.61.0 with even 4.0.0" />
+
+
+<link rel="canonical" href="http://linuxfunk.com/2020/04/11/django3%E5%8D%9A%E5%AE%A2%E5%AE%9E%E4%BE%8B%E8%BF%9B%E9%98%B6/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<link href="/dist/even.84785aa1.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="Django 3 博客实例进阶" />
+<meta property="og:description" content="上一篇博客中我们实现了一个基本的博客程序，现在我们给它增加一些高阶功能，使这个博客系统更加实用。 功能实现： 编写通过邮件分享文章功能 给文章添加" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://linuxfunk.com/2020/04/11/django3%E5%8D%9A%E5%AE%A2%E5%AE%9E%E4%BE%8B%E8%BF%9B%E9%98%B6/" />
+<meta property="article:published_time" content="2020-04-11T12:34:03+08:00" />
+<meta property="article:modified_time" content="2020-04-11T12:34:03+08:00" />
+<meta itemprop="name" content="Django 3 博客实例进阶">
+<meta itemprop="description" content="上一篇博客中我们实现了一个基本的博客程序，现在我们给它增加一些高阶功能，使这个博客系统更加实用。 功能实现： 编写通过邮件分享文章功能 给文章添加">
+<meta itemprop="datePublished" content="2020-04-11T12:34:03&#43;08:00" />
+<meta itemprop="dateModified" content="2020-04-11T12:34:03&#43;08:00" />
+<meta itemprop="wordCount" content="7050">
+
+
+
+<meta itemprop="keywords" content="django," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Django 3 博客实例进阶"/>
+<meta name="twitter:description" content="上一篇博客中我们实现了一个基本的博客程序，现在我们给它增加一些高阶功能，使这个博客系统更加实用。 功能实现： 编写通过邮件分享文章功能 给文章添加"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">モルガンナの家</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">About</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">モルガンナの家</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">Categories</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">About</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">Django 3 博客实例进阶</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2020-04-11 </span>
+        <div class="post-category">
+            <a href="/categories/python/"> python </a>
+            </div>
+          <span class="more-meta"> 约 7050 字 </span>
+          <span class="more-meta"> 预计阅读 15 分钟 </span>
+        <span id="busuanzi_container_page_pv" class="more-meta"> <span id="busuanzi_value_page_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次阅读 </span>
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#heading">通过邮件分享文章</a>
+      <ul>
+        <li><a href="#django-">实用Django 创建表单</a></li>
+        <li><a href="#heading-1">在视图中处理表单</a></li>
+        <li><a href="#django--1">通过Django 发送邮件</a></li>
+        <li><a href="#heading-2">在模板中渲染表单</a></li>
+      </ul>
+    </li>
+    <li><a href="#heading-3">创建评论系统</a>
+      <ul>
+        <li><a href="#heading-4">创建模型</a></li>
+        <li><a href="#heading-5">为评论模型创建表单</a></li>
+        <li><a href="#-modelforms">在视图中处理 ModelForms</a></li>
+        <li><a href="#heading-6">在文章详情模板中添加评论</a></li>
+      </ul>
+    </li>
+    <li><a href="#heading-7">添加标签功能</a></li>
+    <li><a href="#heading-8">推荐类似博客功能</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <p>上一篇博客中我们实现了一个基本的博客程序，现在我们给它增加一些高阶功能，使这个博客系统更加实用。</p>
+<p>功能实现：</p>
+<ul>
+<li>编写通过邮件分享文章功能</li>
+<li>给文章添加评论功能</li>
+<li>给文章添加标签功能</li>
+<li>推荐类似博客功能</li>
+</ul>
+<p>学习知识点：</p>
+<ul>
+<li>Django 发送邮件功能</li>
+<li>创建表单并且添加到视图当中</li>
+<li>通过models创建表单</li>
+<li>集成第三方应用</li>
+<li>构建复杂QuerySets</li>
+</ul>
+<h2 id="heading">通过邮件分享文章</h2>
+<p>首先我们来实现邮件分享功能，我们需要做以下事情：</p>
+<ul>
+<li>创建一个表单，能够让用户填写他们的名字、邮箱、发送人以及额外的留言</li>
+<li>在view.py 中新建一个view处理通过post发送过来的数据，然后发送邮件。</li>
+<li>在 blog应用的 urls.py 中添加一个URL匹配到新的视图</li>
+<li>创建模板来显示这个表单</li>
+</ul>
+<h3 id="django-">实用Django 创建表单</h3>
+<p>Django 自带了表单框架，它能够让我们方便的定义表单，修改它的显示以及提供输入验证功能。Django表单框架提供了一种灵活的方式来渲染表单和处理数据。</p>
+<p>它通过两个基类来创建表单：</p>
+<ul>
+<li>Form: 用于创建基本表单</li>
+<li>ModelForm: 通过绑定数据模型实例来创建表单</li>
+</ul>
+<p>首先在 blog 应用中创建 forms.py ，编写代码：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-python" data-lang="python"><span class="kn">from</span> <span class="nn">django</span> <span class="kn">import</span> <span class="n">forms</span>
+
+<span class="k">class</span> <span class="nc">EmailPostForm</span><span class="p">(</span><span class="n">forms</span><span class="o">.</span><span class="n">Form</span><span class="p">)</span><span class="p">:</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="n">forms</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">25</span><span class="p">)</span>
+    <span class="n">email</span> <span class="o">=</span> <span class="n">forms</span><span class="o">.</span><span class="n">EmailField</span><span class="p">(</span><span class="p">)</span>
+    <span class="n">to</span> <span class="o">=</span> <span class="n">forms</span><span class="o">.</span><span class="n">EmailField</span><span class="p">(</span><span class="p">)</span>
+    <span class="n">comments</span> <span class="o">=</span> <span class="n">forms</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">required</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">widget</span><span class="o">=</span><span class="n">forms</span><span class="o">.</span><span class="n">Textarea</span><span class="p">)</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>我们来看一下这个类创建了些什么：</p>
+<p>name 字段是 CharField 类型，这种类型最终会渲染成 <code>&lt;input type=&quot;text&quot;&gt;</code> HTML标签。每一个类型都有它默认的 widget 属性用于决定它会渲染成为什么样的HTML。比如说后面的 comments 字段就自定义了 widget 为 Textarea，这样它会渲染为 <code>&lt;textarea&gt;</code> ，而不是默认的<code>&lt;input&gt;</code>标签。</p>
+<p>不同的表单类型也有自己的验证规则。比如说 email 和 to 字段，这两个 EmailField 类型就会要求填写时候必须符合邮件地址规则，否则就会报 forms.ValicationError的异常并且这个表单项不会被通过。我们上面用到的表单验证还有 name 中max_length 规定字段的长度；comments 中 required 规定是否必须要求填写。</p>
+<p>这里只使用到了很少的表单字段，更多的字段可以参考官方文档：https://docs.djangoproject.com/en/3.0/ref/forms/fields/</p>
+<h3 id="heading-1">在视图中处理表单</h3>
+<p>我们需要在视图中添加一个新的处理函数，当用户提交表单的时候用来处理表单数据、发送邮件。</p>
+<p>编辑 blog 应用中的 views.py 文件：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-python" data-lang="python"><span class="k">def</span> <span class="nf">post_share</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">post_id</span><span class="p">)</span><span class="p">:</span>
+    <span class="c1"># Retrieve post by id</span>
+    <span class="n">post</span> <span class="o">=</span> <span class="n">get_object_or_404</span><span class="p">(</span><span class="n">Post</span><span class="p">,</span> <span class="nb">id</span><span class="o">=</span><span class="n">post_id</span><span class="p">,</span> <span class="n">status</span><span class="o">=</span><span class="sa"></span><span class="s1">&#39;</span><span class="s1">published</span><span class="s1">&#39;</span><span class="p">)</span>
+    
+    <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="sa"></span><span class="s1">&#39;</span><span class="s1">POST</span><span class="s1">&#39;</span><span class="p">:</span>
+        <span class="c1"># Form was submitted</span>
+        <span class="n">form</span> <span class="o">=</span> <span class="n">EmailPostForm</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">form</span><span class="o">.</span><span class="n">is_valid</span><span class="p">(</span><span class="p">)</span><span class="p">:</span>
+            <span class="c1"># Form fields passed validation</span>
+            <span class="n">cd</span> <span class="o">=</span> <span class="n">form</span><span class="o">.</span><span class="n">cleaned_data</span><span class="p">(</span><span class="p">)</span>
+            <span class="c1"># send email</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">form</span> <span class="o">=</span> <span class="n">EmailPostForm</span><span class="p">(</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="sa"></span><span class="s1">&#39;</span><span class="s1">blog/post/share.html</span><span class="s1">&#39;</span><span class="p">,</span> <span class="p">{</span><span class="sa"></span><span class="s1">&#39;</span><span class="s1">post</span><span class="s1">&#39;</span><span class="p">:</span> <span class="n">post</span><span class="p">,</span> <span class="sa"></span><span class="s1">&#39;</span><span class="s1">form</span><span class="s1">&#39;</span><span class="p">:</span> <span class="n">form</span><span class="p">}</span><span class="p">)</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>这个视图的工作原理大概为：</p>
+<ul>
+<li>定义 post_share 视图， 接收 request 和 post_id 作为参数。</li>
+<li>使用 get_object_or_404() 获取id 为 post_id， 状态为 published 的文章。</li>
+<li>通过判断 request 的请求方式来处理表单被提交的情况和表单初始化的情况：这里假设如果是GET请求，我们就渲染一个空的表单；如果是POST请求，说明用户提交了数据，我们需要对提交的数据进行逻辑处理。</li>
+</ul>
+<h3 id="django--1">通过Django 发送邮件</h3>
+<p>Django 自带了邮件发送的模块，我们只需要调用就可以。不过在调用之前我们需要配置好 Simple Mail Transfer Protocol(SMTP) 邮件服务。这些配置需要写入到项目中的 settings.py 文件中。</p>
+<ul>
+<li>EMAIL_HOST:  SMTP服务器的地址</li>
+<li>EMAIL_PORT:  SMTP服务器的端口</li>
+<li>EMAIL_HOST_USER:  SMTP服务器的用户</li>
+<li>EMAIL_HOST_PASSWORD: SMTP服务器的用户密码</li>
+<li>EMAIL_USE_TLS: 是否使用 Transport Layer Security(TLS) 安全连接</li>
+<li>EMAIL_USE_SSL: 是否实用隐式TLS安全连接</li>
+</ul>
+<p>如果你手头没有能用的SMTP服务，我们可以实用Django自带的虚拟功能，它会将邮件发送到 console 终端。这个配置是修改 settings.py ：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-python" data-lang="python"><span class="n">EMAIL_BACKEND</span> <span class="o">=</span> <span class="sa"></span><span class="s1">&#39;</span><span class="s1">django.core.mail.backends.console.EmailBackend</span><span class="s1">&#39;</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>我们目前能够选择的SMTP服务商由很多，国内比如163，QQ邮箱；国外可以使用 Gmail邮件，如果是这些服务商的邮件，大概需要的配置如下：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-python" data-lang="python"><span class="n">EMAIL_HOST</span> <span class="o">=</span> <span class="sa"></span><span class="s1">&#39;</span><span class="s1">smtp.gmail.com</span><span class="s1">&#39;</span>
+<span class="n">EMAIL_HOST_USER</span> <span class="o">=</span> <span class="sa"></span><span class="s1">&#39;</span><span class="s1">your_account@gmail.com</span><span class="s1">&#39;</span>
+<span class="n">EMAIL_HOST_PASSWORD</span> <span class="o">=</span> <span class="sa"></span><span class="s1">&#39;</span><span class="s1">your_password</span><span class="s1">&#39;</span>
+<span class="n">EMAIL_PORT</span> <span class="o">=</span> <span class="mi">587</span>
+<span class="n">EMAIL_USE_TLS</span> <span class="o">=</span> <span class="bp">True</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>配置好了之后我们可以使用 shell 命令行来测试是否能够成功发送邮件：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">python manage.py shell
+&gt;&gt;&gt; from django.core.mail import send_mail
+&gt;&gt;&gt; send_mail<span class="o">(</span><span class="s1">&#39;Django mail&#39;</span>, <span class="s1">&#39;This e-mail was sent with Django&#39;</span>, <span class="s1">&#39;your_account@gmail.com&#39;</span>, <span class="o">[</span><span class="s1">&#39;your_account@gmail.com&#39;</span><span class="o">]</span>, <span class="nv">fail_silently</span><span class="o">=</span>False<span class="o">)</span>
+<span class="m">1</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>这个 send_mail() 方法接收的参数为 邮件主题，邮件内容，发送邮件的账号，接收邮件账号列表，同时我们设置 fail_silently=False 这样，当邮件发送失败后会有报错信息提示。如果返回结果是1，那么说明你的邮件发送成功了。</p>
+<p>提示：有些邮件服务商会有安全设置，你需要降低安全等级才能通过SMTP来发送邮件。具体可以参考服务商的设置，对与Gmail 有以下两个选项值得考虑：</p>
+<p><a href="https://myaccount.google.com/lesssecureapps">https://myaccount.google.com/lesssecureapps</a></p>
+<p><a href="https://accounts.google.com/b/0/displayunlockcaptcha">https://accounts.google.com/b/0/displayunlockcaptcha</a></p>
+<p>接下来我们修改 views.py 中的 post_share 视图函数：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-python" data-lang="python"><span class="kn">from</span> <span class="nn">django.core.mail</span> <span class="kn">import</span> <span class="n">send_mail</span>
+
+<span class="k">def</span> <span class="nf">post_share</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">post_id</span><span class="p">)</span><span class="p">:</span>
+    <span class="c1"># Retrieve post by id</span>
+    <span class="n">post</span> <span class="o">=</span> <span class="n">get_object_or_404</span><span class="p">(</span><span class="n">Post</span><span class="p">,</span> <span class="nb">id</span><span class="o">=</span><span class="n">post_id</span><span class="p">,</span> <span class="n">status</span><span class="o">=</span><span class="sa"></span><span class="s1">&#39;</span><span class="s1">published</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="n">sent</span> <span class="o">=</span> <span class="bp">False</span>
+    
+    <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="sa"></span><span class="s1">&#39;</span><span class="s1">POST</span><span class="s1">&#39;</span><span class="p">:</span>
+        <span class="c1"># Form was submitted</span>
+        <span class="n">form</span> <span class="o">=</span> <span class="n">EmailPostForm</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">form</span><span class="o">.</span><span class="n">is_valid</span><span class="p">(</span><span class="p">)</span><span class="p">:</span>
+            <span class="c1"># Form fields passed validation</span>
+            <span class="n">cd</span> <span class="o">=</span> <span class="n">form</span><span class="o">.</span><span class="n">cleaned_data</span>
+            <span class="c1"># send email</span>
+            <span class="n">post_url</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">build_absolute_uri</span><span class="p">(</span><span class="n">post</span><span class="o">.</span><span class="n">get_absolute_url</span><span class="p">(</span><span class="p">)</span><span class="p">)</span>
+            <span class="n">subject</span> <span class="o">=</span> <span class="n">f</span><span class="sa"></span><span class="s2">&#34;</span><span class="s2">{cd[</span><span class="s2">&#39;</span><span class="s2">name</span><span class="s2">&#39;</span><span class="s2">]} recommends you read {post.title}</span><span class="s2">&#34;</span>
+            <span class="n">message</span> <span class="o">=</span> <span class="n">f</span><span class="sa"></span><span class="s2">&#34;</span><span class="s2">Read {post.title} at {post_url}</span><span class="se">\n</span><span class="se">\n</span><span class="s2">&#34;</span> \
+                      <span class="n">f</span><span class="sa"></span><span class="s2">&#34;</span><span class="s2">{cd[</span><span class="s2">&#39;</span><span class="s2">name</span><span class="s2">&#39;</span><span class="s2">]}</span><span class="se">\&#39;</span><span class="s2">s comments: {cd[</span><span class="s2">&#39;</span><span class="s2">comments</span><span class="s2">&#39;</span><span class="s2">]}</span><span class="s2">&#34;</span>
+            <span class="n">send_mail</span><span class="p">(</span><span class="n">subject</span><span class="p">,</span> <span class="n">message</span><span class="p">,</span> <span class="sa"></span><span class="s1">&#39;</span><span class="s1">admin@myblog.com</span><span class="s1">&#39;</span><span class="p">,</span> <span class="p">[</span><span class="n">cd</span><span class="p">[</span><span class="sa"></span><span class="s1">&#39;</span><span class="s1">to</span><span class="s1">&#39;</span><span class="p">]</span><span class="p">]</span><span class="p">)</span>
+            <span class="n">sent</span> <span class="o">=</span> <span class="bp">True</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">form</span> <span class="o">=</span> <span class="n">EmailPostForm</span><span class="p">(</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="sa"></span><span class="s1">&#39;</span><span class="s1">blog/post/share.html</span><span class="s1">&#39;</span><span class="p">,</span> <span class="p">{</span><span class="sa"></span><span class="s1">&#39;</span><span class="s1">post</span><span class="s1">&#39;</span><span class="p">:</span> <span class="n">post</span><span class="p">,</span> <span class="sa"></span><span class="s1">&#39;</span><span class="s1">form</span><span class="s1">&#39;</span><span class="p">:</span> <span class="n">form</span><span class="p">,</span> <span class="sa"></span><span class="s1">&#39;</span><span class="s1">sent</span><span class="s1">&#39;</span><span class="p">:</span> <span class="n">sent</span><span class="p">}</span><span class="p">)</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>将 <a href="mailto:admin@myblog.com">admin@myblog.com</a> 替换成你的真实邮箱地址。</p>
+<p>上面代码中我们设置了一个变量 sent ，当POST 发送之后我们将这个值设置成了 True， 这方便我们之后用于在模板中显示邮件发送成功标识。</p>
+<p>需要注意我们用于给用户推送文章地址的 post_url 的构造过程，这里用到了两个函数。</p>
+<p>接下来我们还需要在 blog 应用中的 urls.py 中添加匹配 post_share 视图的URL</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-python" data-lang="python"> <span class="n">path</span><span class="p">(</span><span class="sa"></span><span class="s1">&#39;</span><span class="s1">&lt;int:post_id&gt;/share/</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">views</span><span class="o">.</span><span class="n">post_share</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="sa"></span><span class="s1">&#39;</span><span class="s1">post_share</span><span class="s1">&#39;</span><span class="p">)</span><span class="p">,</span>
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="heading-2">在模板中渲染表单</h3>
+<p>终于来到了模板渲染这一步，在 blog/templates/blog/post/ 目录下面创建 share.html 文件：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-html" data-lang="html">{% extends &#34;blog/base.html&#34; %}
+
+{% block title %}Share a post{% endblock %}
+
+{% block content %}
+  {% if sent %}
+    <span class="p">&lt;</span><span class="nt">h1</span><span class="p"></span><span class="p">&gt;</span>E-mail successfully sent<span class="p">&lt;</span><span class="p">/</span><span class="nt">h1</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">p</span><span class="p"></span><span class="p">&gt;</span>
+      &#34;{{ post.title }}&#34; was successfully sent to {{ form.cleaned_data.to }}.
+    <span class="p">&lt;</span><span class="p">/</span><span class="nt">p</span><span class="p">&gt;</span>
+  {% else %}
+    <span class="p">&lt;</span><span class="nt">h1</span><span class="p"></span><span class="p">&gt;</span>Share &#34;{{ post.title }}&#34; by e-mail<span class="p">&lt;</span><span class="p">/</span><span class="nt">h1</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">form</span> <span class="na">method</span><span class="o">=</span><span class="s">&#34;post&#34;</span><span class="p"></span><span class="p">&gt;</span>
+      {{ form.as_p }}
+      {% csrf_token %}
+      <span class="p">&lt;</span><span class="nt">input</span> <span class="na">type</span><span class="o">=</span><span class="s">&#34;submit&#34;</span> <span class="na">value</span><span class="o">=</span><span class="s">&#34;Send e-mail&#34;</span><span class="p"></span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="p">/</span><span class="nt">form</span><span class="p">&gt;</span>
+  {% endif %}
+{% endblock %}
+</code></pre></td></tr></table>
+</div>
+</div><p>可以注意到这个模板中用到了我们之前传过来的 send 变量，当 sent 为 True 时候，页面显示邮件发送成功；否则就会渲染提交表单。</p>
+<p>这里的表单格式 <code>&lt;form method=&quot;post&quot;&gt;</code> 明确的指明了提交方式为 POST，同时在这个表单中，我们将之前定义好的表单通过使用方法 as_p ，将每一项渲染为 <code>&lt;p&gt;</code>标签。这个渲染方式还有其他，比如说 as_ul 渲染为列表，as_table 渲染为表格。如果你想逐个字段的渲染，也可以自行循环渲染：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-html" data-lang="html">{% for field in form %}
+  <span class="p">&lt;</span><span class="nt">div</span><span class="p"></span><span class="p">&gt;</span>
+    {{ field.errors }}
+    {{ field.label_tag }} {{ field }}
+  <span class="p">&lt;</span><span class="p">/</span><span class="nt">div</span><span class="p">&gt;</span>
+{% endfor %}
+</code></pre></td></tr></table>
+</div>
+</div><p>还需要注意的一点是我们用到了 <code>{% csrf_token %} </code>这个模板标签，这是为了防止 cross-site request forgery(CSRF)攻击。具体可以参考这里：https://owasp.org/www-community/attacks/csrf</p>
+<p>这个模板标签在渲染之后前端代码大概如下：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-html" data-lang="html"><span class="p">&lt;</span><span class="nt">input</span> <span class="na">type</span><span class="o">=</span><span class="s">&#39;hidden&#39;</span> <span class="na">name</span><span class="o">=</span><span class="s">&#39;csrfmiddlewaretoken&#39;</span> <span class="na">value</span><span class="o">=</span><span class="s">&#39;26JjKo2lcEtYkGo V9z4XmJIEHLXN5LDR&#39;</span> <span class="p">/</span><span class="p">&gt;</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>默认情况下每一个 POST 请求Django 都会去验证这段 CSRF token，所以之后的所有POST表单都要记得带上这个标签。</p>
+<p>接下来在 blog/post/detail.html 中加入跳转到分享页面的链接：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-html" data-lang="html">{{ post.body|linebreaks }}
+<span class="p">&lt;</span><span class="nt">p</span><span class="p"></span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">a</span> <span class="na">href</span><span class="o">=</span><span class="s">&#34;{% url &#34;</span><span class="na">blog:post_share</span><span class="err">&#34;</span> <span class="na">post</span><span class="err">.</span><span class="na">id</span> <span class="err">%</span><span class="err">}</span><span class="err">&#34;</span><span class="p"></span><span class="p">&gt;</span>Share this post<span class="p">&lt;</span><span class="p">/</span><span class="nt">a</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="p">/</span><span class="nt">p</span><span class="p">&gt;</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>这里能够学习到的知识点是：使用 url 模板标签，通过 blog 命名空间以及 post_share 这个URL名称来构建动态URL，同时传入参数的方式就是在后面添加所需要的字段。</p>
+<p>现在我们通过运行 python manage.py runserver 来检查这个功能的实现。</p>
+<p>打开链接  http://127.0.0.1:8000/blog/ 点击任何一个文章，进入详细内容：</p>
+<p><img src="blog_detail.png" alt="blog_detail" style="zoom: 50%;" /></p>
+<p>点击下面的 <code>Share this post</code>，就进入了我们的分享功能的表单页面</p>
+<p><img src="share_post.png" alt="share_post" style="zoom:50%;" /></p>
+<p>发送成功之后的页面效果</p>
+<p><img src="mail_send.png" alt="mail_send"></p>
+<h2 id="heading-3">创建评论系统</h2>
+<p>创建文章评论系统的大概流程是：</p>
+<ol>
+<li>创建用于保存评论的数据模型</li>
+<li>创建一个表单，用于提交评论，并且验证用户的输入。</li>
+<li>创建一个视图用来处理提交过来的数据，并且将新的评论保存到数据库。</li>
+<li>编辑文章详情模板，将所有相关评论显示出来，并且显示添加评论的表单。</li>
+</ol>
+<h3 id="heading-4">创建模型</h3>
+<p>编辑 blog 应用中的 models.py</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-python" data-lang="python"><span class="k">class</span> <span class="nc">Comment</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">)</span><span class="p">:</span>
+    <span class="n">post</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="n">Post</span><span class="p">,</span>
+                             <span class="n">on_delete</span><span class="o">=</span><span class="n">models</span><span class="o">.</span><span class="n">CASCADE</span><span class="p">,</span>
+                             <span class="n">related_name</span><span class="o">=</span><span class="sa"></span><span class="s1">&#39;</span><span class="s1">comments</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">80</span><span class="p">)</span>
+    <span class="n">email</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">EmailField</span><span class="p">(</span><span class="p">)</span>
+    <span class="n">body</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">TextField</span><span class="p">(</span><span class="p">)</span>
+    <span class="n">created</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">DateTimeField</span><span class="p">(</span><span class="n">auto_now_add</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">updated</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">DateTimeField</span><span class="p">(</span><span class="n">auto_now</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">active</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">BooleanField</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+
+    <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
+        <span class="n">ordering</span> <span class="o">=</span> <span class="p">(</span><span class="sa"></span><span class="s1">&#39;</span><span class="s1">created</span><span class="s1">&#39;</span><span class="p">,</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">f</span><span class="sa"></span><span class="s1">&#39;</span><span class="s1">Comment by {self.name} on {self.post}</span><span class="s1">&#39;</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>这个模型中比较重要的一项就是 post 字段的 ForeignKey 类型，它将每一条评论与一篇文章关联。这是多对一的关系类型，表示每个评论属于一篇文章，但是一篇文章会有很多评论。</p>
+<p>同时这个字段中的 related_name 属性可以让你将相关对象的关系命名从而可以从关联对象反查到这个对象。翻译成人话就是，你可以实用 <code>comment.post</code> 查找到这条评论属于的文章，也可以实用 <code>post.comments.all()</code> 来查找出这篇文章关联的所有评论。如果你不显示的定义这个属性，Django 也会为你自动生成， 它会使用模型名称的小写加上 _set，也就是最后拼成：<code>comment_set</code> 。</p>
+<p>更多关于多对一的关系可以在官方文档中查看：https://docs.djangoproject.com/en/3.0/topics/db/examples/many_to_one/</p>
+<p>接下来我们通过 migration 将模型映射到数据库中</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">python manage.py makemigrations blog
+
+Migrations <span class="k">for</span> <span class="s1">&#39;blog&#39;</span>:
+  blog/migrations/0002_comment.py
+    - Create model Comment
+
+python manage.py migrate
+
+Operations to perform:
+  Apply all migrations: admin, auth, blog, contenttypes, sessions
+Running migrations:
+  Applying blog.0002_comment... OK
+</code></pre></td></tr></table>
+</div>
+</div><p>执行完这个操作之后，数据库中就会多出一个表 <code>blog_comment</code></p>
+<p>我们可以将这个新的模型添加到管理后台中，方便我们管理数据。编辑 admin.py 文件：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-python" data-lang="python"><span class="kn">from</span> <span class="nn">.models</span> <span class="kn">import</span> <span class="n">Post</span><span class="p">,</span> <span class="n">Comment</span>
+<span class="nd">@admin.register</span><span class="p">(</span><span class="n">Comment</span><span class="p">)</span>
+<span class="k">class</span> <span class="nc">CommentAdmin</span><span class="p">(</span><span class="n">admin</span><span class="o">.</span><span class="n">ModelAdmin</span><span class="p">)</span><span class="p">:</span>
+    <span class="n">list_display</span> <span class="o">=</span> <span class="p">(</span><span class="sa"></span><span class="s1">&#39;</span><span class="s1">name</span><span class="s1">&#39;</span><span class="p">,</span> <span class="sa"></span><span class="s1">&#39;</span><span class="s1">email</span><span class="s1">&#39;</span><span class="p">,</span> <span class="sa"></span><span class="s1">&#39;</span><span class="s1">post</span><span class="s1">&#39;</span><span class="p">,</span> <span class="sa"></span><span class="s1">&#39;</span><span class="s1">created</span><span class="s1">&#39;</span><span class="p">,</span> <span class="sa"></span><span class="s1">&#39;</span><span class="s1">active</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="n">list_filter</span> <span class="o">=</span> <span class="p">(</span><span class="sa"></span><span class="s1">&#39;</span><span class="s1">active</span><span class="s1">&#39;</span><span class="p">,</span> <span class="sa"></span><span class="s1">&#39;</span><span class="s1">created</span><span class="s1">&#39;</span><span class="p">,</span> <span class="sa"></span><span class="s1">&#39;</span><span class="s1">updated</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="n">search_fields</span> <span class="o">=</span> <span class="p">(</span><span class="sa"></span><span class="s1">&#39;</span><span class="s1">name</span><span class="s1">&#39;</span><span class="p">,</span> <span class="sa"></span><span class="s1">&#39;</span><span class="s1">email</span><span class="s1">&#39;</span><span class="p">,</span> <span class="sa"></span><span class="s1">&#39;</span><span class="s1">body</span><span class="s1">&#39;</span><span class="p">)</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>这样评论的模型就集成到后台管理了</p>
+<h3 id="heading-5">为评论模型创建表单</h3>
+<p>前面邮件分享的表单我们用到了 Form 类，这里由于需要生成模型 Comment 相关的表单，我么你可以使用 ModelForm 类来关联操作。编辑 blog 应用中的 forms.py 文件：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-python" data-lang="python"><span class="kn">from</span> <span class="nn">.models</span> <span class="kn">import</span> <span class="n">Comment</span>
+<span class="k">class</span> <span class="nc">CommentForm</span><span class="p">(</span><span class="n">forms</span><span class="o">.</span><span class="n">ModelForm</span><span class="p">)</span><span class="p">:</span>
+    <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
+        <span class="n">model</span> <span class="o">=</span> <span class="n">Comment</span>
+        <span class="n">fields</span> <span class="o">=</span> <span class="p">(</span><span class="sa"></span><span class="s1">&#39;</span><span class="s1">name</span><span class="s1">&#39;</span><span class="p">,</span> <span class="sa"></span><span class="s1">&#39;</span><span class="s1">email</span><span class="s1">&#39;</span><span class="p">,</span> <span class="sa"></span><span class="s1">&#39;</span><span class="s1">body</span><span class="s1">&#39;</span><span class="p">)</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>从上面的代码可以看出，通过模型建立表单非常简单，只需要在 Meta 类中 model 字段关联想要使用的模型即可。</p>
+<p>每个模型字段类型都会有相应的默认表单字段类型，同时你定义模型所做的约束也会被应用到表单验证中。默认情况下Django 会为每一个模型中的字段定义一个表单字段。然而你可以在 fields 字段中指定想要创建的字段，或者使用 exclude 排除不想要的字段。比如说我们的 CommentForm 仅仅需要用户填写 name, email, body 这三个表单字段。</p>
+<h3 id="-modelforms">在视图中处理 ModelForms</h3>
+<p>我们可以在文章详情视图中加入对评论表单的处理，编辑 views.py 文件：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-python" data-lang="python"><span class="kn">from</span> <span class="nn">.models</span> <span class="kn">import</span> <span class="n">Post</span><span class="p">,</span> <span class="n">Comment</span>
+<span class="kn">from</span> <span class="nn">.forms</span> <span class="kn">import</span> <span class="n">EmailPostForm</span><span class="p">,</span> <span class="n">CommentForm</span>
+
+<span class="k">def</span> <span class="nf">post_detail</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">year</span><span class="p">,</span> <span class="n">month</span><span class="p">,</span> <span class="n">day</span><span class="p">,</span> <span class="n">post</span><span class="p">)</span><span class="p">:</span>
+    <span class="n">post</span> <span class="o">=</span> <span class="n">get_object_or_404</span><span class="p">(</span><span class="n">Post</span><span class="p">,</span> <span class="n">slug</span><span class="o">=</span><span class="n">post</span><span class="p">,</span>
+                                   <span class="n">status</span><span class="o">=</span><span class="sa"></span><span class="s1">&#39;</span><span class="s1">published</span><span class="s1">&#39;</span><span class="p">,</span>
+                                   <span class="n">publish__year</span><span class="o">=</span><span class="n">year</span><span class="p">,</span>
+                                   <span class="n">publish__month</span><span class="o">=</span><span class="n">month</span><span class="p">,</span>
+                                   <span class="n">publish__day</span><span class="o">=</span><span class="n">day</span><span class="p">)</span>
+
+    <span class="c1"># List of active comments for this post</span>
+    <span class="n">comments</span> <span class="o">=</span> <span class="n">post</span><span class="o">.</span><span class="n">comments</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">active</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+
+    <span class="n">new_comment</span> <span class="o">=</span> <span class="bp">None</span>
+
+    <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="sa"></span><span class="s1">&#39;</span><span class="s1">POST</span><span class="s1">&#39;</span><span class="p">:</span>
+        <span class="c1"># A comment was posted</span>
+        <span class="n">comment_form</span> <span class="o">=</span> <span class="n">CommentForm</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">comment_form</span><span class="o">.</span><span class="n">is_valid</span><span class="p">(</span><span class="p">)</span><span class="p">:</span>
+            <span class="c1"># Create Comment object but don&#39;t save to database yet</span>
+            <span class="n">new_comment</span> <span class="o">=</span> <span class="n">comment_form</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">commit</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+            <span class="c1"># Assign the current post to the comment</span>
+            <span class="n">new_comment</span><span class="o">.</span><span class="n">post</span> <span class="o">=</span> <span class="n">post</span>
+            <span class="c1"># Save the comment to the database</span>
+            <span class="n">new_comment</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">comment_form</span> <span class="o">=</span> <span class="n">CommentForm</span><span class="p">(</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span>
+                  <span class="sa"></span><span class="s1">&#39;</span><span class="s1">blog/post/detail.html</span><span class="s1">&#39;</span><span class="p">,</span>
+                  <span class="p">{</span><span class="sa"></span><span class="s1">&#39;</span><span class="s1">post</span><span class="s1">&#39;</span><span class="p">:</span> <span class="n">post</span><span class="p">,</span>
+                   <span class="sa"></span><span class="s1">&#39;</span><span class="s1">comments</span><span class="s1">&#39;</span><span class="p">:</span> <span class="n">comments</span><span class="p">,</span>
+                   <span class="sa"></span><span class="s1">&#39;</span><span class="s1">new_comment</span><span class="s1">&#39;</span><span class="p">:</span> <span class="n">new_comment</span><span class="p">,</span>
+                   <span class="sa"></span><span class="s1">&#39;</span><span class="s1">comment_form</span><span class="s1">&#39;</span><span class="p">:</span> <span class="n">comment_form</span><span class="p">}</span><span class="p">)</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>让我们看一下都添加了哪些功能。首先我们在 post_detail 这个使用中同时显示文章内容和它相关评论。我们使用了一个QuerySet 来获取所有激活的评论</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-python" data-lang="python"><span class="n">comments</span> <span class="o">=</span> <span class="n">post</span><span class="o">.</span><span class="n">comments</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">active</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>这里就用到了我们之前提到过的关联命名，我们没有从Comment 这个模型中直接建立QuerySet来查询与本文章相关的评论，而是使用单个文章 post 对象来检索所有与它关联的 Comment 对象。</p>
+<p>我们这里也新建了一个变量 new_comment 并赋值为 None，用于创建评论时使用。</p>
+<p>如果请求是 GET 我们新建一个评论表单实例 <code>comment_form = CommentForm()</code>，而如果请求是POST，那我们使用发过来的数据实例化表单，并使用 <code>is_valid()</code> 方法验证这些数据。</p>
+<p>如果表单验证失败，我们将会在模板中渲染这些错误信息。如果验证成功，我们做以下操作：</p>
+<ol>
+<li>
+<p>通过调用表单的 save() 方法来创建一个新的 Comment 对象，并将它赋值给 new_comment</p>
+<p><code>new_comment = comment_form.save(commit=False)</code></p>
+<p>save 方法创建一个与表单关联的模型实例，并保存到数据库中。这里我们使用了 <code>commit=False</code>，这样创建了实例，但是没有提交到数据库。这样我们就能在最终提交之前再对实例数据进行一些调整。</p>
+</li>
+<li>
+<p>我们将当前的文章 post 关联到新创建的实例中 <code>new_comment.post = post</code> 这样做的目的就是为了申明这个评论属于这篇文章。</p>
+</li>
+<li>
+<p>最后再使用 save 方法将数据存入数据库。</p>
+</li>
+</ol>
+<h3 id="heading-6">在文章详情模板中添加评论</h3>
+<p>接下来我们对 post/detail.html 模板做如下调整：</p>
+<ul>
+<li>显示文章的评论总数</li>
+<li>显示评论列表</li>
+<li>显示添加评论的表单</li>
+</ul>
+<p>首先是添加总评论， 修改 post/detail.html 模板，再 content 块中添加：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-html" data-lang="html">  {% with comments.count as total_comments %}
+    <span class="p">&lt;</span><span class="nt">h2</span><span class="p"></span><span class="p">&gt;</span>
+      {{ total_comments }} comment {{ total_comments|pluralize }}
+    <span class="p">&lt;</span><span class="p">/</span><span class="nt">h2</span><span class="p">&gt;</span>
+  {% endwith %}
+</code></pre></td></tr></table>
+</div>
+</div><p>这段代码在模板中使用了 Django ORM ，它执行了 QuerySet 的 <code>comments.count()</code>。需要注意到， Django 模板语言中不使用括号调用函数。 <code>{% with %}</code> 标签可以将值赋值到新的变量中， 这个标量可以在 <code>{% endwith %}</code>之前任意使用。<code>{% with %}</code>标签的好处就是，我们调用一次ORM之后可以多次使用，避免了多次调用数据库或者多次执行耗时运算的成本。</p>
+<p>这里有一个有意思的模板标签 <code>pluralize</code> 它能够根据 <code>total_comments</code>的数值多少来决定 comment 这个单词显示为单数还是复数。</p>
+<p>接下来我们接着展示评论列表：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-html" data-lang="html">  {% for comment in comments %}
+    <span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&#34;comment&#34;</span><span class="p"></span><span class="p">&gt;</span>
+      <span class="p">&lt;</span><span class="nt">p</span> <span class="na">class</span><span class="o">=</span><span class="s">&#34;info&#34;</span><span class="p"></span><span class="p">&gt;</span>
+        Comment {{ forloop.counter }} by {{ comment.name }}
+        {{ comment.created }}
+      <span class="p">&lt;</span><span class="p">/</span><span class="nt">p</span><span class="p">&gt;</span>
+      {{ comment.body|linebreaks }}
+    <span class="p">&lt;</span><span class="p">/</span><span class="nt">div</span><span class="p">&gt;</span>
+  {% empty %}
+    <span class="p">&lt;</span><span class="nt">p</span><span class="p"></span><span class="p">&gt;</span>There are no comments yet.<span class="p">&lt;</span><span class="p">/</span><span class="nt">p</span><span class="p">&gt;</span>
+  {% endfor %}
+</code></pre></td></tr></table>
+</div>
+</div><p>这里我们使用<code>{% for %}</code> 模板标签来循环 <code>comments</code>。如果没有评论，我们会默认显示没有的信息。我们使用<code>{{ forloop.counter }}</code>这个变量来显示当前循环的次数。后面就显示一些评论的用户名，时间，以及内容。</p>
+<p>最后，我们需要渲染评论表单或者当评论成功之后提交显示成功页面：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-html" data-lang="html">  {% if new_comment %}
+    <span class="p">&lt;</span><span class="nt">h2</span><span class="p"></span><span class="p">&gt;</span>Your comment has been added. <span class="p">&lt;</span><span class="p">/</span><span class="nt">h2</span><span class="p">&gt;</span>
+  {% else %}
+    <span class="p">&lt;</span><span class="nt">h2</span><span class="p"></span><span class="p">&gt;</span>Add a new comment <span class="p">&lt;</span><span class="p">/</span><span class="nt">h2</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">form</span> <span class="na">action</span><span class="o">=</span><span class="s">&#34;post&#34;</span><span class="p"></span><span class="p">&gt;</span>
+      {{ comment_form.as_p }}
+      {% csrf_token %}
+      <span class="p">&lt;</span><span class="nt">p</span><span class="p"></span><span class="p">&gt;</span><span class="p">&lt;</span><span class="nt">input</span> <span class="na">type</span><span class="o">=</span><span class="s">&#34;submit&#34;</span> <span class="na">value</span><span class="o">=</span><span class="s">&#34;Add comment&#34;</span><span class="p"></span><span class="p">&gt;</span><span class="p">&lt;</span><span class="p">/</span><span class="nt">p</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="p">/</span><span class="nt">form</span><span class="p">&gt;</span>
+  {% endif %}
+</code></pre></td></tr></table>
+</div>
+</div><p>这段代码很简单，就是当POST提交成功之后，<code>new_comment</code> 会是一个评论实例，不为None，这样就会显示提交成功的信息。反之，会渲染出评论表单</p>
+<p>重启服务，打开 http://127.0.0.1:8000/blog/ 点入一个文章，我们查看以下实现效果：</p>
+<p><img src="comment_post.png" alt="comment_post"></p>
+<p>添加评论之后</p>
+<p><img src="comments.png" alt="comments"></p>
+<p>这个时候如果我们通过http://127.0.0.1:8000/admin/blog/comment/将其中的任何一条评论状态Active关闭，再次刷新文章页面，就会发现这条评论不再显示了。</p>
+<h2 id="heading-7">添加标签功能</h2>
+<p>实现了评论功能之后，我们应该就可以使用相同的方式来实现添加标签的功能。但是除了自己实现，我们也可以使用第三方已经实现好的功能来利用。比如这个标签功能，我们就可以用 django-taggit 这个应用，它提供了一个Tag模型和管理器，能够轻松的将标签添加到任何其他模型。具体代码可以看：https://github.com/jazzband/django-taggit</p>
+<p>首先通过 pip 安装应用：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">pip install <span class="nv">django_taggit</span><span class="o">=</span><span class="o">=</span>1.2.0
+</code></pre></td></tr></table>
+</div>
+</div><p>然后再 settings.py 中将应用添加到 INSTALLED_APPS 中</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell"><span class="nv">INSTALLED_APPS</span> <span class="o">=</span> <span class="o">[</span>
+    <span class="c1"># ...</span>
+    <span class="s1">&#39;blog.apps.BlogConfig&#39;</span>,
+    <span class="s1">&#39;taggit&#39;</span>,
+<span class="o">]</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>修改 blog 应用中的 models.py ，将 <code>TaggableManager</code> 添加到 <code>Post</code> 模型中</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-python" data-lang="python"><span class="kn">from</span> <span class="nn">taggit.managers</span> <span class="kn">import</span> <span class="n">TaggableManager</span>
+<span class="k">class</span> <span class="nc">Post</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">)</span><span class="p">:</span> 
+  <span class="c1"># ....</span>
+  <span class="n">tags</span> <span class="o">=</span> <span class="n">TaggableManager</span><span class="p">(</span><span class="p">)</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>这个tags 管理器可以允许我们从 Post 对象中添加，获取，删除标签。</p>
+<p>由于模型发生了变化，我们需要对数据库进行迁移</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">python manage.py makemigrations blog
+python manage.py migrate
+
+Operations to perform:
+  Apply all migrations: admin, auth, blog, contenttypes, sessions, taggit
+Running migrations:
+  Applying taggit.0001_initial... OK
+  Applying taggit.0002_auto_20150616_2121... OK
+  Applying taggit.0003_taggeditem_add_unique_index... OK
+  Applying blog.0003_post_tags... OK
+</code></pre></td></tr></table>
+</div>
+</div><p>这样数据库就可以使用 django-taggit 模型了，我们来练习一下怎么使用 tags 管理器</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">python manage.py shell
+&gt;&gt;&gt; from blog.models import Post
+&gt;&gt;&gt; <span class="nv">post</span> <span class="o">=</span> Post.objects.get<span class="o">(</span><span class="nv">id</span><span class="o">=</span>1<span class="o">)</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>向这个文章添加一些标签</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">&gt;&gt;&gt; post.tags.add<span class="o">(</span><span class="s1">&#39;music&#39;</span>, <span class="s1">&#39;jazjz&#39;</span>, <span class="s1">&#39;django&#39;</span><span class="o">)</span>
+&gt;&gt;&gt; post.tags.all<span class="o">(</span><span class="o">)</span>
+&lt;QuerySet <span class="o">[</span>&lt;Tag: music&gt;, &lt;Tag: django&gt;, &lt;Tag: jazjz&gt;<span class="o">]</span>&gt;
+</code></pre></td></tr></table>
+</div>
+</div><p>删除标签</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">&gt;&gt;&gt; post.tags.remove<span class="o">(</span><span class="s1">&#39;jazjz&#39;</span><span class="o">)</span>
+&gt;&gt;&gt; post.tags.all<span class="o">(</span><span class="o">)</span>
+&lt;QuerySet <span class="o">[</span>&lt;Tag: music&gt;, &lt;Tag: django&gt;<span class="o">]</span>&gt;
+</code></pre></td></tr></table>
+</div>
+</div><p>也可以通过http://127.0.0.1:8000/admin/taggit/tag/ 来管理标签</p>
+<p>通过http://127.0.0.1:8000/admin/blog/post/ 可以修改文章所属的标签。</p>
+<p>接下来编辑视图让文章显示标签，修改文件为 blog/post/list.html，在文章标题后面添加</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-html" data-lang="html"><span class="p">&lt;</span><span class="nt">p</span> <span class="na">class</span><span class="o">=</span><span class="s">&#34;tags&#34;</span><span class="p"></span><span class="p">&gt;</span>Tags:{{ post.tags.all|join:&#34;, &#34;}}<span class="p">&lt;</span><span class="p">/</span><span class="nt">p</span><span class="p">&gt;</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>这时候再次查看页面就能够看到每个标题下面都有标签列表了。</p>
+<p>接下来我们编写 post_list 视图，当选定标签以后，我们能够列出所有具有这个标签的文章。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-python" data-lang="python"><span class="kn">from</span> <span class="nn">taggit.models</span> <span class="kn">import</span> <span class="n">Tag</span>
+
+<span class="k">def</span> <span class="nf">post_list</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">tag_slug</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span><span class="p">:</span>
+    <span class="n">object_list</span> <span class="o">=</span> <span class="n">Post</span><span class="o">.</span><span class="n">published</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="p">)</span>
+    <span class="n">tag</span> <span class="o">=</span> <span class="bp">None</span>
+
+    <span class="k">if</span> <span class="n">tag_slug</span><span class="p">:</span>
+        <span class="n">tag</span> <span class="o">=</span> <span class="n">get_object_or_404</span><span class="p">(</span><span class="n">Tag</span><span class="p">,</span> <span class="n">slug</span><span class="o">=</span><span class="n">tag_slug</span><span class="p">)</span>
+        <span class="n">object_list</span> <span class="o">=</span> <span class="n">object_list</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">tags__in</span><span class="o">=</span><span class="p">[</span><span class="n">tag</span><span class="p">]</span><span class="p">)</span>
+
+    <span class="n">paginator</span> <span class="o">=</span> <span class="n">Paginator</span><span class="p">(</span><span class="n">object_list</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span> 
+    <span class="c1"># ...</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>现在这个 post_list 视图的工作原理是：</p>
+<ol>
+<li>视图函数接收一个可选参数， tag_slug 默认为 None，这个参数通过URL传递</li>
+<li>函数的第一步就是获取所有发表的文章，如果给定了 tag ，我们获取到这个Tag对象。</li>
+<li>然后我们过滤出包含指定标签的文章。由于这是一个多对多的关系，你必须通过给定列表中的标签来过滤文章，这里我们的列表中只包含一个元素。当一个模型的多个对象和另外一个模型的多个对象关联时，就会出现多对多关系。在我们的应用中，一个帖子可以有多个标签，一个标签也可以与多个帖子相关联。具体可以查看官方文档：https://docs.djangoproject.com/en/3.0/topics/db/examples/many_to_many/</li>
+</ol>
+<p>最后我们修改 render() 函数，将 tag 变量传入模板</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-python" data-lang="python"><span class="k">def</span> <span class="nf">post_list</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">tag_slug</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span><span class="p">:</span>
+    <span class="n">object_list</span> <span class="o">=</span> <span class="n">Post</span><span class="o">.</span><span class="n">published</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="p">)</span>
+    <span class="n">tag</span> <span class="o">=</span> <span class="bp">None</span>
+
+    <span class="k">if</span> <span class="n">tag_slug</span><span class="p">:</span>
+        <span class="n">tag</span> <span class="o">=</span> <span class="n">get_object_or_404</span><span class="p">(</span><span class="n">Tag</span><span class="p">,</span> <span class="n">slug</span><span class="o">=</span><span class="n">tag_slug</span><span class="p">)</span>
+        <span class="n">object_list</span> <span class="o">=</span> <span class="n">object_list</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">tags__in</span><span class="o">=</span><span class="p">[</span><span class="n">tag</span><span class="p">]</span><span class="p">)</span>
+
+    <span class="n">paginator</span> <span class="o">=</span> <span class="n">Paginator</span><span class="p">(</span><span class="n">object_list</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span> <span class="c1"># 3 posts in each page</span>
+    <span class="n">page</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">GET</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="sa"></span><span class="s1">&#39;</span><span class="s1">page</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">posts</span> <span class="o">=</span> <span class="n">paginator</span><span class="o">.</span><span class="n">page</span><span class="p">(</span><span class="n">page</span><span class="p">)</span>
+    <span class="k">except</span> <span class="n">PageNotAnInteger</span><span class="p">:</span>
+        <span class="c1"># If page is not an integer deliver the first page</span>
+        <span class="n">posts</span> <span class="o">=</span> <span class="n">paginator</span><span class="o">.</span><span class="n">page</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">except</span> <span class="n">EmptyPage</span><span class="p">:</span>
+        <span class="c1"># If page is out of range deliver last page of results</span>
+        <span class="n">posts</span> <span class="o">=</span> <span class="n">paginator</span><span class="o">.</span><span class="n">page</span><span class="p">(</span><span class="n">paginator</span><span class="o">.</span><span class="n">num_pages</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span>
+                 <span class="sa"></span><span class="s1">&#39;</span><span class="s1">blog/post/list.html</span><span class="s1">&#39;</span><span class="p">,</span>
+                 <span class="p">{</span><span class="sa"></span><span class="s1">&#39;</span><span class="s1">page</span><span class="s1">&#39;</span><span class="p">:</span> <span class="n">page</span><span class="p">,</span>
+                  <span class="sa"></span><span class="s1">&#39;</span><span class="s1">posts</span><span class="s1">&#39;</span><span class="p">:</span> <span class="n">posts</span><span class="p">,</span>
+                  <span class="sa"></span><span class="s1">&#39;</span><span class="s1">tag</span><span class="s1">&#39;</span><span class="p">:</span> <span class="n">tag</span><span class="p">}</span>
+                 <span class="p">)</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>修改 urls.py 中的URL匹配，记得注释掉之前的 基于类的视图，并且修改 blog/post/list.html 中关于分页的代码</p>
+<p><code>  {% include &quot;pagination.html&quot; with page=posts %}</code></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-python" data-lang="python">    <span class="n">path</span><span class="p">(</span><span class="sa"></span><span class="s1">&#39;</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">views</span><span class="o">.</span><span class="n">post_list</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="sa"></span><span class="s1">&#39;</span><span class="s1">post_list</span><span class="s1">&#39;</span><span class="p">)</span><span class="p">,</span>
+    <span class="c1"># path(&#39;&#39;, views.PostListView.as_view(), name=&#39;post_list&#39;),</span>
+    <span class="n">path</span><span class="p">(</span><span class="sa"></span><span class="s1">&#39;</span><span class="s1">tag/&lt;slug:tag_slug&gt;/</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">views</span><span class="o">.</span><span class="n">post_list</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="sa"></span><span class="s1">&#39;</span><span class="s1">post_list_by_tag</span><span class="s1">&#39;</span><span class="p">)</span><span class="p">,</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>可以看到我们的两个URl都指向了同一个视图函数，不同之处在于，当匹配到第一个，post_list 没有任何参数，而第二个会带有 tag_slug 参数。</p>
+<p>编辑 blog/post/list.html 模板：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-html" data-lang="html">  
+{% extends &#34;blog/base.html&#34; %}
+
+{% block title %}My Blog{% endblock %}
+
+{% block content %}
+  <span class="p">&lt;</span><span class="nt">h1</span><span class="p"></span><span class="p">&gt;</span>My Blog<span class="p">&lt;</span><span class="p">/</span><span class="nt">h1</span><span class="p">&gt;</span>
+  {% if tag %}
+    <span class="p">&lt;</span><span class="nt">h2</span><span class="p"></span><span class="p">&gt;</span>Posts tagged with &#34;{{ tag.name }}&#34;<span class="p">&lt;</span><span class="p">/</span><span class="nt">h2</span><span class="p">&gt;</span>
+  {% endif %}
+  {% for post in posts %}
+    <span class="p">&lt;</span><span class="nt">h2</span><span class="p"></span><span class="p">&gt;</span>
+      <span class="p">&lt;</span><span class="nt">a</span> <span class="na">href</span><span class="o">=</span><span class="s">&#34;{{ post.get_absolute_url }}&#34;</span><span class="p"></span><span class="p">&gt;</span>
+        {{ post.title }}
+      <span class="p">&lt;</span><span class="p">/</span><span class="nt">a</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="p">/</span><span class="nt">h2</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">p</span> <span class="na">class</span><span class="o">=</span><span class="s">&#34;tags&#34;</span><span class="p"></span><span class="p">&gt;</span>
+      Tags:
+      {% for tag in post.tags.all %}
+        <span class="p">&lt;</span><span class="nt">a</span> <span class="na">href</span><span class="o">=</span><span class="s">&#34;{% url &#34;</span><span class="na">blog:post_list_by_tag</span><span class="err">&#34;</span> <span class="na">tag</span><span class="err">.</span><span class="na">slug</span> <span class="err">%</span><span class="err">}</span><span class="err">&#34;</span><span class="p"></span><span class="p">&gt;</span>
+          {{ tag.name }}
+        <span class="p">&lt;</span><span class="p">/</span><span class="nt">a</span><span class="p">&gt;</span>
+        {% if not forloop.last %}, {% endif %}
+      {% endfor %}
+    <span class="p">&lt;</span><span class="p">/</span><span class="nt">p</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">p</span> <span class="na">class</span><span class="o">=</span><span class="s">&#34;date&#34;</span><span class="p"></span><span class="p">&gt;</span>
+      Published {{ post.publish }} by {{ post.author }}
+    <span class="p">&lt;</span><span class="p">/</span><span class="nt">p</span><span class="p">&gt;</span>
+    {{ post.body|truncatewords:30|linebreaks }}
+  {% endfor %}
+  {% include &#34;pagination.html&#34; with page=posts %}
+{% endblock %}
+</code></pre></td></tr></table>
+</div>
+</div><p>上面的代码最主要的修改就是，循环文章的所有标签，并给每一个标签生成一个特定的URL并传入tag_slug 参数，这样我们点击链接的时候就能够显示相关标签的文章了。</p>
+<p>我们重启服务，测试效果:</p>
+<p><img src="tag_filter.png" alt="tag_filter"></p>
+<h2 id="heading-8">推荐类似博客功能</h2>
+<p>既然我们实现了文章添加标签的功能，那么我们就可以用这个功能来实现一些有趣的事情。由于内容相似的文章或多或少会有一些相似的标签，那我们可以根据这个编写一个功能，通过共享标签数量来显示类似的文章。</p>
+<p>大概的思路为以下几步：</p>
+<ol>
+<li>获取当前文章的所有标签</li>
+<li>获取所有标记为这些标签的文章</li>
+<li>在获取的文章列表中排除当前文章</li>
+<li>按照与当前文章共享标签的数量来给其他文章排序</li>
+<li>如果多个文章具有相同的标签数，我们推荐最新发表的文章</li>
+<li>通过限制查询来获取你想推荐数量的文章</li>
+</ol>
+<p>这些步骤需要在 post_detail 视图中，通过一个复杂的 QuerySet 查询来实现。修改views.py 文件：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-python" data-lang="python"><span class="kn">from</span> <span class="nn">django.db.models</span> <span class="kn">import</span> <span class="n">Count</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>引入Django ORM 的 Count 聚合功能。具体可以查看文档：https://docs.djangoproject.com/en/3.0/topics/db/aggregation/</p>
+<p>在 post_detail 函数的 render 之前添加功能</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-python" data-lang="python">    <span class="c1"># List of similar posts</span>
+    <span class="n">post_tags_ids</span> <span class="o">=</span> <span class="n">post</span><span class="o">.</span><span class="n">tags</span><span class="o">.</span><span class="n">values_list</span><span class="p">(</span><span class="sa"></span><span class="s1">&#39;</span><span class="s1">id</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">flat</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">similar_posts</span> <span class="o">=</span> <span class="n">Post</span><span class="o">.</span><span class="n">published</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">tags__in</span><span class="o">=</span><span class="n">post_tags_ids</span><span class="p">)</span>\
+                                  <span class="o">.</span><span class="n">exclude</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">post</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+    <span class="n">similar_posts</span> <span class="o">=</span> <span class="n">similar_posts</span><span class="o">.</span><span class="n">annotate</span><span class="p">(</span><span class="n">same_tags</span><span class="o">=</span><span class="n">Count</span><span class="p">(</span><span class="sa"></span><span class="s1">&#39;</span><span class="s1">tags</span><span class="s1">&#39;</span><span class="p">)</span><span class="p">)</span>\
+                                <span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="sa"></span><span class="s1">&#39;</span><span class="s1">-same_tags</span><span class="s1">&#39;</span><span class="p">,</span><span class="sa"></span><span class="s1">&#39;</span><span class="s1">-publish</span><span class="s1">&#39;</span><span class="p">)</span><span class="p">[</span><span class="p">:</span><span class="mi">4</span><span class="p">]</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>这段代码的功能：</p>
+<ol>
+<li>获取当前文章标签相关ID列表。这里使用到了 <code>values_list()</code>这个QuerySet 返回给定字段值的元组，传入的 flat=True 能够使得返回结果为[1,2,3,4,&hellip;] 而不是 [(1,), (2,), (3,) &hellip;]</li>
+<li>获取所有包含这些标签的文章，并排除自己</li>
+<li>通过 Count 聚合函数生成了一个计算字段 same_tags， 这个字段包含与查询的所有标签共享的标记数量</li>
+<li>将结果根据指定字段排序，并截取前四个文章结果</li>
+</ol>
+<p>将获取到的结果传入 render 函数</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-python" data-lang="python">    <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span>
+                  <span class="sa"></span><span class="s1">&#39;</span><span class="s1">blog/post/detail.html</span><span class="s1">&#39;</span><span class="p">,</span>
+                  <span class="p">{</span><span class="sa"></span><span class="s1">&#39;</span><span class="s1">post</span><span class="s1">&#39;</span><span class="p">:</span> <span class="n">post</span><span class="p">,</span>
+                   <span class="sa"></span><span class="s1">&#39;</span><span class="s1">comments</span><span class="s1">&#39;</span><span class="p">:</span> <span class="n">comments</span><span class="p">,</span>
+                   <span class="sa"></span><span class="s1">&#39;</span><span class="s1">new_comment</span><span class="s1">&#39;</span><span class="p">:</span> <span class="n">new_comment</span><span class="p">,</span>
+                   <span class="sa"></span><span class="s1">&#39;</span><span class="s1">comment_form</span><span class="s1">&#39;</span><span class="p">:</span> <span class="n">comment_form</span><span class="p">,</span>
+                   <span class="sa"></span><span class="s1">&#39;</span><span class="s1">similar_posts</span><span class="s1">&#39;</span><span class="p">:</span> <span class="n">similar_posts</span><span class="p">}</span><span class="p">)</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>编辑 blog/post/detail.html 模板，在文章评论列表之前加入如下代码:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-html" data-lang="html">  <span class="p">&lt;</span><span class="nt">h2</span><span class="p"></span><span class="p">&gt;</span>Similar posts<span class="p">&lt;</span><span class="p">/</span><span class="nt">h2</span><span class="p">&gt;</span>
+  {% for post in similar_posts %}
+    <span class="p">&lt;</span><span class="nt">p</span><span class="p"></span><span class="p">&gt;</span>
+      <span class="p">&lt;</span><span class="nt">a</span> <span class="na">href</span><span class="o">=</span><span class="s">&#34;{{ post.get_absolute_url }}&#34;</span><span class="p"></span><span class="p">&gt;</span>{{ post.title }}<span class="p">&lt;</span><span class="p">/</span><span class="nt">a</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="p">/</span><span class="nt">p</span><span class="p">&gt;</span>
+  {% empty %}
+    There are no similar posts yet.
+  {% endfor %}
+</code></pre></td></tr></table>
+</div>
+</div><p>这时候详情页的结果：</p>
+<p><img src="similar_posts.png" alt="similar_posts"></p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">
+      <a href="http://linuxfunk.com/">Morgana</a>
+    </span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">初次发布</span>
+    <span class="item-content">
+        2020-04-11
+    </span>
+  </p>
+  
+  
+  
+  <p class="copyright-item">
+    <span class="item-title">许可协议</span>
+    <span class="item-content"><a rel="license noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a></span>
+  </p>
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/django/">django</a>
+          </div>
+      <nav class="post-nav">
+        
+        <a class="next" href="/2020/04/04/django-3-%E5%8D%9A%E5%AE%A2%E5%AE%9E%E4%BE%8B/">
+            <span class="next-text nav-default">Django 3 博客实例</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+  
+  <div id="utter-container"></div>
+    <script src="https://utteranc.es/client.js"
+        repo= 'fivestrong/fivestrong.github.io'
+        issue-term= "title"
+        theme= 'github-light'
+        crossorigin= "anonymous"
+        async>
+    </script>
+
+  
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:fivestrong@live.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://github.com/fivestrong" class="iconfont icon-github" title="github"></a>
+  <a href="http://linuxfunk.com/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  <div class="busuanzi-footer">
+    <span id="busuanzi_container_site_pv"> 本站总访问量 <span id="busuanzi_value_site_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次 </span>
+      <span class="division">|</span>
+    <span id="busuanzi_container_site_uv"> 本站总访客数 <span id="busuanzi_value_site_uv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 人 </span>
+  </div>
+
+  <span class="copyright-year">
+    &copy; 
+    2015 - 
+    2020
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">Morgana</span>
+  </span>
+</div>
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/dist/even.2139186b.min.js"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

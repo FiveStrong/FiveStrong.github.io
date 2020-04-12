@@ -6,10 +6,19 @@
     <description>Recent content in Posts on モルガンナの家</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Sat, 04 Apr 2020 22:34:03 +0800</lastBuildDate>
+    <lastBuildDate>Sat, 11 Apr 2020 12:34:03 +0800</lastBuildDate>
     
 	<atom:link href="http://linuxfunk.com/post/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Django 3 博客实例进阶</title>
+      <link>http://linuxfunk.com/2020/04/11/django3%E5%8D%9A%E5%AE%A2%E5%AE%9E%E4%BE%8B%E8%BF%9B%E9%98%B6/</link>
+      <pubDate>Sat, 11 Apr 2020 12:34:03 +0800</pubDate>
+      
+      <guid>http://linuxfunk.com/2020/04/11/django3%E5%8D%9A%E5%AE%A2%E5%AE%9E%E4%BE%8B%E8%BF%9B%E9%98%B6/</guid>
+      <description>上一篇博客中我们实现了一个基本的博客程序，现在我们给它增加一些高阶功能，使这个博客系统更加实用。 功能实现： 编写通过邮件分享文章功能 给文章添加</description>
+    </item>
     
     <item>
       <title>Django 3 博客实例</title>

@@ -3,48 +3,55 @@
   
   <url>
     <loc>http://linuxfunk.com/categories/</loc>
-    <lastmod>2020-04-04T22:34:03+08:00</lastmod>
+    <lastmod>2020-04-11T12:34:03+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
     <loc>http://linuxfunk.com/tags/django/</loc>
-    <lastmod>2020-04-04T22:34:03+08:00</lastmod>
+    <lastmod>2020-04-11T12:34:03+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>http://linuxfunk.com/2020/04/04/django-3-%E5%8D%9A%E5%AE%A2%E5%AE%9E%E4%BE%8B/</loc>
-    <lastmod>2020-04-04T22:34:03+08:00</lastmod>
+    <loc>http://linuxfunk.com/2020/04/11/django3%E5%8D%9A%E5%AE%A2%E5%AE%9E%E4%BE%8B%E8%BF%9B%E9%98%B6/</loc>
+    <lastmod>2020-04-11T12:34:03+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
     <loc>http://linuxfunk.com/post/</loc>
-    <lastmod>2020-04-04T22:34:03+08:00</lastmod>
+    <lastmod>2020-04-11T12:34:03+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
     <loc>http://linuxfunk.com/categories/python/</loc>
-    <lastmod>2020-04-04T22:34:03+08:00</lastmod>
+    <lastmod>2020-04-11T12:34:03+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
     <loc>http://linuxfunk.com/tags/</loc>
-    <lastmod>2020-04-04T22:34:03+08:00</lastmod>
+    <lastmod>2020-04-11T12:34:03+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
     <loc>http://linuxfunk.com/</loc>
+    <lastmod>2020-04-11T12:34:03+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>http://linuxfunk.com/2020/04/04/django-3-%E5%8D%9A%E5%AE%A2%E5%AE%9E%E4%BE%8B/</loc>
     <lastmod>2020-04-04T22:34:03+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
