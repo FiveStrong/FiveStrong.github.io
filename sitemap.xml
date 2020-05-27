@@ -3,7 +3,49 @@
   
   <url>
     <loc>http://linuxfunk.com/categories/</loc>
-    <lastmod>2020-04-11T12:34:03+08:00</lastmod>
+    <lastmod>2020-05-27T14:09:14+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>http://linuxfunk.com/tags/centos/</loc>
+    <lastmod>2020-05-27T14:09:14+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>http://linuxfunk.com/2020/05/27/how-to-install-a-centos-7-minimal-server/</loc>
+    <lastmod>2020-05-27T14:09:14+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>http://linuxfunk.com/categories/linux/</loc>
+    <lastmod>2020-05-27T14:09:14+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>http://linuxfunk.com/post/</loc>
+    <lastmod>2020-05-27T14:09:14+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>http://linuxfunk.com/tags/</loc>
+    <lastmod>2020-05-27T14:09:14+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>http://linuxfunk.com/</loc>
+    <lastmod>2020-05-27T14:09:14+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
@@ -23,28 +65,7 @@
   </url>
   
   <url>
-    <loc>http://linuxfunk.com/post/</loc>
-    <lastmod>2020-04-11T12:34:03+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
     <loc>http://linuxfunk.com/categories/python/</loc>
-    <lastmod>2020-04-11T12:34:03+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>http://linuxfunk.com/tags/</loc>
-    <lastmod>2020-04-11T12:34:03+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>http://linuxfunk.com/</loc>
     <lastmod>2020-04-11T12:34:03+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
@@ -94,13 +115,6 @@
   
   <url>
     <loc>http://linuxfunk.com/tags/firewall/</loc>
-    <lastmod>2020-03-11T17:06:48+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>http://linuxfunk.com/categories/linux/</loc>
     <lastmod>2020-03-11T17:06:48+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
@@ -163,14 +177,14 @@
   </url>
   
   <url>
-    <loc>http://linuxfunk.com/tags/rust/</loc>
+    <loc>http://linuxfunk.com/categories/rust/</loc>
     <lastmod>2020-01-03T09:36:09+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>http://linuxfunk.com/categories/rust/</loc>
+    <loc>http://linuxfunk.com/tags/rust/</loc>
     <lastmod>2020-01-03T09:36:09+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>

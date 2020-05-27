@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>How to Install a CentOS 7 Minimal Server - モルガンナの家</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="Morgana" /><meta name="description" content="本文描述了安装CentOS 7 系统的过程。目的是在生产服务器上安装一套最小化系统，作为其他大型服务搭建的基础。 准备工作 U盘启动制作 下载最新版本" /><meta name="keywords" content="Hugo, モルガンナの家" />
+
+
+<meta name="robots" content="">
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.61.0 with even 4.0.0" />
+
+
+<link rel="canonical" href="http://linuxfunk.com/2020/05/27/how-to-install-a-centos-7-minimal-server/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<link href="/dist/even.84785aa1.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="How to Install a CentOS 7 Minimal Server" />
+<meta property="og:description" content="本文描述了安装CentOS 7 系统的过程。目的是在生产服务器上安装一套最小化系统，作为其他大型服务搭建的基础。 准备工作 U盘启动制作 下载最新版本" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://linuxfunk.com/2020/05/27/how-to-install-a-centos-7-minimal-server/" />
+<meta property="article:published_time" content="2020-05-27T14:09:14+08:00" />
+<meta property="article:modified_time" content="2020-05-27T14:09:14+08:00" />
+<meta itemprop="name" content="How to Install a CentOS 7 Minimal Server">
+<meta itemprop="description" content="本文描述了安装CentOS 7 系统的过程。目的是在生产服务器上安装一套最小化系统，作为其他大型服务搭建的基础。 准备工作 U盘启动制作 下载最新版本">
+<meta itemprop="datePublished" content="2020-05-27T14:09:14&#43;08:00" />
+<meta itemprop="dateModified" content="2020-05-27T14:09:14&#43;08:00" />
+<meta itemprop="wordCount" content="2770">
+
+
+
+<meta itemprop="keywords" content="centos," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="How to Install a CentOS 7 Minimal Server"/>
+<meta name="twitter:description" content="本文描述了安装CentOS 7 系统的过程。目的是在生产服务器上安装一套最小化系统，作为其他大型服务搭建的基础。 准备工作 U盘启动制作 下载最新版本"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">モルガンナの家</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">About</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">モルガンナの家</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">Categories</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">About</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">How to Install a CentOS 7 Minimal Server</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2020-05-27 </span>
+        <div class="post-category">
+            <a href="/categories/linux/"> linux </a>
+            </div>
+          <span class="more-meta"> 约 2770 字 </span>
+          <span class="more-meta"> 预计阅读 6 分钟 </span>
+        <span id="busuanzi_container_page_pv" class="more-meta"> <span id="busuanzi_value_page_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次阅读 </span>
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#heading">准备工作</a></li>
+        <li><a href="#u">U盘引导安装</a></li>
+        <li><a href="#heading-1">系统安装过程</a></li>
+        <li><a href="#heading-2">系统初始化配置</a></li>
+        <li><a href="#dell--raid-">DELL 服务器 RAID 配置</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <p>本文描述了安装CentOS 7 系统的过程。目的是在生产服务器上安装一套最小化系统，作为其他大型服务搭建的基础。</p>
+<h3 id="heading">准备工作</h3>
+<p>U盘启动制作</p>
+<ul>
+<li>下载最新版本的<a href="http://isoredirect.centos.org/centos/7/isos/x86_64/">Centos7 镜像</a>，当前为7.8版本。</li>
+<li>U盘一个，大于8G。</li>
+<li>U盘启动制作工具，推荐<a href="https://rufus.ie/">rufus</a>，详细使用方法网站上有。</li>
+</ul>
+<p>更新服务器(可选)</p>
+<p>在安装新的操作系统之前，可以更新服务器固件以充分利用所有功能，具体方法查看<a href="%5Bhttps://www.dell.com/support/article/zh-cn/sln300663/%E6%88%B4%E5%B0%94%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%93%8D%E4%BD%9C%E8%AF%B4%E6%98%8E-%E5%9C%A8poweredge%E4%B8%8A%E5%AE%89%E8%A3%85%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F?lang=zh%5D(https://www.dell.com/support/article/zh-cn/sln300663/%E6%88%B4%E5%B0%94%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%93%8D%E4%BD%9C%E8%AF%B4%E6%98%8E-%E5%9C%A8poweredge%E4%B8%8A%E5%AE%89%E8%A3%85%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F?lang=zh)">官网</a>。</p>
+<p>从支持网站下载戴尔操作系统驱动程序包。</p>
+<ol>
+<li>访问<a href="https://www.dell.com/support/home/cn/zh/cnbsd1/">支持网站</a>，输入您系统的服务标签，或单击“Browse all products”并选择您的产品。</li>
+<li>单击“DRIVERS and DOWNLOADS”选项卡，将“Dell OS Driver Pack”键入关键字框中，接着下载戴尔操作系统驱动程序包，然后将其上传到 iDRAC 的<a href="https://www.dell.com/support/article/zh-cn/sln292363/dell-poweredge-update-the-firmware-of-single-system-components-remotely-using-the-idrac?lang=en">“update and rollback”部分</a>。</li>
+</ol>
+<p>安装源选择</p>
+<p>要安装操作系统，必须为服务器提供源介质。安装文件可通过以下方式提供：</p>
+<ul>
+<li>DVD 光驱、</li>
+<li>USB设备</li>
+<li>PXE网络引导</li>
+<li>安装的ISO文件（通过iDRAC虚拟介质）</li>
+</ul>
+<p>我们这里使用通过USB安装</p>
+<h3 id="u">U盘引导安装</h3>
+<p>具体执行步骤如下：</p>
+<ol>
+<li>将U盘插入服务器前置USB口，或者后置口</li>
+<li>在引导过程中按F11以选择引导设备，这里从USB启动</li>
+</ol>
+<h3 id="heading-1">系统安装过程</h3>
+<p>如果U盘制作没问题，或者引导正确，会进入安装界面，选择 <strong>Install CentOS Linux 7</strong></p>
+<p><img src="boot.png" alt="boot"></p>
+<p>完全启动之后会进入配置界面</p>
+<p><img src="config.png" alt="config"></p>
+<p>需要配置的选项有：时区时间、系统安装位置，其他的默认就行，需要定制的请自行研究。</p>
+<p>时区选择界面，国内的话选择东八区上海就行</p>
+<p><img src="datetime.png" alt="datetime"></p>
+<p>系统安装位置</p>
+<p><img src="oslocal.png" alt="oslocal"></p>
+<p>图片中只有一块儿30G的硬盘，实际服务器中会有很多的硬盘，一般会将硬盘做成两组RAID，一组安装系统，一组数据存储；选择需要安装系统的RAID盘，假设这个磁盘大小为500G。</p>
+<p>利用LVM新建系统，默认会分配四个分区，分别为 / , /boot/efi，/home，以及swap分区，我会重新分配存储，给根目录100G，swap大小为内存的一半（如果内存特别大，最大16G估计够了，不够后期再加），其他默认，剩下的容量全部分配给home目录，至少还剩400G左右。如果懒得分，默认也行。</p>
+<p>系统分配好后，回到配置界面，如果没问题了，就选择下一步开始安装。在安装过程界面会有设置用户密码的选项，记得把root密码配置好。</p>
+<p><img src="rootpass.png" alt="rootpass" style="zoom:;"  /><img src="finish.png" alt="finish"></p>
+<p>等待系统安装完成，按重启按键，正常情况下就能顺利进入安装好的系统了，在命令行登录界面输入root的用户名密码登录系统。</p>
+<h3 id="heading-2">系统初始化配置</h3>
+<p><strong>切记在系统配置好安全设置之前不要优先配置网络！！！</strong></p>
+<ol>
+<li>
+<p>关闭selinux</p>
+<p>selinux 开启之后限制太多，没有深入研究之前建议直接关闭</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">setenforce <span class="m">0</span>
+vi /etc/selinux/config
+修改SELINUX的值（enforcing为开启，disabled为关闭<span class="o">)</span>
+<span class="nv">SELINUX</span><span class="o">=</span>disabled
+   
+注意：别错误修改SELINUXTYPE的值为disabled，误改会导致系统无法启动
+</code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>SSH配置</p>
+<p>ssh最基本的安全配置就是修改默认登录端口，禁止root直接登录，有条件的还可以设置禁止密码登录，只能使用公钥登录。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">vi /etc/ssh/sshd_confg
+修改
+Port xxx
+PermitRootLogin no
+UseDNS no
+   
+systemctl restart sshd  //重启sshd服务让配置生效
+</code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>防火墙配置</p>
+<p>开启系统防火墙，centos 7 使用的是 firewalld，一般配置文件在/etc/firewalld/zones/public.xml，可以手动修改，也可以通过命令行</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">启动firewalld并设为开机自启，执行如下指令：
+systemctl start firewalld.service
+systemctl <span class="nb">enable</span> firewalld.service
+记得将ssh端口添加到规则：
+firewall-cmd --permanent --zone<span class="o">=</span>public --add-port<span class="o">=</span>xxx/tcp
+firewall-cmd --reload
+</code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>创建登录账户</p>
+<p>由于我们禁止了root的直接登录，所以需要创建一个能够登录的普通账户</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">useradd jack
+passwd jack
+</code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>配置并启动网络</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell"><span class="nb">cd</span> /etc/sysconfig/network-scripts/
+vi ifcfg-em1
+   
+<span class="nv">TYPE</span><span class="o">=</span>Ethernet
+<span class="nv">PROXY_METHOD</span><span class="o">=</span>none
+<span class="nv">BROWSER_ONLY</span><span class="o">=</span>no
+<span class="nv">BOOTPROTO</span><span class="o">=</span>static
+<span class="nv">DEFROUTE</span><span class="o">=</span>yes
+<span class="nv">IPV4_FAILURE_FATAL</span><span class="o">=</span>no
+<span class="nv">IPV6INIT</span><span class="o">=</span>yes
+<span class="nv">IPV6_AUTOCONF</span><span class="o">=</span>yes
+<span class="nv">IPV6_DEFROUTE</span><span class="o">=</span>yes
+<span class="nv">IPV6_FAILURE_FATAL</span><span class="o">=</span>no
+<span class="nv">IPV6_ADDR_GEN_MODE</span><span class="o">=</span>stable-privacy
+<span class="nv">NAME</span><span class="o">=</span>em1
+<span class="nv">UUID</span><span class="o">=</span>xxxx
+<span class="nv">DEVICE</span><span class="o">=</span>em1
+<span class="nv">ONBOOT</span><span class="o">=</span>yes
+<span class="nv">IPADDR</span><span class="o">=</span>IP地址
+<span class="nv">NETMASK</span><span class="o">=</span>子网掩码
+<span class="nv">GATEWAY</span><span class="o">=</span>网关
+<span class="nv">IPV6ADDR</span><span class="o">=</span>IPv6地址
+<span class="nv">IPV6_DEFAULTGW</span><span class="o">=</span>IPv6网关
+<span class="nv">DNS1</span><span class="o">=</span>223.5.5.5
+<span class="nv">DNS2</span><span class="o">=</span>114.114.114.114
+   
+systemctl restart network
+</code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>更新系统</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">查看当前系统版本
+cat /etc/*release*
+   
+安装EPEL源（可选）
+yum -y install epel-release
+   
+更新系统
+yum update
+   
+更新系统之后，条件允许下重启系统
+reboot
+</code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>增加swap分区（可选）</p>
+<p>正如前面所说，如果安装系统的时候swap分配小了，可以手动增加一些</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">查看当前分区情况
+free -m
+   
+增加 swap分区，容量为1GB
+dd <span class="k">if</span><span class="o">=</span>/dev/zero <span class="nv">of</span><span class="o">=</span>/var/swap <span class="nv">bs</span><span class="o">=</span><span class="m">1024</span> <span class="nv">count</span><span class="o">=</span><span class="m">1024000</span>
+   
+设置交换文件
+mkswap /var/swap
+   
+立即激活启用交换分区
+swapon /var/swap
+   
+添加系统引导时自启动运行
+vi /etc/fstab
+   
+添加一行
+/var/swap swap swap defaults <span class="m">0</span> <span class="m">0</span>
+   
+如果不需要了，收回 swap 空间
+swapoff /var/swap
+   
+从文件系统中回收
+rm /var/swap
+</code></pre></td></tr></table>
+</div>
+</div></li>
+</ol>
+<h3 id="dell--raid-">DELL 服务器 RAID 配置</h3>
+<ol>
+<li>
+<p>在系统启动期间，按<strong>F2</strong>键进入<strong>System Setup</strong>（系统设置）。</p>
+</li>
+<li>
+<p>单击<strong>Device Settings</strong>（设备设置）。
+<img src="device-settings.png" alt="device-settings" style="zoom:75%;" /></p>
+<p><strong>图1</strong>：System Setup（系统设置）主菜单</p>
+</li>
+<li>
+<p>单击所需的<strong>RAID controller</strong>（RAID控制器）设备。
+<img src="controller.png" alt="controller" style="zoom:75%;" /></p>
+<p><strong>图2</strong>：Device（设备）菜单</p>
+</li>
+<li>
+<p>单击<strong>Configuration Management</strong>（配置管理）。
+<img src="configManager.png" alt="configManager" style="zoom:75%;" /></p>
+<p><strong>图3</strong>：Configuration Utility（配置实用程序）主菜单</p>
+</li>
+<li>
+<p>单击<strong>Create Virtual Disk</strong>（创建虚拟磁盘）。
+<img src="createDisk.png" alt="createDisk" style="zoom:75%;" /></p>
+<p><strong>图4</strong>：Configuration Management（配置管理）菜单</p>
+</li>
+<li>
+<p>现在会显示下面的选项列表以定义虚拟磁盘参数：</p>
+<ul>
+<li>
+<p><strong>Select RAID level</strong>（选择RAID级别）— 允许您选择所需的RAID级别。</p>
+</li>
+<li>
+<p>Secure Virtual Disk</p>
+<p>（安全虚拟磁盘）— 如果您要创建受保护的虚拟磁盘，请选择Secure Virtual Disk（安全虚拟磁盘）。</p>
+<p><strong>注</strong>：仅当安全密钥已配置时，Secure Virtual Disk（安全虚拟磁盘）选项默认才会处于启用状态并已选中。仅会列出SED物理磁盘。</p>
+</li>
+<li>
+<p>Select Physical Disks From</p>
+<p>（从以下选项中选择物理磁盘）— 可让您选择物理磁盘容量之一：</p>
+<ul>
+<li>Unconfigured Capacity（未配置的容量）：在未配置的物理磁盘上创建虚拟磁盘。</li>
+<li>Free Capacity（可用容量）：利用已是虚拟磁盘的一部分未使用的物理磁盘容量。</li>
+</ul>
+</li>
+<li>
+<p><strong>Select Physical Disks</strong>（选择物理磁盘）— 如果您要选择从中创建虚拟磁盘的物理磁盘，请单击Select Physical Disks（选择物理磁盘）。如果您选择Unconfigured Capacity（未配置的容量）作为物理磁盘容量，则会显示此选项。</p>
+</li>
+<li>
+<p><strong>Select Disk Groups</strong>（选择磁盘组）— 如果您要选择从中创建虚拟磁盘的磁盘组，请单击Select Disk Group（选择磁盘组）。如果您选择Free Capacity（可用容量）作为物理磁盘容量，将会显示此选项。</p>
+</li>
+<li>
+<p><strong>Configure Virtual Disk Parameters</strong>（配置虚拟磁盘参数）— 允许您在创建虚拟磁盘时设置虚拟磁盘参数。</p>
+</li>
+</ul>
+</li>
+<li>
+<p>单击<strong>Select Physical Disks</strong>（选择物理磁盘）。
+<img src="selectDevice.png" alt="selectDevice" style="zoom:75%;" /></p>
+<p><strong>图5</strong>：Create Virtual Disk（创建虚拟磁盘）菜单</p>
+</li>
+<li>
+<p>选择所需的驱动器，然后单击<strong>Apply Changes</strong>（应用更改）。
+<img src="applyChange.png" alt="applyChange" style="zoom:75%;" /></p>
+<p><strong>图6</strong>：选择驱动器</p>
+</li>
+<li>
+<p>成功执行该操作后，单击<strong>OK</strong>（确定）。</p>
+</li>
+<li>
+<p>命名新的虚拟磁盘，然后选择所需的设置。</p>
+</li>
+<li>
+<p>单击<strong>Create Virtual Disk</strong>（创建虚拟磁盘）。
+<img src="finishCreateDisk.png" alt="finishCreateDisk" style="zoom:75%;" /></p>
+<p><strong>图7</strong>：Create Virtual Disk（创建虚拟磁盘）</p>
+</li>
+<li>
+<p>选择<strong>Confirm</strong>（确认），然后单击<strong>Yes</strong>（是）。</p>
+</li>
+<li>
+<p>此时便已成创建<strong>虚拟磁盘</strong>。单击<strong>OK</strong>（确定）</p>
+</li>
+<li>
+<p>需要配置多个RAID盘，请重复步骤。</p>
+</li>
+</ol>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">
+      <a href="http://linuxfunk.com/">Morgana</a>
+    </span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">初次发布</span>
+    <span class="item-content">
+        2020-05-27
+    </span>
+  </p>
+  
+  
+  
+  <p class="copyright-item">
+    <span class="item-title">许可协议</span>
+    <span class="item-content"><a rel="license noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a></span>
+  </p>
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/centos/">centos</a>
+          </div>
+      <nav class="post-nav">
+        
+        <a class="next" href="/2020/04/11/django3%E5%8D%9A%E5%AE%A2%E5%AE%9E%E4%BE%8B%E8%BF%9B%E9%98%B6/">
+            <span class="next-text nav-default">Django 3 博客实例进阶</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+  
+  <div id="utter-container"></div>
+    <script src="https://utteranc.es/client.js"
+        repo= 'fivestrong/fivestrong.github.io'
+        issue-term= "title"
+        theme= 'github-light'
+        crossorigin= "anonymous"
+        async>
+    </script>
+
+  
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:fivestrong@live.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://github.com/fivestrong" class="iconfont icon-github" title="github"></a>
+  <a href="http://linuxfunk.com/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  <div class="busuanzi-footer">
+    <span id="busuanzi_container_site_pv"> 本站总访问量 <span id="busuanzi_value_site_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次 </span>
+      <span class="division">|</span>
+    <span id="busuanzi_container_site_uv"> 本站总访客数 <span id="busuanzi_value_site_uv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 人 </span>
+  </div>
+
+  <span class="copyright-year">
+    &copy; 
+    2015 - 
+    2020
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">Morgana</span>
+  </span>
+</div>
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/dist/even.2139186b.min.js"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

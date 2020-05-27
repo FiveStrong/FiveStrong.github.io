@@ -6,10 +6,19 @@
     <description>Recent content on モルガンナの家</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Sat, 11 Apr 2020 12:34:03 +0800</lastBuildDate>
+    <lastBuildDate>Wed, 27 May 2020 14:09:14 +0800</lastBuildDate>
     
 	<atom:link href="http://linuxfunk.com/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>How to Install a CentOS 7 Minimal Server</title>
+      <link>http://linuxfunk.com/2020/05/27/how-to-install-a-centos-7-minimal-server/</link>
+      <pubDate>Wed, 27 May 2020 14:09:14 +0800</pubDate>
+      
+      <guid>http://linuxfunk.com/2020/05/27/how-to-install-a-centos-7-minimal-server/</guid>
+      <description>本文描述了安装CentOS 7 系统的过程。目的是在生产服务器上安装一套最小化系统，作为其他大型服务搭建的基础。 准备工作 U盘启动制作 下载最新版本</description>
+    </item>
     
     <item>
       <title>Django 3 博客实例进阶</title>
