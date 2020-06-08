@@ -52,7 +52,7 @@
 <meta itemprop="description" content="zabbix-agent yum install">
 <meta itemprop="datePublished" content="2017-10-17T08:39:53&#43;00:00" />
 <meta itemprop="dateModified" content="2017-10-17T08:39:53&#43;00:00" />
-<meta itemprop="wordCount" content="95">
+<meta itemprop="wordCount" content="100">
 
 
 
@@ -128,7 +128,7 @@
         <div class="post-category">
             <a href="/categories/linux/"> linux </a>
             </div>
-          <span class="more-meta"> 约 95 字 </span>
+          <span class="more-meta"> 约 100 字 </span>
           <span class="more-meta"> 预计阅读 1 分钟 </span>
         <span id="busuanzi_container_page_pv" class="more-meta"> <span id="busuanzi_value_page_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次阅读 </span>
       </div>
@@ -204,9 +204,11 @@ rpm -Uvh http://repo.zabbix.com/zabbix/4.4/rhel/6/x86_64/zabbix-release-4.4-1.el
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
 </span></code></pre></td>
 <td class="lntd">
 <pre class="chroma"><code class="language-shell" data-lang="shell"><span class="c1"># systemctl restart zabbix-agent</span>
+<span class="c1"># systemctl enable zabbix-agent</span>
 </code></pre></td></tr></table>
 </div>
 </div><p>Step 5 – open the firewall port</p>
