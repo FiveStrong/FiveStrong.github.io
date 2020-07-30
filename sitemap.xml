@@ -3,7 +3,49 @@
   
   <url>
     <loc>http://linuxfunk.com/categories/</loc>
-    <lastmod>2020-07-25T15:31:16+08:00</lastmod>
+    <lastmod>2020-07-30T16:45:30+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>http://linuxfunk.com/categories/linux/</loc>
+    <lastmod>2020-07-30T16:45:30+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>http://linuxfunk.com/tags/openssl/</loc>
+    <lastmod>2020-07-30T16:45:30+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>http://linuxfunk.com/2020/07/30/openssl-update-for-centos6or7/</loc>
+    <lastmod>2020-07-30T16:45:30+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>http://linuxfunk.com/post/</loc>
+    <lastmod>2020-07-30T16:45:30+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>http://linuxfunk.com/tags/</loc>
+    <lastmod>2020-07-30T16:45:30+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>http://linuxfunk.com/</loc>
+    <lastmod>2020-07-30T16:45:30+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
@@ -30,27 +72,6 @@
   </url>
   
   <url>
-    <loc>http://linuxfunk.com/post/</loc>
-    <lastmod>2020-07-25T15:31:16+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>http://linuxfunk.com/tags/</loc>
-    <lastmod>2020-07-25T15:31:16+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>http://linuxfunk.com/</loc>
-    <lastmod>2020-07-25T15:31:16+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
     <loc>http://linuxfunk.com/tags/centos/</loc>
     <lastmod>2020-05-27T14:09:14+08:00</lastmod>
     <changefreq>weekly</changefreq>
@@ -59,13 +80,6 @@
   
   <url>
     <loc>http://linuxfunk.com/2020/05/27/how-to-install-a-centos-7-minimal-server/</loc>
-    <lastmod>2020-05-27T14:09:14+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>http://linuxfunk.com/categories/linux/</loc>
     <lastmod>2020-05-27T14:09:14+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
@@ -311,13 +325,6 @@
   
   <url>
     <loc>http://linuxfunk.com/tags/openssh/</loc>
-    <lastmod>2019-03-13T14:15:46+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>http://linuxfunk.com/tags/openssl/</loc>
     <lastmod>2019-03-13T14:15:46+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>

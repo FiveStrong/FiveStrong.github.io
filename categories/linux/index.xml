@@ -6,10 +6,19 @@
     <description>Recent content in linux on モルガンナの家</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Wed, 27 May 2020 14:09:14 +0800</lastBuildDate>
+    <lastBuildDate>Thu, 30 Jul 2020 16:45:30 +0800</lastBuildDate>
     
 	<atom:link href="http://linuxfunk.com/categories/linux/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Openssl Update for Centos6or7</title>
+      <link>http://linuxfunk.com/2020/07/30/openssl-update-for-centos6or7/</link>
+      <pubDate>Thu, 30 Jul 2020 16:45:30 +0800</pubDate>
+      
+      <guid>http://linuxfunk.com/2020/07/30/openssl-update-for-centos6or7/</guid>
+      <description>学习目标： 编译最新版本openssl 解决编译软件无法找到openssl lib 库的问题 总所周知，CentOS自带软件包老到不行，编译新的软件好多需</description>
+    </item>
     
     <item>
       <title>How to Install a CentOS 7 Minimal Server</title>
