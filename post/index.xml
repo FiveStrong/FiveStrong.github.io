@@ -21,6 +21,15 @@
     </item>
     
     <item>
+      <title>Golang Working With Files</title>
+      <link>http://linuxfunk.com/2020/07/27/golang-working-with-files/</link>
+      <pubDate>Mon, 27 Jul 2020 14:38:57 +0800</pubDate>
+      
+      <guid>http://linuxfunk.com/2020/07/27/golang-working-with-files/</guid>
+      <description>学习目标: 创建空文件以及截取文件 获取文件详细信息 重命名、移动、删除文件 操作文件权限、所属、以及时间戳 文件符号链接 多种读写文件的方式 文件归档 文</description>
+    </item>
+    
+    <item>
       <title>Go Cheatsheet</title>
       <link>http://linuxfunk.com/2020/07/25/go-cheatsheet/</link>
       <pubDate>Sat, 25 Jul 2020 15:31:16 +0800</pubDate>

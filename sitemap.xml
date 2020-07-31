@@ -51,6 +51,34 @@
   </url>
   
   <url>
+    <loc>http://linuxfunk.com/tags/files/</loc>
+    <lastmod>2020-07-27T14:38:57+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>http://linuxfunk.com/categories/golang/</loc>
+    <lastmod>2020-07-27T14:38:57+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>http://linuxfunk.com/tags/golang/</loc>
+    <lastmod>2020-07-27T14:38:57+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>http://linuxfunk.com/2020/07/27/golang-working-with-files/</loc>
+    <lastmod>2020-07-27T14:38:57+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
     <loc>http://linuxfunk.com/tags/cheatsheet/</loc>
     <lastmod>2020-07-25T15:31:16+08:00</lastmod>
     <changefreq>weekly</changefreq>
@@ -59,13 +87,6 @@
   
   <url>
     <loc>http://linuxfunk.com/2020/07/25/go-cheatsheet/</loc>
-    <lastmod>2020-07-25T15:31:16+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>http://linuxfunk.com/categories/golang/</loc>
     <lastmod>2020-07-25T15:31:16+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>

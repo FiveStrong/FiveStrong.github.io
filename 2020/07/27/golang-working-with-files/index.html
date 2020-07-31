@@ -1,0 +1,2494 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Golang Working With Files - モルガンナの家</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="Morgana" /><meta name="description" content="学习目标: 创建空文件以及截取文件 获取文件详细信息 重命名、移动、删除文件 操作文件权限、所属、以及时间戳 文件符号链接 多种读写文件的方式 文件归档 文" /><meta name="keywords" content="Hugo, モルガンナの家" />
+
+
+<meta name="robots" content="">
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.61.0 with even 4.0.0" />
+
+
+<link rel="canonical" href="http://linuxfunk.com/2020/07/27/golang-working-with-files/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<link href="/dist/even.84785aa1.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="Golang Working With Files" />
+<meta property="og:description" content="学习目标: 创建空文件以及截取文件 获取文件详细信息 重命名、移动、删除文件 操作文件权限、所属、以及时间戳 文件符号链接 多种读写文件的方式 文件归档 文" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://linuxfunk.com/2020/07/27/golang-working-with-files/" />
+<meta property="article:published_time" content="2020-07-27T14:38:57+08:00" />
+<meta property="article:modified_time" content="2020-07-27T14:38:57+08:00" />
+<meta itemprop="name" content="Golang Working With Files">
+<meta itemprop="description" content="学习目标: 创建空文件以及截取文件 获取文件详细信息 重命名、移动、删除文件 操作文件权限、所属、以及时间戳 文件符号链接 多种读写文件的方式 文件归档 文">
+<meta itemprop="datePublished" content="2020-07-27T14:38:57&#43;08:00" />
+<meta itemprop="dateModified" content="2020-07-27T14:38:57&#43;08:00" />
+<meta itemprop="wordCount" content="7697">
+
+
+
+<meta itemprop="keywords" content="golang,files," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Golang Working With Files"/>
+<meta name="twitter:description" content="学习目标: 创建空文件以及截取文件 获取文件详细信息 重命名、移动、删除文件 操作文件权限、所属、以及时间戳 文件符号链接 多种读写文件的方式 文件归档 文"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">モルガンナの家</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">About</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">モルガンナの家</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">Categories</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">About</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">Golang Working With Files</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2020-07-27 </span>
+        <div class="post-category">
+            <a href="/categories/golang/"> golang </a>
+            </div>
+          <span class="more-meta"> 约 7697 字 </span>
+          <span class="more-meta"> 预计阅读 16 分钟 </span>
+        <span id="busuanzi_container_page_pv" class="more-meta"> <span id="busuanzi_value_page_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次阅读 </span>
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#heading">文件基础</a>
+      <ul>
+        <li><a href="#heading-1">创建空文件</a></li>
+        <li><a href="#heading-2">截断文件</a></li>
+        <li><a href="#heading-3">获取文件信息</a></li>
+        <li><a href="#heading-4">重命名文件</a></li>
+        <li><a href="#heading-5">删除文件</a></li>
+        <li><a href="#heading-6">打开关闭文件</a></li>
+        <li><a href="#heading-7">判断文件是否存在</a></li>
+        <li><a href="#heading-8">判断读写权限</a></li>
+        <li><a href="#heading-9">改变权限、所属、时间戳</a></li>
+        <li><a href="#heading-10">硬链接和软链接</a></li>
+      </ul>
+    </li>
+    <li><a href="#heading-11">文件读写</a>
+      <ul>
+        <li><a href="#heading-12">拷贝文件</a></li>
+        <li><a href="#heading-13">通过位置在文件中查找</a></li>
+        <li><a href="#bytes">向文件写入bytes</a></li>
+        <li><a href="#heading-14">快速写入文件</a></li>
+        <li><a href="#heading-15">写入缓存</a></li>
+        <li><a href="#bytes-1">从文件读取bytes</a></li>
+        <li><a href="#buffered-reader">缓存读取器(Buffered reader)</a></li>
+        <li><a href="#-scanner-">使用 scanner 读取文件</a></li>
+      </ul>
+    </li>
+    <li><a href="#heading-17">文件归档</a>
+      <ul>
+        <li><a href="#zip">利用ZIP打包文件</a></li>
+        <li><a href="#unzip">利用unzip解压</a></li>
+      </ul>
+    </li>
+    <li><a href="#heading-18">文件压缩</a>
+      <ul>
+        <li><a href="#heading-19">压缩文件</a></li>
+        <li><a href="#heading-20">解压缩文件</a></li>
+      </ul>
+    </li>
+    <li><a href="#heading-21">创建临时文件及文件夹</a></li>
+    <li><a href="#http">通过HTTP下载文件</a></li>
+    <li><a href="#heading-22">总结</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <p>学习目标:</p>
+<ul>
+<li>创建空文件以及截取文件</li>
+<li>获取文件详细信息</li>
+<li>重命名、移动、删除文件</li>
+<li>操作文件权限、所属、以及时间戳</li>
+<li>文件符号链接</li>
+<li>多种读写文件的方式</li>
+<li>文件归档</li>
+<li>文件压缩</li>
+<li>临时文件以及文件夹创建</li>
+<li>通过HTTP下载文件</li>
+</ul>
+<h2 id="heading">文件基础</h2>
+<h3 id="heading-1">创建空文件</h3>
+<p>我们假设有这样一个场景：有一台服务器每天滚动写入日志，日志名称由当天时间决定。一般情况下开发者会将权限设置周全，比如说只有管理员才可以读取日志数据。但是有一种可能他们对目录的权限限制比较弱，这时候假设我们提前创建下一天的文件，一般情况下服务仅仅当文件不存在的时候才会创建特定权限的新文件，但是如果检测文件已经存在就不会检测权限而直接写入。这样我们就可以利用这个漏洞创建有自己可读权限的日志文件。这个文件的命名格式和服务的要一致，比如，如果服务使用的格式是<code>logs-2020-07-21.txt</code>，那我们就应该创建<code>logs-2020-07-22.txt</code>.这样明天服务就会写入这个你有权限的文件，而不是生成仅仅root才能读写的日志。</p>
+<p>代码示例：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-go" data-lang="go"><span class="kn">package</span> <span class="nx">main</span>
+
+<span class="kn">import</span> <span class="p">(</span>
+	<span class="s">&#34;log&#34;</span>
+  <span class="s">&#34;os&#34;</span>
+<span class="p">)</span>
+
+<span class="kd">func</span> <span class="nf">main</span><span class="p">(</span><span class="p">)</span><span class="p">{</span>
+  <span class="nx">newFile</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">os</span><span class="p">.</span><span class="nf">Create</span><span class="p">(</span><span class="s">&#34;test.txt&#34;</span><span class="p">)</span>
+  <span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+    <span class="nx">log</span><span class="p">.</span><span class="nf">Fatal</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+  <span class="p">}</span>
+  <span class="nx">log</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">newFile</span><span class="p">)</span>
+  <span class="nx">newFile</span><span class="p">.</span><span class="nf">Close</span><span class="p">(</span><span class="p">)</span>
+<span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="heading-2">截断文件</h3>
+<p>截断文件是指将文件修剪到指定大小。常用于完全将文件内容移除，也可以用于将文件限制到特定大小。<code>os.Truncate()</code>函数的一个显著特点是当目标文件小于需要截断的大小时，它会将文件空白部分使用空bytes填充到指定长度。</p>
+<p>截断文件比创建空文件还要广泛一些。当日志文件太大，我们可以通过截取文件将它保存到硬盘上。如果你是个黑客，你可能会想要通过截取方式掩盖<code>bash_history</code>以及其他日志文件的记录。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-go" data-lang="go"><span class="kn">package</span> <span class="nx">main</span>
+
+<span class="kn">import</span> <span class="p">(</span>
+	<span class="s">&#34;log&#34;</span>
+  <span class="s">&#34;os&#34;</span>
+<span class="p">)</span>
+
+<span class="kd">func</span> <span class="nf">main</span><span class="p">(</span><span class="p">)</span><span class="p">{</span>
+  <span class="c1">// Truncate a file to 100 bytes.If file
+</span><span class="c1"></span>  <span class="c1">// is less than 100 bytes, and the rest of the space is 
+</span><span class="c1"></span>  <span class="c1">// filled with null bytes. If it is over 100 bytes,
+</span><span class="c1"></span>  <span class="c1">// Everything past 100 bytes will be lost.Either way
+</span><span class="c1"></span>  <span class="c1">// we will end up with exactly 100 bytes.
+</span><span class="c1"></span>  <span class="c1">// Pass in 0 to truncate to a completely empty file
+</span><span class="c1"></span>  
+  <span class="nx">err</span> <span class="o">:=</span> <span class="nx">os</span><span class="p">.</span><span class="nf">Truncate</span><span class="p">(</span><span class="s">&#34;test.txt&#34;</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+  <span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+    <span class="nx">log</span><span class="p">.</span><span class="nf">Fatal</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="heading-3">获取文件信息</h3>
+<p>下面的例子会获取文件能够得到的元数据。其中包括属性，名称、权限、最后一次修改时间、是否是文件夹等等信息。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-go" data-lang="go"><span class="kn">package</span> <span class="nx">main</span>
+
+<span class="kn">import</span> <span class="p">(</span>
+	<span class="s">&#34;fmt&#34;</span>
+  <span class="s">&#34;log&#34;</span>
+  <span class="s">&#34;os&#34;</span>
+<span class="p">)</span>
+
+<span class="kd">func</span> <span class="nf">main</span><span class="p">(</span><span class="p">)</span><span class="p">{</span>
+  <span class="c1">// Stat returns file info.It will return an error if there is no file.
+</span><span class="c1"></span>  <span class="nx">fileInfo</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">os</span><span class="p">.</span><span class="nf">Stat</span><span class="p">(</span><span class="s">&#34;test.txt&#34;</span><span class="p">)</span>
+  <span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+    <span class="nx">log</span><span class="p">.</span><span class="nf">Fatal</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+  <span class="p">}</span>
+  <span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="s">&#34;File name: &#34;</span><span class="p">,</span> <span class="nx">fileInfo</span><span class="p">.</span><span class="nf">Name</span><span class="p">(</span><span class="p">)</span><span class="p">)</span>
+  <span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="s">&#34;Size in bytes: &#34;</span><span class="p">,</span> <span class="nx">fileInfo</span><span class="p">.</span><span class="nf">Size</span><span class="p">(</span><span class="p">)</span><span class="p">)</span>
+  <span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="s">&#34;Permissions: &#34;</span><span class="p">,</span> <span class="nx">fileInfo</span><span class="p">.</span><span class="nf">Mode</span><span class="p">(</span><span class="p">)</span><span class="p">)</span>
+  <span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="s">&#34;Last modified:&#34;</span><span class="p">,</span> <span class="nx">fileInfo</span><span class="p">.</span><span class="nf">ModTime</span><span class="p">(</span><span class="p">)</span><span class="p">)</span>
+  <span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="s">&#34;Is Directory: &#34;</span><span class="p">,</span> <span class="nx">fileInfo</span><span class="p">.</span><span class="nf">IsDir</span><span class="p">(</span><span class="p">)</span><span class="p">)</span>
+  <span class="nx">fmt</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;System interface type: %T\n &#34;</span><span class="p">,</span> <span class="nx">fileInfo</span><span class="p">.</span><span class="nf">Sys</span><span class="p">(</span><span class="p">)</span><span class="p">)</span>
+  <span class="nx">fmt</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;System info: %+v\n\n &#34;</span><span class="p">,</span> <span class="nx">fileInfo</span><span class="p">.</span><span class="nf">Sys</span><span class="p">(</span><span class="p">)</span><span class="p">)</span>
+<span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="heading-4">重命名文件</h3>
+<p>本质上重命名和移动文件性质是一致的，所以如果你打算将一个文件移动到另外一个文件夹，可以使用 <code>os.Rename()</code>函数</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-go" data-lang="go"><span class="kn">package</span> <span class="nx">main</span>
+
+<span class="kn">import</span> <span class="p">(</span>
+	<span class="s">&#34;log&#34;</span>
+  <span class="s">&#34;os&#34;</span>
+<span class="p">)</span>
+
+<span class="kd">func</span> <span class="nf">main</span> <span class="p">(</span><span class="p">)</span><span class="p">{</span>
+  <span class="nx">originalPath</span> <span class="o">:=</span> <span class="s">&#34;test.txt&#34;</span>
+  <span class="nx">newPath</span> <span class="o">:=</span> <span class="s">&#34;test2.txt&#34;</span>
+  <span class="nx">err</span> <span class="o">:=</span> <span class="nx">os</span><span class="p">.</span><span class="nf">Rename</span><span class="p">(</span><span class="nx">originalPath</span><span class="p">,</span> <span class="nx">newPaht</span><span class="p">)</span>
+  <span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+    <span class="nx">log</span><span class="p">.</span><span class="nf">Fatal</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="heading-5">删除文件</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-go" data-lang="go"><span class="kn">package</span> <span class="nx">main</span> 
+
+<span class="kn">import</span> <span class="p">(</span>
+	<span class="s">&#34;log&#34;</span>
+  <span class="s">&#34;os&#34;</span>
+<span class="p">)</span>
+
+<span class="kd">func</span> <span class="nf">main</span><span class="p">(</span><span class="p">)</span><span class="p">{</span>
+  <span class="nx">err</span> <span class="o">:=</span> <span class="nx">os</span><span class="p">.</span><span class="nf">Remove</span><span class="p">(</span><span class="s">&#34;test.txt&#34;</span><span class="p">)</span>
+  <span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+    <span class="nx">log</span><span class="p">.</span><span class="nf">Fatal</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="heading-6">打开关闭文件</h3>
+<p>打开文件有很多种方式：</p>
+<p>os.Open()函数传入文件名，得到一个只读文件。os.OpenFile()函数可以传入更多参数，你可以指定文件的可读可写权限，也可以指定打开文件方式是读，写，追加，不存在创建或是根据需求截取。</p>
+<p>关闭文件只需要调用<code>Close()</code>方法，可以立马调用关闭，也可以使用<code>defer</code>延迟关闭。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-go" data-lang="go"><span class="kn">package</span> <span class="nx">main</span>
+
+<span class="kn">import</span> <span class="p">(</span>
+	<span class="s">&#34;log&#34;</span>
+  <span class="s">&#34;os&#34;</span>
+<span class="p">)</span>
+
+<span class="kd">func</span> <span class="nf">main</span><span class="p">(</span><span class="p">)</span><span class="p">{</span>
+  <span class="c1">// Simple read only open.We will cover actually reading 
+</span><span class="c1"></span>  <span class="c1">// and writing to files in examples further down the page
+</span><span class="c1"></span>  <span class="nx">file</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">os</span><span class="p">.</span><span class="nf">Open</span><span class="p">(</span><span class="s">&#34;test.txt&#34;</span><span class="p">)</span>
+  <span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+    <span class="nx">log</span><span class="p">.</span><span class="nf">Fatal</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+  <span class="p">}</span>
+  <span class="nx">file</span><span class="p">.</span><span class="nf">Close</span><span class="p">(</span><span class="p">)</span>
+  
+  <span class="c1">// OpenFile with more optinos. Last param is the permission mode
+</span><span class="c1"></span>  <span class="c1">// Second param is the attributes when opening
+</span><span class="c1"></span>  <span class="nx">file</span><span class="p">,</span> <span class="nx">err</span> <span class="p">=</span> <span class="nx">os</span><span class="p">.</span><span class="nf">OpenFile</span><span class="p">(</span><span class="s">&#34;test.txt&#34;</span><span class="p">,</span> <span class="nx">os</span><span class="p">.</span><span class="nx">O_APPEND</span><span class="p">,</span> <span class="mo">0666</span><span class="p">)</span>
+  <span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+    <span class="nx">log</span><span class="p">.</span><span class="nf">Fatal</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+  <span class="p">}</span>
+  <span class="nx">file</span><span class="p">.</span><span class="nf">Close</span><span class="p">(</span><span class="p">)</span>
+  
+  <span class="c1">// Use these attributes individually or combined
+</span><span class="c1"></span>  <span class="c1">// with an OR for second arg os OpenFile()
+</span><span class="c1"></span>  <span class="c1">// e.g. os.O_CREATE|os.O_APPEND
+</span><span class="c1"></span>  <span class="c1">// OR os.O_CREATE|os.O_TRUNC|os.O_WRONLY
+</span><span class="c1"></span>  
+  <span class="c1">// os.O_RDONLY // Read only
+</span><span class="c1"></span>  <span class="c1">// os.O_WRONLY // Write only
+</span><span class="c1"></span>  <span class="c1">// os.O_RDWR   // Read and write
+</span><span class="c1"></span>  <span class="c1">// os.O_APPEND // Append to end of file
+</span><span class="c1"></span>  <span class="c1">// os.O_CREATE // Create is none exist
+</span><span class="c1"></span>  <span class="c1">// os.O_TRUNC  // Truncate file when opening
+</span><span class="c1"></span><span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="heading-7">判断文件是否存在</h3>
+<p>判断文件是否存在分为两个步骤：</p>
+<p>首先，通过<code>os.Stat()</code>函数获取到文件的<code>FileInfo</code>对象。如果文件不存在，返回结果就是一个错误类型。所以文件信息获取一定要记得检查返回错误。</p>
+<p>标准库中提供了<code>os.IsNotExist()</code>它能够通过检测返回错误判断文件是否存在。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-go" data-lang="go"><span class="kn">package</span> <span class="nx">main</span>
+
+<span class="kn">import</span> <span class="p">(</span>
+	<span class="s">&#34;log&#34;</span>
+  <span class="s">&#34;os&#34;</span>
+<span class="p">)</span>
+
+<span class="kd">func</span> <span class="nf">main</span><span class="p">(</span><span class="p">)</span> <span class="p">{</span>
+  <span class="c1">// Stat returns file info. It will return 
+</span><span class="c1"></span>  <span class="c1">// an error if there is no file
+</span><span class="c1"></span>  <span class="nx">fileInfo</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">os</span><span class="p">.</span><span class="nf">Stat</span><span class="p">(</span><span class="s">&#34;test.txt&#34;</span><span class="p">)</span>
+  <span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="nx">os</span><span class="p">.</span><span class="nf">IsNotExist</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nx">log</span><span class="p">.</span><span class="nf">Fatal</span><span class="p">(</span><span class="s">&#34;Flie does not exist.&#34;</span><span class="p">)</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+  <span class="nx">log</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="s">&#34;File does exist. File information: &#34;</span><span class="p">)</span>
+  <span class="nx">log</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">fileInfo</span><span class="p">)</span>
+<span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="heading-8">判断读写权限</h3>
+<p>与上面的例子类似，检测权限的方法是<code>os.IsPermission()</code></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-go" data-lang="go"><span class="kn">package</span> <span class="nx">main</span>
+
+<span class="kn">import</span> <span class="p">(</span>
+	<span class="s">&#34;log&#34;</span>
+  <span class="s">&#34;os&#34;</span>
+<span class="p">)</span>
+
+<span class="kd">func</span> <span class="nf">main</span><span class="p">(</span><span class="p">)</span><span class="p">{</span>
+  <span class="c1">// Test write permissions.It is possible the file 
+</span><span class="c1"></span>  <span class="c1">// does not exist and that will return a different
+</span><span class="c1"></span>  <span class="c1">// error that can be checked with os.IsNotExist(err)
+</span><span class="c1"></span>  <span class="nx">file</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">os</span><span class="p">.</span><span class="nf">OpenFile</span><span class="p">(</span><span class="s">&#34;test.txt&#34;</span><span class="p">,</span> <span class="nx">os</span><span class="p">.</span><span class="nx">O_WRONLY</span><span class="p">,</span> <span class="mo">0666</span><span class="p">)</span>
+  <span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="nx">os</span><span class="p">.</span><span class="nf">IsPermission</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nx">log</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="s">&#34;Error: Write permission denied.&#34;</span><span class="p">)</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+  <span class="nx">file</span><span class="p">.</span><span class="nf">Close</span><span class="p">(</span><span class="p">)</span>
+  
+  <span class="c1">// Test read permissions
+</span><span class="c1"></span>  <span class="nx">file</span><span class="p">,</span> <span class="nx">err</span> <span class="p">=</span> <span class="nx">os</span><span class="p">.</span><span class="nf">OpenFile</span><span class="p">(</span><span class="s">&#34;test.txt&#34;</span><span class="p">,</span> <span class="nx">os</span><span class="p">.</span><span class="nx">O_RDONLY</span><span class="p">,</span> <span class="mo">0666</span><span class="p">)</span>
+  <span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="nx">os</span><span class="p">.</span><span class="nf">IsPermission</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nx">log</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="s">&#34;Error: Read permission denied.&#34;</span><span class="p">)</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+  <span class="nx">file</span><span class="p">.</span><span class="nf">Close</span><span class="p">(</span><span class="p">)</span>
+<span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="heading-9">改变权限、所属、时间戳</h3>
+<p>如果你有正确的权限，你可以利用标准库提供的方法改变权限、所属、时间戳。用到的方法有：</p>
+<ul>
+<li>os.Chmod()</li>
+<li>os.Chown()</li>
+<li>os.Chtimes()</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-go" data-lang="go"><span class="kn">package</span> <span class="nx">main</span> 
+
+<span class="kn">import</span> <span class="p">(</span>
+	<span class="s">&#34;log&#34;</span>
+  <span class="s">&#34;os&#34;</span>
+  <span class="s">&#34;time&#34;</span>
+<span class="p">)</span>
+
+<span class="kd">func</span> <span class="nf">main</span><span class="p">(</span><span class="p">)</span><span class="p">{</span>
+  <span class="c1">// Change permissions using Linux style
+</span><span class="c1"></span>  <span class="nx">err</span> <span class="o">:=</span> <span class="nx">os</span><span class="p">.</span><span class="nf">Chmod</span><span class="p">(</span><span class="s">&#34;test.txt&#34;</span><span class="p">,</span> <span class="mo">0777</span><span class="p">)</span>
+  <span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+    <span class="nx">log</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+  <span class="p">}</span> 
+  
+  <span class="c1">// Change ownership
+</span><span class="c1"></span>  <span class="nx">err</span> <span class="p">=</span> <span class="nx">os</span><span class="p">.</span><span class="nf">Chown</span><span class="p">(</span><span class="s">&#34;test.txt&#34;</span><span class="p">,</span> <span class="nx">os</span><span class="p">.</span><span class="nf">Getuid</span><span class="p">(</span><span class="p">)</span><span class="p">,</span> <span class="nx">os</span><span class="p">.</span><span class="nf">Getgid</span><span class="p">(</span><span class="p">)</span><span class="p">)</span>
+  <span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+    <span class="nx">log</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+  <span class="p">}</span>
+  
+  <span class="c1">// Change timestamps
+</span><span class="c1"></span>  <span class="nx">twoDaysFromNow</span> <span class="o">:=</span> <span class="nx">time</span><span class="p">.</span><span class="nf">Now</span><span class="p">(</span><span class="p">)</span><span class="p">.</span><span class="nf">Add</span><span class="p">(</span><span class="mi">48</span> <span class="o">*</span> <span class="nx">time</span><span class="p">.</span><span class="nx">Hour</span><span class="p">)</span>
+  <span class="nx">lastAccessTime</span> <span class="o">:=</span> <span class="nx">twoDaysFromNow</span>
+  <span class="nx">lastModifyTime</span> <span class="o">:=</span> <span class="nx">twoDaysFromNow</span>
+  <span class="nx">err</span> <span class="p">=</span> <span class="nx">os</span><span class="p">.</span><span class="nf">Chtimes</span><span class="p">(</span><span class="s">&#34;test.txt&#34;</span><span class="p">,</span> <span class="nx">lastAccessTime</span><span class="p">,</span> <span class="nx">lastModifyTime</span><span class="p">)</span>
+  <span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+    <span class="nx">log</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="heading-10">硬链接和软链接</h3>
+<p>通常文件的本质是指向硬盘某块儿存储的指针，也称为inode。而硬链接就是创建一个新的指针指向同一块地方。只有当所有链接都被移除，一个文件才真正会被删除。硬链接只在同一个文件系统生效，我们可以将硬链接认为是'正常'链接。</p>
+<p>符号链接或者也称为软链接与之略微不同，它不直接指向硬盘位置。符号链接只引用其他文件的名称，它可以指向不同文件系统的文件。不过需要注意的是，不是所有的系统都支持软链接。</p>
+<p>Windows由于历史原因对软链接支持不够好，不过在Windows 10系统中，如果你获取了管理员权限，硬链接软链接都能很好的支持。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-go" data-lang="go"><span class="kn">package</span> <span class="nx">main</span>
+
+<span class="kn">import</span> <span class="p">(</span>
+	<span class="s">&#34;fmt&#34;</span>
+  <span class="s">&#34;log&#34;</span>
+  <span class="s">&#34;os&#34;</span>
+<span class="p">)</span>
+
+<span class="kd">func</span> <span class="nf">main</span><span class="p">(</span><span class="p">)</span> <span class="p">{</span>
+  <span class="c1">// Create a hard link
+</span><span class="c1"></span>  <span class="c1">// You will have two file names that point to the same contents
+</span><span class="c1"></span>  <span class="c1">// Changing the contents of one will change the other 
+</span><span class="c1"></span>  <span class="c1">// Deleting/renaming one will not affect the other
+</span><span class="c1"></span>  <span class="nx">err</span> <span class="o">:=</span> <span class="nx">os</span><span class="p">.</span><span class="nf">Link</span><span class="p">(</span><span class="s">&#34;original.txt&#34;</span><span class="p">,</span> <span class="s">&#34;original_also.txt&#34;</span><span class="p">)</span>
+  <span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+    <span class="nx">log</span><span class="p">.</span><span class="nf">Fatal</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+  <span class="p">}</span>
+  
+  <span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="s">&#34;Creating symlink&#34;</span><span class="p">)</span>
+  <span class="c1">// Create a symlink
+</span><span class="c1"></span>  <span class="nx">err</span> <span class="p">=</span> <span class="nx">os</span><span class="p">.</span><span class="nf">Symlink</span><span class="p">(</span><span class="s">&#34;original.txt&#34;</span><span class="p">,</span> <span class="s">&#34;original_sym.txt&#34;</span><span class="p">)</span>
+  <span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+    <span class="nx">log</span><span class="p">.</span><span class="nf">Fatal</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+  <span class="p">}</span>
+  
+  <span class="c1">// Lstat will return file info, but if it is actually 
+</span><span class="c1"></span>  <span class="c1">// a symlink, it will return info about the symlink.
+</span><span class="c1"></span>  <span class="c1">// It will not follow the link and give information
+</span><span class="c1"></span>  <span class="c1">// about the real file
+</span><span class="c1"></span>  <span class="c1">// Symlinks do not work in Windows
+</span><span class="c1"></span>  <span class="nx">fileInfo</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">os</span><span class="p">.</span><span class="nf">Lstat</span><span class="p">(</span><span class="s">&#34;original_sym.txt&#34;</span><span class="p">)</span>
+  <span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span><span class="p">{</span>
+    <span class="nx">log</span><span class="p">.</span><span class="nf">Fatal</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+  <span class="p">}</span>
+  <span class="nx">fmt</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;Link info: %+v&#34;</span><span class="p">,</span> <span class="nx">fileInfo</span><span class="p">)</span>
+  
+  <span class="c1">// Change ownership of a symlink only 
+</span><span class="c1"></span>  <span class="c1">// and not the file it points to
+</span><span class="c1"></span>  <span class="nx">err</span> <span class="p">=</span> <span class="nx">os</span><span class="p">.</span><span class="nf">Lchown</span><span class="p">(</span><span class="s">&#34;original_sym.txt&#34;</span><span class="p">,</span> <span class="nx">os</span><span class="p">.</span><span class="nf">Getuid</span><span class="p">(</span><span class="p">)</span><span class="p">,</span> <span class="nx">os</span><span class="p">.</span><span class="nf">Getgid</span><span class="p">(</span><span class="p">)</span><span class="p">)</span>
+  <span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+    <span class="nx">log</span><span class="p">.</span><span class="nf">Fatal</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+  <span class="p">}</span>
+  
+<span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="heading-11">文件读写</h2>
+<p>文件的读写可以有多种方式，Go提供了相关的接口使得你能够方便的实现自己的方法来处理文件或者其他的读写接口。</p>
+<p>你可以在<code>os</code>、<code>io</code>、<code>ioutil</code>包中找到需要的合适方法</p>
+<h3 id="heading-12">拷贝文件</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-go" data-lang="go"><span class="kn">package</span> <span class="nx">main</span>
+
+<span class="kn">import</span> <span class="p">(</span>
+	<span class="s">&#34;io&#34;</span>
+  <span class="s">&#34;log&#34;</span>
+  <span class="s">&#34;os&#34;</span>
+<span class="p">)</span>
+
+<span class="kd">func</span> <span class="nf">main</span><span class="p">(</span><span class="p">)</span> <span class="p">{</span>
+  <span class="c1">// Open original file 
+</span><span class="c1"></span>  <span class="nx">originalFile</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">os</span><span class="p">.</span><span class="nf">Open</span><span class="p">(</span><span class="s">&#34;test.txt&#34;</span><span class="p">)</span>
+  <span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span><span class="p">{</span>
+    <span class="nx">log</span><span class="p">.</span><span class="nf">Fatal</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+  <span class="p">}</span>
+  <span class="k">defer</span> <span class="nx">originalFile</span><span class="p">.</span><span class="nf">Close</span><span class="p">(</span><span class="p">)</span>
+  
+  <span class="c1">// Create new file
+</span><span class="c1"></span>  <span class="nx">newFile</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">os</span><span class="p">.</span><span class="nf">Create</span><span class="p">(</span><span class="s">&#34;test_copy.txt&#34;</span><span class="p">)</span>
+  <span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+    <span class="nx">log</span><span class="p">.</span><span class="nf">Fatal</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+  <span class="p">}</span>
+  <span class="k">defer</span> <span class="nx">newFile</span><span class="p">.</span><span class="nf">Close</span><span class="p">(</span><span class="p">)</span>
+  
+  <span class="c1">// Copy the bytes to destination from source
+</span><span class="c1"></span>  <span class="nx">bytesWritten</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">io</span><span class="p">.</span><span class="nf">Copy</span><span class="p">(</span><span class="nx">newFile</span><span class="p">,</span> <span class="nx">originalFile</span><span class="p">)</span>
+  <span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span><span class="p">{</span>
+    <span class="nx">log</span><span class="p">.</span><span class="nf">Fatal</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+  <span class="p">}</span>
+  <span class="nx">log</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;Copied %d bytes.&#34;</span><span class="p">,</span> <span class="nx">bytesWritten</span><span class="p">)</span>
+  
+  <span class="c1">// Commit the file contents
+</span><span class="c1"></span>  <span class="c1">// Flushes memory to disk
+</span><span class="c1"></span>  <span class="nx">err</span> <span class="p">=</span> <span class="nx">newFile</span><span class="p">.</span><span class="nf">Sync</span><span class="p">(</span><span class="p">)</span>
+  <span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span><span class="p">{</span>
+    <span class="nx">log</span><span class="p">.</span><span class="nf">Fatal</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+  <span class="p">}</span>
+  
+<span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="heading-13">通过位置在文件中查找</h3>
+<p>Seek() 函数可以用来将文件光标定位到特定位置。默认情况下的偏移位是0， 可以以bytes为单位向前读取。你也可以重置光标的位置到文件头部或者跳转到指定位置。</p>
+<p>Seek()有两个参数，第一个参数表示移动距离，单位是bytes，正数表示向前移动，负数表示向后移动。第二个参数表示光标相对从那里开始，是相对偏移量的参考点。这个参数可以是0,1,2分别代表文件开头，当前位置，文件末尾。</p>
+<p>举例来说，Seek(-1, 2)表示从文件末尾以1byte向头部移动；Seek(2,0)表示从文件头部向前2byte移动；Seek(5, 1)表示从当前位置向前每次移动5byte。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-go" data-lang="go"><span class="kn">package</span> <span class="nx">main</span>
+
+<span class="kn">import</span> <span class="p">(</span>
+	<span class="s">&#34;fmt&#34;</span>
+  <span class="s">&#34;log&#34;</span>
+  <span class="s">&#34;os&#34;</span>
+<span class="p">)</span>
+
+<span class="kd">func</span> <span class="nf">main</span><span class="p">(</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">file</span><span class="p">,</span> <span class="nx">_</span> <span class="o">:=</span> <span class="nx">os</span><span class="p">.</span><span class="nf">Open</span><span class="p">(</span><span class="s">&#34;test.txt&#34;</span><span class="p">)</span>
+  <span class="k">defer</span> <span class="nx">file</span><span class="p">.</span><span class="nf">Close</span><span class="p">(</span><span class="p">)</span>
+  
+  <span class="c1">// Offset is how many bytes to move
+</span><span class="c1"></span>  <span class="c1">// Offset can be positive or negative
+</span><span class="c1"></span>  <span class="kd">var</span> <span class="nx">offset</span> <span class="kt">int64</span> <span class="p">=</span> <span class="mi">5</span>
+  
+  <span class="c1">// Whence is the point of reference for offset
+</span><span class="c1"></span>  <span class="c1">// 0 = Beginning of file
+</span><span class="c1"></span>  <span class="c1">// 1 = Current of file
+</span><span class="c1"></span>  <span class="c1">// 2 = End of file
+</span><span class="c1"></span>  <span class="kd">var</span> <span class="nx">whence</span> <span class="kt">int</span> <span class="p">=</span> <span class="mi">0</span>
+  <span class="nx">newPosition</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">file</span><span class="p">.</span><span class="nf">Seek</span><span class="p">(</span><span class="nx">offset</span><span class="p">,</span> <span class="nx">whence</span><span class="p">)</span>
+  <span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span><span class="p">{</span>
+    <span class="nx">log</span><span class="p">.</span><span class="nf">Fatal</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+  <span class="p">}</span>
+  <span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="s">&#34;Just moved to 5: &#34;</span><span class="p">,</span> <span class="nx">newPosition</span><span class="p">)</span>
+  
+  <span class="c1">// Go back 2 bytes from current position
+</span><span class="c1"></span>  <span class="nx">newPosition</span><span class="p">,</span> <span class="nx">err</span> <span class="p">=</span> <span class="nx">file</span><span class="p">.</span><span class="nf">Seek</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+  <span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span><span class="p">{</span>
+    <span class="nx">log</span><span class="p">.</span><span class="nf">Fatal</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+  <span class="p">}</span>
+  <span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="s">&#34;Just moved back two: &#34;</span><span class="p">,</span> <span class="nx">newPosition</span><span class="p">)</span>
+  
+  <span class="c1">// Find the current position by getting the return value from Seek after moving 0 bytes
+</span><span class="c1"></span>  <span class="nx">currentPosition</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">file</span><span class="p">.</span><span class="nf">Seek</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+  <span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="s">&#34;Current position:&#34;</span><span class="p">,</span> <span class="nx">currentPosition</span><span class="p">)</span>
+  
+  <span class="c1">// Go to beginning of file
+</span><span class="c1"></span>  <span class="nx">newPosition</span><span class="p">,</span> <span class="nx">err</span> <span class="p">=</span> <span class="nx">file</span><span class="p">.</span><span class="nf">Seek</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
+  <span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+    <span class="nx">log</span><span class="p">.</span><span class="nf">Fatal</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+  <span class="p">}</span>
+  <span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="s">&#34;Position after seeking 0,0:&#34;</span><span class="p">,</span> <span class="nx">newPosition</span><span class="p">)</span>
+<span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="bytes">向文件写入bytes</h3>
+<p>向文件写入bytes可以使用最简单的<code>os</code>包，其他包<code>io</code>, <code>ioutil</code>, <code>bufio</code>都提供类似的方法。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-go" data-lang="go"><span class="kn">package</span> <span class="nx">main</span>
+
+<span class="kn">import</span> <span class="p">(</span>
+	<span class="s">&#34;log&#34;</span>
+  <span class="s">&#34;os&#34;</span>
+<span class="p">)</span>
+
+<span class="kd">func</span> <span class="nf">main</span><span class="p">(</span><span class="p">)</span><span class="p">{</span>
+  <span class="c1">// Open a new file for writing only 
+</span><span class="c1"></span>  <span class="nx">file</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">os</span><span class="p">.</span><span class="nf">OpenFile</span><span class="p">(</span>
+  	<span class="s">&#34;test.txt&#34;</span><span class="p">,</span>
+    <span class="nx">os</span><span class="p">.</span><span class="nx">O_WRONLY</span><span class="p">|</span><span class="nx">os</span><span class="p">.</span><span class="nx">O_TRUNC</span><span class="p">|</span><span class="nx">os</span><span class="p">.</span><span class="nx">O_CREATE</span><span class="p">,</span>
+    <span class="mo">0666</span><span class="p">,</span>
+  <span class="p">)</span>
+  <span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span><span class="p">{</span>
+    <span class="nx">log</span><span class="p">.</span><span class="nf">Fatal</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+  <span class="p">}</span>
+  <span class="k">defer</span> <span class="nx">file</span><span class="p">.</span><span class="nf">Close</span><span class="p">(</span><span class="p">)</span>
+  
+  <span class="c1">// Write bytes to file
+</span><span class="c1"></span>  <span class="nx">byteSlice</span> <span class="o">:=</span> <span class="p">[</span><span class="p">]</span><span class="nb">byte</span><span class="p">(</span><span class="s">&#34;Bytes!\n&#34;</span><span class="p">)</span>
+  <span class="nx">bytesWritten</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">file</span><span class="p">.</span><span class="nf">Write</span><span class="p">(</span><span class="nx">byteSlice</span><span class="p">)</span>
+  <span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+    <span class="nx">log</span><span class="p">.</span><span class="nf">Fatal</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+  <span class="p">}</span>
+  <span class="nx">log</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;Wrote %d bytes.\n&#34;</span><span class="p">,</span> <span class="nx">bytesWritten</span><span class="p">)</span>
+<span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="heading-14">快速写入文件</h3>
+<p><code>ioutil</code>包提供了一个有用的函数<code>WriteFile()</code>，这个函数封装了底层操作，处理文件创建打开、写入bytes切片，并且关闭文件句柄。如果的需求是快速的将bytes写入文件，可以使用这个函数。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-go" data-lang="go"><span class="kn">package</span> <span class="nx">main</span>
+
+<span class="kn">import</span> <span class="p">(</span>
+	<span class="s">&#34;io/ioutil&#34;</span>
+  <span class="s">&#34;log&#34;</span>
+<span class="p">)</span>
+
+<span class="kd">func</span> <span class="nf">main</span><span class="p">(</span><span class="p">)</span><span class="p">{</span>
+  <span class="nx">err</span> <span class="o">:=</span> <span class="nx">ioutil</span><span class="p">.</span><span class="nf">WriteFile</span><span class="p">(</span><span class="s">&#34;test.txt&#34;</span><span class="p">,</span> <span class="p">[</span><span class="p">]</span><span class="nb">byte</span><span class="p">(</span><span class="s">&#34;Hi\n&#34;</span><span class="p">)</span><span class="p">,</span> <span class="mo">0666</span><span class="p">)</span>
+  <span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+    <span class="nx">log</span><span class="p">.</span><span class="nf">Fatal</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="heading-15">写入缓存</h3>
+<p><code>bufio</code>包提供了缓存写入这样我们就能够在将数据写入硬盘之前先写入内存缓存。这样做的好处是，我们可以在写入硬盘之前对数据做很多操作，节省了磁盘IO时间。还有一个好处是能够缓存到一定量数据再一次性写入硬盘，还是减少磁盘IO的需求。举个极端的例子，假设我们每次写入1byte到文件，频繁的写硬盘会损伤硬盘寿命以及降低程序效率，我们可以先写入内存缓存(buffer)到达一定数量之后一次性写入文件。</p>
+<p>写缓存可以检测当前有多少未缓存数据、多少缓存空间剩余。缓存可以重置当前操作到上次写入状态，缓存大小可扩展。</p>
+<p>下面的例子演示了上面提到的理论</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span><span class="lnt">53
+</span><span class="lnt">54
+</span><span class="lnt">55
+</span><span class="lnt">56
+</span><span class="lnt">57
+</span><span class="lnt">58
+</span><span class="lnt">59
+</span><span class="lnt">60
+</span><span class="lnt">61
+</span><span class="lnt">62
+</span><span class="lnt">63
+</span><span class="lnt">64
+</span><span class="lnt">65
+</span><span class="lnt">66
+</span><span class="lnt">67
+</span><span class="lnt">68
+</span><span class="lnt">69
+</span><span class="lnt">70
+</span><span class="lnt">71
+</span><span class="lnt">72
+</span><span class="lnt">73
+</span><span class="lnt">74
+</span><span class="lnt">75
+</span><span class="lnt">76
+</span><span class="lnt">77
+</span><span class="lnt">78
+</span><span class="lnt">79
+</span><span class="lnt">80
+</span><span class="lnt">81
+</span><span class="lnt">82
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-go" data-lang="go"><span class="kn">package</span> <span class="nx">main</span>
+
+<span class="kn">import</span> <span class="p">(</span>
+	<span class="s">&#34;bufio&#34;</span>
+  <span class="s">&#34;log&#34;</span>
+  <span class="s">&#34;os&#34;</span>
+<span class="p">)</span>
+
+<span class="kd">func</span> <span class="nf">main</span><span class="p">(</span><span class="p">)</span> <span class="p">{</span>
+  <span class="c1">// Open file for writing 
+</span><span class="c1"></span>  <span class="nx">file</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">os</span><span class="p">.</span><span class="nf">OpenFile</span><span class="p">(</span><span class="s">&#34;test.txt&#34;</span><span class="p">,</span> <span class="nx">os</span><span class="p">.</span><span class="nx">O_WRONLY</span><span class="p">,</span> <span class="mo">0666</span><span class="p">)</span>
+  <span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span><span class="p">{</span>
+    <span class="nx">log</span><span class="p">.</span><span class="nf">Fatal</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+  <span class="p">}</span>
+  <span class="k">defer</span> <span class="nx">file</span><span class="p">.</span><span class="nf">Close</span><span class="p">(</span><span class="p">)</span>
+  
+  <span class="c1">// Create a buffered writer from the file
+</span><span class="c1"></span>  <span class="nx">bufferedWriter</span> <span class="o">:=</span> <span class="nx">bufio</span><span class="p">.</span><span class="nf">NewWriter</span><span class="p">(</span><span class="nx">file</span><span class="p">)</span>
+  
+  <span class="c1">// Write bytes to buffer
+</span><span class="c1"></span>  <span class="nx">bytesWritten</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">bufferedWriter</span><span class="p">.</span><span class="nf">Write</span><span class="p">(</span>
+    <span class="p">[</span><span class="p">]</span><span class="kt">byte</span><span class="p">{</span><span class="mi">65</span><span class="p">,</span> <span class="mi">66</span><span class="p">,</span> <span class="mi">67</span><span class="p">}</span><span class="p">,</span>
+  <span class="p">)</span>
+  <span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span><span class="p">{</span>
+    <span class="nx">log</span><span class="p">.</span><span class="nf">Fatal</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+  <span class="p">}</span>
+  <span class="nx">log</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;Bytes written: %d\n&#34;</span><span class="p">,</span> <span class="nx">bytesWritten</span><span class="p">)</span>
+  
+  <span class="c1">// Write string to buffer
+</span><span class="c1"></span>  <span class="c1">// Also available are WriteRune() and WriteByte()
+</span><span class="c1"></span>  <span class="nx">bytesWritten</span><span class="p">,</span> <span class="nx">err</span> <span class="p">=</span> <span class="nx">bufferedWriter</span><span class="p">.</span><span class="nf">WriteString</span><span class="p">(</span><span class="s">&#34;Buffered string\n&#34;</span><span class="p">)</span>
+  <span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span><span class="p">{</span>
+    <span class="nx">log</span><span class="p">.</span><span class="nf">Fatal</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+  <span class="p">}</span>
+  <span class="nx">log</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;Bytes written: %d\n&#34;</span><span class="p">,</span> <span class="nx">bytesWritten</span><span class="p">)</span>
+  
+  <span class="c1">// Check how much is stored in buffer waiting
+</span><span class="c1"></span>  <span class="nx">unflushedBufferSize</span> <span class="o">:=</span> <span class="nx">bufferedWriter</span><span class="p">.</span><span class="nf">Buffered</span><span class="p">(</span><span class="p">)</span>
+  <span class="nx">log</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;Bytes buffered: %d\n&#34;</span><span class="p">,</span> <span class="nx">unflushedBufferSize</span><span class="p">)</span>
+  
+  <span class="c1">// See how much buffer is available
+</span><span class="c1"></span>  <span class="nx">bytesAvailable</span> <span class="o">:=</span> <span class="nx">bufferedWriter</span><span class="p">.</span><span class="nf">Available</span><span class="p">(</span><span class="p">)</span>
+  <span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span><span class="p">{</span>
+    <span class="nx">log</span><span class="p">.</span><span class="nf">Fatal</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+  <span class="p">}</span>
+  <span class="nx">log</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;Available buffer: %d\n&#34;</span><span class="p">,</span> <span class="nx">bytesAvailable</span><span class="p">)</span>
+  
+  <span class="c1">// Write memory buffer to disk
+</span><span class="c1"></span>  <span class="nx">bufferedWriter</span><span class="p">.</span><span class="nf">Flush</span><span class="p">(</span><span class="p">)</span>
+  
+  <span class="c1">// Revert any changes done to buffer that have 
+</span><span class="c1"></span>  <span class="c1">// not yet been written to file with Flush()
+</span><span class="c1"></span>  <span class="c1">// We just flushed, so there are no changes to revert
+</span><span class="c1"></span>  <span class="c1">// The writer that you pass as an argument
+</span><span class="c1"></span>  <span class="c1">// is where the buffer will output to, if you want
+</span><span class="c1"></span>  <span class="c1">// to change to a new writer
+</span><span class="c1"></span>  <span class="nx">bufferedWriter</span><span class="p">.</span><span class="nf">Reset</span><span class="p">(</span><span class="nx">bufferedWriter</span><span class="p">)</span>
+  
+  <span class="c1">// See how much buffer is available
+</span><span class="c1"></span>  <span class="nx">bytesAvailable</span> <span class="p">=</span> <span class="nx">bufferedWriter</span><span class="p">.</span><span class="nf">Available</span><span class="p">(</span><span class="p">)</span>
+  <span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span><span class="p">{</span>
+    <span class="nx">log</span><span class="p">.</span><span class="nf">Fatal</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+  <span class="p">}</span>
+  <span class="nx">log</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;Available buffer: %d\n&#34;</span><span class="p">,</span> <span class="nx">bytesAvailable</span><span class="p">)</span>
+  
+  <span class="c1">// Resize buffer. The first argument is a writer
+</span><span class="c1"></span>  <span class="c1">// where the buffer should output to.In this case
+</span><span class="c1"></span>  <span class="c1">// we are using the same buffer. If we chose a number
+</span><span class="c1"></span>  <span class="c1">// that was smaller than the existing buffer, like 10
+</span><span class="c1"></span>  <span class="c1">// we would not get back a buffer of size 10, we will
+</span><span class="c1"></span>  <span class="c1">// get back a buffer the size of the original since
+</span><span class="c1"></span>  <span class="c1">// it was already large enough (default 4096)
+</span><span class="c1"></span>  <span class="nx">bufferedWriter</span> <span class="p">=</span> <span class="nx">bufio</span><span class="p">.</span><span class="nf">NewWriterSize</span><span class="p">(</span><span class="nx">bufferedWriter</span><span class="p">,</span> <span class="mi">8000</span><span class="p">)</span>
+  
+  <span class="c1">// Check available buffer size after resizing
+</span><span class="c1"></span>  <span class="nx">bytesAvailable</span> <span class="p">=</span> <span class="nx">bufferedWriter</span><span class="p">.</span><span class="nf">Available</span><span class="p">(</span><span class="p">)</span>
+  <span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span><span class="p">{</span>
+    <span class="nx">log</span><span class="p">.</span><span class="nf">Fatal</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+  <span class="p">}</span>
+  <span class="nx">log</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;Available buffer: %d\n&#34;</span><span class="p">,</span> <span class="nx">bytesAvailable</span><span class="p">)</span>
+<span class="p">}</span>
+
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="bytes-1">从文件读取bytes</h3>
+<p><code>os.File</code>类型有很多基础方法，比如<code>File.Read()</code>它接收一个bytes类型的切片作为参数，从文件读取bytes数据存储在切片中。<code>Read()</code>会读取尽可能多的数据知道接收容器被填满。</p>
+<p>可以多次调用<code>Read()</code>函数来读取到文件末尾，如果到达末尾<code>io.EOF</code>错误会被返回。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-go" data-lang="go"><span class="kn">package</span> <span class="nx">main</span>
+
+<span class="kn">import</span> <span class="p">(</span>
+	<span class="s">&#34;log&#34;</span>
+  <span class="s">&#34;os&#34;</span>
+<span class="p">)</span>
+
+<span class="kd">func</span> <span class="nf">main</span><span class="p">(</span><span class="p">)</span> <span class="p">{</span>
+  <span class="c1">// Open file for reading 
+</span><span class="c1"></span>  <span class="nx">file</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">os</span><span class="p">.</span><span class="nf">Open</span><span class="p">(</span><span class="s">&#34;test.txt&#34;</span><span class="p">)</span>
+  <span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+    <span class="nx">log</span><span class="p">.</span><span class="nf">Fatal</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+  <span class="p">}</span>
+  <span class="k">defer</span> <span class="nx">file</span><span class="p">.</span><span class="nf">Close</span><span class="p">(</span><span class="p">)</span>
+  
+  <span class="c1">// Read up to len(b) bytes from the File
+</span><span class="c1"></span>  <span class="c1">// Zero bytes written means end of file
+</span><span class="c1"></span>  <span class="c1">// End of file returns error type io.EOF
+</span><span class="c1"></span>  <span class="nx">bytesSlice</span> <span class="o">:=</span> <span class="nb">make</span><span class="p">(</span><span class="p">[</span><span class="p">]</span><span class="kt">byte</span><span class="p">,</span> <span class="mi">16</span><span class="p">)</span>
+  <span class="nx">bytesRead</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">file</span><span class="p">.</span><span class="nf">Read</span><span class="p">(</span><span class="nx">bytesSlice</span><span class="p">)</span>
+  <span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span><span class="p">{</span>
+    <span class="nx">log</span><span class="p">.</span><span class="nf">Fatal</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+  <span class="p">}</span>
+  <span class="nx">log</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;Number of bytes read: %d\n&#34;</span><span class="p">,</span> <span class="nx">bytesRead</span><span class="p">)</span>
+  <span class="nx">log</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;Data read: %s\n&#34;</span><span class="p">,</span> <span class="nx">bytesSlice</span><span class="p">)</span>
+<span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><h4 id="bytes-2">读取准确的bytes</h4>
+<p>前面介绍的<code>File.Read()</code>函数不会报错，当你提供的切片大小为500bytes，而文件仅有10bytes。如果你的需求是想要整个指定大小buffer全部被填满。可以使用<code>io.ReadFull()</code>，这个函数会在填充数据不够的时候报错，如果没有数据读取，它会返回EOF错误；如果读了一部分数据就遭遇EOF，它会返回<code>ErrUnexpectedEOF</code>错误</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-go" data-lang="go"><span class="kn">package</span> <span class="nx">main</span>
+
+<span class="kn">import</span> <span class="p">(</span>
+	<span class="s">&#34;io&#34;</span>
+  <span class="s">&#34;log&#34;</span>
+  <span class="s">&#34;os&#34;</span>
+<span class="p">)</span>
+
+<span class="kd">func</span> <span class="nf">main</span><span class="p">(</span><span class="p">)</span> <span class="p">{</span>
+  <span class="c1">// Open file for reading 
+</span><span class="c1"></span>  <span class="nx">file</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">os</span><span class="p">.</span><span class="nf">Open</span><span class="p">(</span><span class="s">&#34;test.txt&#34;</span><span class="p">)</span>
+  <span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span><span class="p">{</span>
+    <span class="nx">log</span><span class="p">.</span><span class="nf">Fatal</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+  <span class="p">}</span>
+  
+  <span class="c1">// The file.Read() function will happily read a tiny file in to a
+</span><span class="c1"></span>  <span class="c1">// large byte slice, but io.ReadFull() will return an
+</span><span class="c1"></span>  <span class="c1">// error if the file is smaller than the byte slice
+</span><span class="c1"></span>  <span class="nx">byteSlice</span> <span class="o">:=</span> <span class="nb">make</span><span class="p">(</span><span class="p">[</span><span class="p">]</span><span class="kt">byte</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+  <span class="nx">numBytesRead</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">io</span><span class="p">.</span><span class="nf">ReadFull</span><span class="p">(</span><span class="nx">file</span><span class="p">,</span> <span class="nx">byteSlice</span><span class="p">)</span>
+  <span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span><span class="p">{</span>
+    <span class="nx">log</span><span class="p">.</span><span class="nf">Fatal</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+  <span class="p">}</span>
+  <span class="nx">log</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;Number of bytes read: %d\n&#34;</span><span class="p">,</span> <span class="nx">numBytesRead</span><span class="p">)</span>
+  <span class="nx">log</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;Data read: %s\n&#34;</span><span class="p">,</span> <span class="nx">byteSlice</span><span class="p">)</span>
+<span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><h4 id="-n-bytes">最少读取 N bytes</h4>
+<p><code>io.ReadAtLeast()</code>会报错，如果不能够提供最小数量的bytes。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-go" data-lang="go"><span class="kn">package</span> <span class="nx">main</span>
+
+<span class="kn">import</span> <span class="p">(</span>
+	<span class="s">&#34;io&#34;</span>
+  <span class="s">&#34;log&#34;</span>
+  <span class="s">&#34;os&#34;</span>
+<span class="p">)</span>
+
+<span class="kd">func</span> <span class="nf">main</span><span class="p">(</span><span class="p">)</span> <span class="p">{</span>
+  <span class="c1">// Open file for reading 
+</span><span class="c1"></span>  <span class="nx">file</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">os</span><span class="p">.</span><span class="nf">Open</span><span class="p">(</span><span class="s">&#34;test.txt&#34;</span><span class="p">)</span>
+  <span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span><span class="p">{</span>
+    <span class="nx">log</span><span class="p">.</span><span class="nf">Fatal</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+  <span class="p">}</span>
+  
+  <span class="nx">byteSlice</span> <span class="o">:=</span> <span class="nb">make</span><span class="p">(</span><span class="p">[</span><span class="p">]</span><span class="kt">byte</span><span class="p">,</span> <span class="mi">512</span><span class="p">)</span>
+  <span class="nx">minBytes</span> <span class="o">:=</span> <span class="mi">8</span>
+  <span class="c1">// io.ReadAtLeast() will return an error if it cannot 
+</span><span class="c1"></span>  <span class="c1">// find at least minBytes to read. Ti will read as 
+</span><span class="c1"></span>  <span class="c1">// many bytes as byteSlice can hold.
+</span><span class="c1"></span>  <span class="nx">numBytesRead</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">io</span><span class="p">.</span><span class="nf">ReadAtLeast</span><span class="p">(</span><span class="nx">file</span><span class="p">,</span> <span class="nx">byteSlice</span><span class="p">,</span> <span class="nx">minBytes</span><span class="p">)</span>
+  <span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+    <span class="nx">log</span><span class="p">.</span><span class="nf">Fatal</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+  <span class="p">}</span>
+  <span class="nx">log</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;Number of bytes read: %d\n&#34;</span><span class="p">,</span> <span class="nx">numBytesRead</span><span class="p">)</span>
+  <span class="nx">log</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;Data read: %s\n&#34;</span><span class="p">,</span> <span class="nx">byteSlice</span><span class="p">)</span>
+<span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><h4 id="bytes-3">读取文件的所有bytes</h4>
+<p><code>ioutil</code>包提供了一个方法，能够一次性读取文件所有byte并返回byte切片，这样做的便利之处就是你不用在读之前提前定义。不便之处就是如果文件特别大，它会一次性返回大到无法想象的切片。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-go" data-lang="go"><span class="kn">package</span> <span class="nx">main</span>
+
+<span class="kn">import</span> <span class="p">(</span>
+	<span class="s">&#34;fmt&#34;</span>
+  <span class="s">&#34;io/ioutil&#34;</span>
+  <span class="s">&#34;log&#34;</span>
+  <span class="s">&#34;os&#34;</span>
+<span class="p">)</span>
+
+<span class="kd">func</span> <span class="nf">main</span><span class="p">(</span><span class="p">)</span><span class="p">{</span>
+  <span class="c1">// Open file for reading 
+</span><span class="c1"></span>  <span class="nx">file</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">os</span><span class="p">.</span><span class="nf">Open</span><span class="p">(</span><span class="s">&#34;test.txt&#34;</span><span class="p">)</span>
+  <span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+    <span class="nx">log</span><span class="p">.</span><span class="nf">Fatal</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+  <span class="p">}</span>
+  
+  <span class="c1">// os.File.Read(), io.ReadFull() and 
+</span><span class="c1"></span>  <span class="c1">// io.ReadAtLeast() all work with a fixed
+</span><span class="c1"></span>  <span class="c1">// byte slice that you make before you read
+</span><span class="c1"></span>  
+  <span class="c1">// ioutil.ReadAll() will read every byte 
+</span><span class="c1"></span>  <span class="c1">// from the reader (in this case a file)
+</span><span class="c1"></span>  <span class="c1">// and return a slice of unknown slice  
+</span><span class="c1"></span>  <span class="nx">data</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">ioutil</span><span class="p">.</span><span class="nf">ReadAll</span><span class="p">(</span><span class="nx">file</span><span class="p">)</span>
+  <span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span><span class="p">{</span>
+    <span class="nx">log</span><span class="p">.</span><span class="nf">Fatal</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+  <span class="p">}</span>
+  
+  <span class="nx">fmt</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;Data as hex: %x\n&#34;</span><span class="p">,</span> <span class="nx">data</span><span class="p">)</span>
+  <span class="nx">fmt</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;Data as string: %s\n&#34;</span><span class="p">,</span> <span class="nx">data</span><span class="p">)</span>
+  <span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="s">&#34;Number of bytes read:&#34;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="nx">data</span><span class="p">)</span><span class="p">)</span>
+<span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><h4 id="heading-16">读取文件到内存</h4>
+<p>更前面的<code>io.ReadAll()</code>类似，<code>io.ReadFile()</code>也是将文件读取返回byte切片，不同的是，后者参数是文件路径，而不是打开的文件对象。这个函数会管理文件的打开、读取、关闭。这几乎是最方便的读取文件的方法。</p>
+<p>没有十全十美，这个方法的缺点就是会将全部文件直接读取到内存，大文件会比较占内存。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-go" data-lang="go"><span class="kn">package</span> <span class="nx">main</span>
+
+<span class="kn">import</span> <span class="p">(</span>
+  <span class="s">&#34;io/ioutil&#34;</span>
+  <span class="s">&#34;log&#34;</span>
+<span class="p">)</span>
+
+<span class="kd">func</span> <span class="nf">main</span><span class="p">(</span><span class="p">)</span><span class="p">{</span>
+  <span class="c1">// Read file to byte silce
+</span><span class="c1"></span>  <span class="nx">data</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">ioutil</span><span class="p">.</span><span class="nf">ReadFile</span><span class="p">(</span><span class="s">&#34;test.txt&#34;</span><span class="p">)</span>
+  <span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span><span class="p">{</span>
+    <span class="nx">log</span><span class="p">.</span><span class="nf">Fatal</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+  <span class="p">}</span>
+  <span class="nx">log</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;Data read: %s\n&#34;</span><span class="p">,</span> <span class="nx">data</span><span class="p">)</span>
+<span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="buffered-reader">缓存读取器(Buffered reader)</h3>
+<p>创建一个缓存读取器会在内存缓存区存储一些内容，它提供一些在<code>os.File``io.Reader</code>这些类型不具备的方法。默认buffer大小是4096最小大小是16。</p>
+<p>缓存读取器提供的方法有:</p>
+<ul>
+<li>Read(): 读取数据到byte slice</li>
+<li>Peek():在不移动文件光标的前提下读取下一个bytes</li>
+<li>ReadByte(): 读取一个byte</li>
+<li>UnreadByte(): 取消读取最后一个byte</li>
+<li>ReadBytes(): 读取bytes直到遇到指定分隔符</li>
+<li>ReadString(): 读取字符串直到遇到指定分隔符</li>
+</ul>
+<p>下面的例子演示了怎么使用buffered reader 从文件中获取数据。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span><span class="lnt">53
+</span><span class="lnt">54
+</span><span class="lnt">55
+</span><span class="lnt">56
+</span><span class="lnt">57
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-go" data-lang="go"><span class="kn">package</span> <span class="nx">main</span>
+
+<span class="kn">import</span> <span class="p">(</span>
+	<span class="s">&#34;bufio&#34;</span>
+  <span class="s">&#34;fmt&#34;</span>
+  <span class="s">&#34;log&#34;</span>
+  <span class="s">&#34;os&#34;</span>
+<span class="p">)</span>
+
+<span class="kd">func</span> <span class="nf">main</span><span class="p">(</span><span class="p">)</span><span class="p">{</span>
+  <span class="c1">// Open file and create a buffered reader on top
+</span><span class="c1"></span>  <span class="nx">file</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">os</span><span class="p">.</span><span class="nf">Open</span><span class="p">(</span><span class="s">&#34;test.txt&#34;</span><span class="p">)</span>
+  <span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span><span class="p">{</span>
+    <span class="nx">log</span><span class="p">.</span><span class="nf">Fatal</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+  <span class="p">}</span>
+  <span class="nx">bufferedReader</span> <span class="o">:=</span> <span class="nx">bufio</span><span class="p">.</span><span class="nf">NewReader</span><span class="p">(</span><span class="nx">file</span><span class="p">)</span>
+  
+  <span class="c1">// Get bytes without advancing pointer
+</span><span class="c1"></span>  <span class="nx">byteSlice</span> <span class="o">:=</span> <span class="nb">make</span><span class="p">(</span><span class="p">[</span><span class="p">]</span><span class="kt">byte</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+  <span class="nx">byteSlice</span><span class="p">,</span> <span class="nx">err</span> <span class="p">=</span> <span class="nx">bufferedReader</span><span class="p">.</span><span class="nf">Peek</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+  <span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span><span class="p">{</span>
+    <span class="nx">log</span><span class="p">.</span><span class="nf">Fatal</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+  <span class="p">}</span>
+  <span class="nx">fmt</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;Peeked at 5 bytes: %s\n&#34;</span><span class="p">,</span> <span class="nx">byteSlice</span><span class="p">)</span>
+  
+  <span class="c1">// Read and advance pointer
+</span><span class="c1"></span>  <span class="nx">numBytesRead</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">bufferedReader</span><span class="p">.</span><span class="nf">Read</span><span class="p">(</span><span class="nx">byteSlice</span><span class="p">)</span>
+  <span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span><span class="p">{</span>
+    <span class="nx">log</span><span class="p">.</span><span class="nf">Fatal</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+  <span class="p">}</span>
+  <span class="nx">fmt</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;Read %d bytes: %s\n&#34;</span><span class="p">,</span> <span class="nx">numBytesRead</span><span class="p">,</span> <span class="nx">byteSlice</span><span class="p">)</span>
+  
+  <span class="c1">// Ready 1 byte.Error if no byte to read
+</span><span class="c1"></span>  <span class="nx">myByte</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">bufferedReader</span><span class="p">.</span><span class="nf">ReadByte</span><span class="p">(</span><span class="p">)</span>
+  <span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span><span class="p">{</span>
+    <span class="nx">log</span><span class="p">.</span><span class="nf">Fatal</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+  <span class="p">}</span>
+  <span class="nx">fmt</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;Read 1 byte: %c\n&#34;</span><span class="p">,</span> <span class="nx">myByte</span><span class="p">)</span>
+  
+  <span class="c1">// Read up to and including delimiter
+</span><span class="c1"></span>  <span class="c1">// Returns byte slice
+</span><span class="c1"></span>  <span class="nx">dataBytes</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">bufferedReader</span><span class="p">.</span><span class="nf">ReadBytes</span><span class="p">(</span><span class="sc">&#39;\n&#39;</span><span class="p">)</span>
+  <span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span><span class="p">{</span>
+    <span class="nx">log</span><span class="p">.</span><span class="nf">Fatal</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+  <span class="p">}</span>
+  <span class="nx">fmt</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;Read bytes: %s\n&#34;</span><span class="p">,</span> <span class="nx">dataBytes</span><span class="p">)</span>
+  
+  <span class="c1">// Read up to and including delimiter
+</span><span class="c1"></span>  <span class="nx">dataString</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">bufferedReader</span><span class="p">.</span><span class="nf">ReadString</span><span class="p">(</span><span class="sc">&#39;\n&#39;</span><span class="p">)</span>
+  <span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span><span class="p">{</span>
+    <span class="nx">log</span><span class="p">.</span><span class="nf">Fatal</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+  <span class="p">}</span>
+  <span class="nx">fmt</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;Read string: %s\n&#34;</span><span class="p">,</span> <span class="nx">dataString</span><span class="p">)</span>
+  <span class="c1">// This example reads a few lines so test.txt
+</span><span class="c1"></span>  <span class="c1">// should have a few lines of text to work correct
+</span><span class="c1"></span>  
+<span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="-scanner-">使用 scanner 读取文件</h3>
+<p>Scanner 属于<code>bufio</code>包， 它对于按照特定的分隔符逐步遍历文件非常有用。通常来说我们通过换行符来将文件分割为多行。在CSV中，逗号是分隔符。<code>bufio.Scanner</code>可以包装<code>os.File</code>对象 ，使用<code>Scan()</code>来读取到下一个分隔符的内容。然后使用<code>Text()</code>或者'Bytes()&lsquo;来获取得到的数据。</p>
+<p>这里的分隔符不是简单的byte或者单个字符，需要你自己实现一个特殊的方法，决定分隔符在哪里，每次移动多少指针，以及返回什么数据。如果没有自定义<code>SplitFunc</code>，系统提供了默认的<code>ScanLines</code>，以及<code>ScanRunes</code> <code>ScanWords</code></p>
+<p>自定义分割函数，需要实现类似的函数签名</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">type</span> <span class="nf">SplitFuncfunc</span><span class="p">(</span><span class="nx">data</span> <span class="p">[</span><span class="p">]</span><span class="kt">byte</span><span class="p">,</span> <span class="nx">atEOF</span> <span class="kt">bool</span><span class="p">)</span> <span class="p">(</span><span class="nx">advance</span> <span class="kt">int</span><span class="p">,</span> <span class="nx">token</span> <span class="p">[</span><span class="p">]</span><span class="kt">byte</span><span class="p">,</span> <span class="nx">err</span> <span class="kt">error</span><span class="p">)</span>
+</code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-go" data-lang="go"><span class="kn">package</span> <span class="nx">main</span>
+
+<span class="kn">import</span> <span class="p">(</span>
+	<span class="s">&#34;bufio&#34;</span>
+  <span class="s">&#34;fmt&#34;</span>
+  <span class="s">&#34;log&#34;</span>
+  <span class="s">&#34;os&#34;</span>
+<span class="p">)</span>
+
+<span class="kd">func</span> <span class="nf">main</span><span class="p">(</span><span class="p">)</span><span class="p">{</span>
+  <span class="c1">// Open file and create scanner on top of it
+</span><span class="c1"></span>  <span class="nx">file</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">os</span><span class="p">.</span><span class="nf">Open</span><span class="p">(</span><span class="s">&#34;test.txt&#34;</span><span class="p">)</span>
+  <span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span><span class="p">{</span>
+    <span class="nx">log</span><span class="p">.</span><span class="nf">Fatal</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+  <span class="p">}</span>
+  <span class="nx">scanner</span> <span class="o">:=</span> <span class="nx">bufio</span><span class="p">.</span><span class="nf">NewScanner</span><span class="p">(</span><span class="nx">file</span><span class="p">)</span>
+  
+  <span class="c1">// Default scanner is bufio.ScanLines.Lets use ScanWords.
+</span><span class="c1"></span>  <span class="c1">// Could also use a custom function of SplitFunc type
+</span><span class="c1"></span>  <span class="nx">scanner</span><span class="p">.</span><span class="nf">Split</span><span class="p">(</span><span class="nx">bufio</span><span class="p">.</span><span class="nx">ScanWords</span><span class="p">)</span>
+  <span class="c1">// Scan for next token.
+</span><span class="c1"></span>  <span class="nx">success</span> <span class="o">:=</span> <span class="nx">scanner</span><span class="p">.</span><span class="nf">Scan</span><span class="p">(</span><span class="p">)</span>
+  <span class="k">if</span> <span class="nx">success</span> <span class="o">==</span> <span class="kc">false</span> <span class="p">{</span>
+    <span class="c1">// False on error or EOF.Check error
+</span><span class="c1"></span>    <span class="nx">err</span> <span class="p">=</span> <span class="nx">scanner</span><span class="p">.</span><span class="nf">Err</span><span class="p">(</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nx">err</span> <span class="o">==</span> <span class="kc">nil</span><span class="p">{</span>
+      <span class="nx">log</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="s">&#34;Scan completed and reached EOF&#34;</span><span class="p">)</span>
+    <span class="p">}</span><span class="k">else</span><span class="p">{</span>
+      <span class="nx">log</span><span class="p">.</span><span class="nf">Fatal</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+  <span class="c1">// Get data from scan with Bytes() or Text()
+</span><span class="c1"></span>  <span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="s">&#34;First word found: &#34;</span><span class="p">,</span> <span class="nx">scanner</span><span class="p">.</span><span class="nf">Text</span><span class="p">(</span><span class="p">)</span><span class="p">)</span>
+  
+  <span class="c1">// Call scanner.Scan() manually, or loop with for
+</span><span class="c1"></span>  <span class="k">for</span> <span class="nx">scanner</span><span class="p">.</span><span class="nf">Scan</span><span class="p">(</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">scanner</span><span class="p">.</span><span class="nf">Text</span><span class="p">(</span><span class="p">)</span><span class="p">)</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="heading-17">文件归档</h2>
+<p>归档是一种文件格式用来存储多数文件。最常用的两种归档格式是<code>tar balls</code> <code>zip archives</code> Go标准库包含<code>tar</code>和<code>zip</code>包。</p>
+<h3 id="zip">利用ZIP打包文件</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span><span class="lnt">53
+</span><span class="lnt">54
+</span><span class="lnt">55
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-go" data-lang="go"><span class="c1">// This example uses zip but standard library
+</span><span class="c1"></span><span class="c1">// also supports tar archives
+</span><span class="c1"></span><span class="kn">package</span> <span class="nx">main</span>
+
+<span class="kn">import</span> <span class="p">(</span>
+	<span class="s">&#34;archive/zip&#34;</span>
+  <span class="s">&#34;log&#34;</span>
+  <span class="s">&#34;os&#34;</span>
+<span class="p">)</span>
+
+<span class="kd">func</span> <span class="nf">main</span><span class="p">(</span><span class="p">)</span><span class="p">{</span>
+  <span class="c1">// Create a file to write the archive buffer to 
+</span><span class="c1"></span>  <span class="c1">// Could also use an in memory buffer.
+</span><span class="c1"></span>  <span class="nx">outFile</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">os</span><span class="p">.</span><span class="nf">Create</span><span class="p">(</span><span class="s">&#34;test.zip&#34;</span><span class="p">)</span>
+  <span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span><span class="p">{</span>
+    <span class="nx">log</span><span class="p">.</span><span class="nf">Fatal</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+  <span class="p">}</span>
+  <span class="k">defer</span> <span class="nx">outFile</span><span class="p">.</span><span class="nf">Close</span><span class="p">(</span><span class="p">)</span>
+  
+  <span class="c1">// Create a zip writer on top of the file writer
+</span><span class="c1"></span>  <span class="nx">zipWriter</span> <span class="o">:=</span> <span class="nx">zip</span><span class="p">.</span><span class="nf">NewWriter</span><span class="p">(</span><span class="nx">outFile</span><span class="p">)</span>
+  
+  <span class="c1">// Add files to archive
+</span><span class="c1"></span>  <span class="c1">// We use some hard code data to demonstrate,
+</span><span class="c1"></span>  <span class="c1">// but you could iterate through all the files
+</span><span class="c1"></span>  <span class="c1">// of each file, or you can take data from your
+</span><span class="c1"></span>  <span class="c1">// program  and write it in to the archive
+</span><span class="c1"></span>  <span class="kd">var</span> <span class="nx">filesToArchive</span> <span class="p">=</span> <span class="p">[</span><span class="p">]</span><span class="kd">struct</span><span class="p">{</span>
+    <span class="nx">Name</span><span class="p">,</span> <span class="nx">Body</span> <span class="kt">string</span>
+  <span class="p">}</span><span class="p">{</span>
+    <span class="p">{</span><span class="s">&#34;test.txt&#34;</span><span class="p">,</span> <span class="s">&#34;String contents of file&#34;</span><span class="p">}</span><span class="p">,</span>
+    <span class="p">{</span><span class="s">&#34;test2.txt&#34;</span><span class="p">,</span> <span class="s">&#34;\x61\x62\x63\n&#34;</span><span class="p">}</span><span class="p">,</span>
+  <span class="p">}</span>
+  
+  <span class="c1">// Create and write files to the archive, which in turn 
+</span><span class="c1"></span>  <span class="c1">// are getting written to the underlying writer to the
+</span><span class="c1"></span>  <span class="c1">// .zip file we created at the beginning
+</span><span class="c1"></span>  <span class="k">for</span> <span class="nx">_</span><span class="p">,</span> <span class="nx">file</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">filesToArchive</span> <span class="p">{</span>
+    <span class="nx">fileWriter</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">zipWriter</span><span class="p">.</span><span class="nf">Create</span><span class="p">(</span><span class="nx">file</span><span class="p">.</span><span class="nx">Name</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span><span class="p">{</span>
+      <span class="nx">log</span><span class="p">.</span><span class="nf">Fatal</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+    <span class="p">}</span>
+    <span class="nx">_</span><span class="p">,</span> <span class="nx">err</span> <span class="p">=</span> <span class="nx">fileWriter</span><span class="p">.</span><span class="nf">Write</span><span class="p">(</span><span class="p">[</span><span class="p">]</span><span class="nb">byte</span><span class="p">(</span><span class="nx">file</span><span class="p">.</span><span class="nx">Body</span><span class="p">)</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+      <span class="nx">log</span><span class="p">.</span><span class="nf">Fatal</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+  
+  <span class="c1">// Clean up
+</span><span class="c1"></span>  <span class="nx">err</span> <span class="p">=</span> <span class="nx">zipWriter</span><span class="p">.</span><span class="nf">Close</span><span class="p">(</span><span class="p">)</span>
+  <span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+    <span class="nx">log</span><span class="p">.</span><span class="nf">Fatal</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+  <span class="p">}</span>
+  
+<span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="unzip">利用unzip解压</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span><span class="lnt">53
+</span><span class="lnt">54
+</span><span class="lnt">55
+</span><span class="lnt">56
+</span><span class="lnt">57
+</span><span class="lnt">58
+</span><span class="lnt">59
+</span><span class="lnt">60
+</span><span class="lnt">61
+</span><span class="lnt">62
+</span><span class="lnt">63
+</span><span class="lnt">64
+</span><span class="lnt">65
+</span><span class="lnt">66
+</span><span class="lnt">67
+</span><span class="lnt">68
+</span><span class="lnt">69
+</span><span class="lnt">70
+</span><span class="lnt">71
+</span><span class="lnt">72
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-go" data-lang="go"><span class="c1">// This example uses zip but standard library
+</span><span class="c1"></span><span class="c1">// also supports tar archlives
+</span><span class="c1"></span><span class="kn">package</span> <span class="nx">main</span>
+
+<span class="kn">import</span> <span class="p">(</span>
+  <span class="s">&#34;archive/zip&#34;</span>
+  <span class="s">&#34;io&#34;</span>
+  <span class="s">&#34;log&#34;</span>
+  <span class="s">&#34;os&#34;</span>
+  <span class="s">&#34;path/filepath&#34;</span>
+<span class="p">)</span>
+
+<span class="kd">func</span> <span class="nf">main</span><span class="p">(</span><span class="p">)</span> <span class="p">{</span>
+  <span class="c1">// Create a reader out of the zip archive
+</span><span class="c1"></span>  <span class="nx">zipReader</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">zip</span><span class="p">.</span><span class="nf">OpenReader</span><span class="p">(</span><span class="s">&#34;test.zip&#34;</span><span class="p">)</span>
+  <span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+    <span class="nx">log</span><span class="p">.</span><span class="nf">Fatal</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+  <span class="p">}</span>
+  <span class="k">defer</span> <span class="nx">zipReader</span><span class="p">.</span><span class="nf">Close</span><span class="p">(</span><span class="p">)</span>
+  
+  <span class="c1">// Iterate through each file/dir found in
+</span><span class="c1"></span>  <span class="k">for</span> <span class="nx">_</span><span class="p">,</span> <span class="nx">file</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">zipReader</span><span class="p">.</span><span class="nx">Reader</span><span class="p">.</span><span class="nx">File</span><span class="p">{</span>
+    <span class="c1">// Open the file inside the zip archive
+</span><span class="c1"></span>    <span class="c1">// like a normal file
+</span><span class="c1"></span>    <span class="nx">zippedFile</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">file</span><span class="p">.</span><span class="nf">Open</span><span class="p">(</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span><span class="p">{</span>
+      <span class="nx">log</span><span class="p">.</span><span class="nf">Fatal</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+    <span class="p">}</span>
+    <span class="k">defer</span> <span class="nx">zippedFile</span><span class="p">.</span><span class="nf">Close</span><span class="p">(</span><span class="p">)</span>
+    
+    <span class="c1">// Specify what the extracted file name should be.
+</span><span class="c1"></span>    <span class="c1">// You can specify a full path or a prefix
+</span><span class="c1"></span>    <span class="c1">// to move it to a different directory.
+</span><span class="c1"></span>    <span class="c1">// In this case, we will extract the file from
+</span><span class="c1"></span>    <span class="c1">// the zip to a file of the same name.
+</span><span class="c1"></span>    <span class="nx">targetDir</span> <span class="o">:=</span> <span class="s">&#34;./&#34;</span>
+    <span class="nx">extractedFilePath</span> <span class="o">:=</span> <span class="nx">filepath</span><span class="p">.</span><span class="nf">Join</span><span class="p">(</span>
+    	<span class="nx">targetDir</span><span class="p">,</span>
+      <span class="nx">file</span><span class="p">.</span><span class="nx">Name</span><span class="p">,</span>
+    <span class="p">)</span>
+    
+    <span class="c1">// Extract the item (or create directory)
+</span><span class="c1"></span>    <span class="k">if</span> <span class="nx">file</span><span class="p">.</span><span class="nf">FileInfo</span><span class="p">(</span><span class="p">)</span><span class="p">.</span><span class="nf">IsDir</span><span class="p">(</span><span class="p">)</span><span class="p">{</span>
+      <span class="c1">// Create directories to recreate directory
+</span><span class="c1"></span>      <span class="c1">// structure inside the zip archive.Also 
+</span><span class="c1"></span>      <span class="c1">// preserves permissions
+</span><span class="c1"></span>      <span class="nx">log</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="s">&#34;Creating directory:&#34;</span><span class="p">,</span> <span class="nx">extractedFilePath</span><span class="p">)</span>
+      <span class="nx">os</span><span class="p">.</span><span class="nf">MkdirAll</span><span class="p">(</span><span class="nx">extractedFilePath</span><span class="p">,</span> <span class="nx">file</span><span class="p">.</span><span class="nf">Mode</span><span class="p">(</span><span class="p">)</span><span class="p">)</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+      <span class="c1">// Extract regular file since not a directory
+</span><span class="c1"></span>      <span class="nx">log</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="s">&#34;Extracting file:&#34;</span><span class="p">,</span> <span class="nx">file</span><span class="p">.</span><span class="nx">Name</span><span class="p">)</span>
+      
+      <span class="c1">// Open an output file for writing
+</span><span class="c1"></span>      <span class="nx">outputFile</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">os</span><span class="p">.</span><span class="nf">OpenFile</span><span class="p">(</span>
+      	<span class="nx">extractedFilePath</span><span class="p">,</span>
+        <span class="nx">os</span><span class="p">.</span><span class="nx">O_WRONLY</span><span class="p">|</span><span class="nx">os</span><span class="p">.</span><span class="nx">O_CREATE</span><span class="p">|</span><span class="nx">os</span><span class="p">.</span><span class="nx">O_TRUNC</span><span class="p">,</span>
+        <span class="nx">file</span><span class="p">.</span><span class="nf">Mode</span><span class="p">(</span><span class="p">)</span><span class="p">,</span>
+      <span class="p">)</span>
+      <span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span><span class="p">{</span>
+        <span class="nx">log</span><span class="p">.</span><span class="nf">Fatal</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+      <span class="p">}</span>
+      <span class="k">defer</span> <span class="nx">outputFile</span><span class="p">.</span><span class="nf">Close</span><span class="p">(</span><span class="p">)</span>
+      
+      <span class="c1">// &#34;Extract&#34; the file by copying zipped file
+</span><span class="c1"></span>      <span class="c1">// contents to the output file
+</span><span class="c1"></span>      <span class="nx">_</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">io</span><span class="p">.</span><span class="nf">Copy</span><span class="p">(</span><span class="nx">outputFile</span><span class="p">,</span> <span class="nx">zippedFile</span><span class="p">)</span>
+      <span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span><span class="p">{</span>
+        <span class="nx">log</span><span class="p">.</span><span class="nf">Fatal</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+      <span class="p">}</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="heading-18">文件压缩</h2>
+<p>Go标准库支持压缩，包括的算法有：</p>
+<ul>
+<li>bzip2: bzip2 format</li>
+<li>flate: DEFLATE(RFC 1951)</li>
+<li>gzip: gzip format(RFC 1952)</li>
+<li>lzw: Lempel-Ziv-Welch format</li>
+<li>zlib: zlib format(RFC 1950)</li>
+</ul>
+<p>相关的官方文档可以访问 <a href="https://golang.org/pkg/compress/">https://golang.org/pkg/compress/</a></p>
+<h3 id="heading-19">压缩文件</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-go" data-lang="go"><span class="c1">// This example uses gzip but standard library alse
+</span><span class="c1"></span><span class="c1">// supports zlib, bz2, flate, and lzw
+</span><span class="c1"></span><span class="kn">package</span> <span class="nx">main</span>
+
+<span class="kn">import</span> <span class="p">(</span>
+	<span class="s">&#34;compress/gzip&#34;</span>
+  <span class="s">&#34;log&#34;</span>
+  <span class="s">&#34;os&#34;</span>
+<span class="p">)</span>
+
+<span class="kd">func</span> <span class="nf">main</span><span class="p">(</span><span class="p">)</span><span class="p">{</span>
+  <span class="c1">// Create .gz file to write to 
+</span><span class="c1"></span>  <span class="nx">outputFile</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">os</span><span class="p">.</span><span class="nf">Create</span><span class="p">(</span><span class="s">&#34;test.txt.gz&#34;</span><span class="p">)</span>
+  <span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span><span class="p">{</span>
+    <span class="nx">log</span><span class="p">.</span><span class="nf">Fatal</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+  <span class="p">}</span>
+  
+  <span class="c1">// Create a gzip writer on top of file writer
+</span><span class="c1"></span>  <span class="nx">gzipWriter</span> <span class="o">:=</span> <span class="nx">gzip</span><span class="p">.</span><span class="nf">NewWriter</span><span class="p">(</span><span class="nx">outputFile</span><span class="p">)</span>
+  <span class="k">defer</span> <span class="nx">gzipWriter</span><span class="p">.</span><span class="nf">Close</span><span class="p">(</span><span class="p">)</span>
+  
+  <span class="c1">// When we write to the gzip writer
+</span><span class="c1"></span>  <span class="c1">// it will in turn compress the contents
+</span><span class="c1"></span>  <span class="c1">// and then write it to the underlying
+</span><span class="c1"></span>  <span class="c1">// file writer as well
+</span><span class="c1"></span>  <span class="c1">// We don&#39;t have to worry about how all
+</span><span class="c1"></span>  <span class="c1">// the compression works since we just
+</span><span class="c1"></span>  <span class="c1">// use it as a simple writer interface
+</span><span class="c1"></span>  <span class="c1">// that we send bytes to
+</span><span class="c1"></span>  <span class="nx">_</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">gzipWriter</span><span class="p">.</span><span class="nf">Write</span><span class="p">(</span><span class="p">[</span><span class="p">]</span><span class="nb">byte</span><span class="p">(</span><span class="s">&#34;Gophers rule!\n&#34;</span><span class="p">)</span><span class="p">)</span>
+  <span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+    <span class="nx">log</span><span class="p">.</span><span class="nf">Fatal</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+  <span class="p">}</span>
+  <span class="nx">log</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="s">&#34;Compressed data written to file.&#34;</span><span class="p">)</span>
+<span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="heading-20">解压缩文件</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-go" data-lang="go"><span class="c1">// This example uses gzip but standard library alse
+</span><span class="c1"></span><span class="c1">// supports zlib, bz2, flate, and lzw
+</span><span class="c1"></span><span class="kn">package</span> <span class="nx">main</span>
+
+<span class="kn">import</span> <span class="p">(</span>
+	<span class="s">&#34;compress/gzip&#34;</span>
+  <span class="s">&#34;io&#34;</span>
+  <span class="s">&#34;log&#34;</span>
+  <span class="s">&#34;os&#34;</span>
+<span class="p">)</span>
+
+<span class="kd">func</span> <span class="nf">main</span><span class="p">(</span><span class="p">)</span><span class="p">{</span>
+  <span class="c1">// Open gzip file that we want to uncompress
+</span><span class="c1"></span>  <span class="c1">// The file is a reader, but we could use any
+</span><span class="c1"></span>  <span class="c1">// data source.It is common for web servers
+</span><span class="c1"></span>  <span class="c1">// to return gzipped contents to save bandwidth
+</span><span class="c1"></span>  <span class="c1">// and in that case the data is not in a file
+</span><span class="c1"></span>  <span class="c1">// on the file system but is in a memory buffer
+</span><span class="c1"></span>  <span class="nx">gzipFile</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">os</span><span class="p">.</span><span class="nf">Open</span><span class="p">(</span><span class="s">&#34;test.txt.gz&#34;</span><span class="p">)</span>
+  <span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+    <span class="nx">log</span><span class="p">.</span><span class="nf">Fatal</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+  <span class="p">}</span>
+  
+  <span class="c1">// Create a gzip reader on top of the file reader
+</span><span class="c1"></span>  <span class="c1">// Again, it could be any type reader though
+</span><span class="c1"></span>  <span class="nx">gzipReader</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">gzip</span><span class="p">.</span><span class="nf">NewReader</span><span class="p">(</span><span class="nx">gzipFile</span><span class="p">)</span>
+  <span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+    <span class="nx">log</span><span class="p">.</span><span class="nf">Fatal</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+  <span class="p">}</span>
+  <span class="k">defer</span> <span class="nx">gzipReader</span><span class="p">.</span><span class="nf">Close</span><span class="p">(</span><span class="p">)</span>
+  
+  <span class="c1">// Uncompress to a writer. We&#39;ll use a file writer
+</span><span class="c1"></span>  <span class="nx">outfileWriter</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">os</span><span class="p">.</span><span class="nf">Create</span><span class="p">(</span><span class="s">&#34;unzipped.txt&#34;</span><span class="p">)</span>
+  <span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+    <span class="nx">log</span><span class="p">.</span><span class="nf">Fatal</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+  <span class="p">}</span>
+  <span class="k">defer</span> <span class="nx">outfileWriter</span><span class="p">.</span><span class="nf">Close</span><span class="p">(</span><span class="p">)</span>
+  
+  <span class="c1">// Copy contents of gzipped file to ouput file
+</span><span class="c1"></span>  <span class="nx">_</span><span class="p">,</span> <span class="nx">err</span> <span class="p">=</span> <span class="nx">io</span><span class="p">.</span><span class="nf">Copy</span><span class="p">(</span><span class="nx">outfileWriter</span><span class="p">,</span> <span class="nx">gzipReader</span><span class="p">)</span>
+  <span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+    <span class="nx">log</span><span class="p">.</span><span class="nf">Fatal</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="heading-21">创建临时文件及文件夹</h2>
+<p><code>ioutil</code>包提供了两个方法<code>TempDir()</code>和<code>TempFile()</code> 这两个方法默认路径使用系统的临时文件夹(比如LInux 的 /tmp)</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-go" data-lang="go"><span class="kn">package</span> <span class="nx">main</span>
+
+<span class="kn">import</span> <span class="p">(</span>
+  <span class="s">&#34;fmt&#34;</span>
+  <span class="s">&#34;io/ioutil&#34;</span>
+  <span class="s">&#34;log&#34;</span>
+  <span class="s">&#34;os&#34;</span>
+<span class="p">)</span>
+
+<span class="kd">func</span> <span class="nf">main</span><span class="p">(</span><span class="p">)</span> <span class="p">{</span>
+  <span class="c1">// Create a temp dir in the system default temp folder
+</span><span class="c1"></span>  <span class="nx">tempDirPath</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">ioutil</span><span class="p">.</span><span class="nf">TempDir</span><span class="p">(</span><span class="s">&#34;&#34;</span><span class="p">,</span> <span class="s">&#34;myTempDir&#34;</span><span class="p">)</span>
+  <span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span><span class="p">{</span>
+    <span class="nx">log</span><span class="p">.</span><span class="nf">Fatal</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+  <span class="p">}</span>
+  <span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="s">&#34;Temp dir created:&#34;</span><span class="p">,</span> <span class="nx">tempDirPath</span><span class="p">)</span>
+  
+  <span class="c1">// Create a file in new temp directory
+</span><span class="c1"></span>  <span class="nx">tempFile</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">ioutil</span><span class="p">.</span><span class="nf">TempFile</span><span class="p">(</span><span class="nx">tempDirPath</span><span class="p">,</span> <span class="s">&#34;myTempFile.txt&#34;</span><span class="p">)</span>
+  <span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+    <span class="nx">log</span><span class="p">.</span><span class="nf">Fatal</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+  <span class="p">}</span>
+  <span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="s">&#34;Temp file created:&#34;</span><span class="p">,</span> <span class="nx">tempFile</span><span class="p">.</span><span class="nf">Name</span><span class="p">(</span><span class="p">)</span><span class="p">)</span>
+  
+  <span class="c1">// ...do something with temp file/dir ....
+</span><span class="c1"></span>  
+  <span class="c1">// Close file
+</span><span class="c1"></span>  <span class="nx">err</span> <span class="p">=</span> <span class="nx">tempFile</span><span class="p">.</span><span class="nf">Close</span><span class="p">(</span><span class="p">)</span>
+  <span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span><span class="p">{</span>
+    <span class="nx">log</span><span class="p">.</span><span class="nf">Fatal</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+  <span class="p">}</span>
+  
+  <span class="c1">// Delete the resources we created
+</span><span class="c1"></span>  <span class="nx">err</span> <span class="p">=</span> <span class="nx">os</span><span class="p">.</span><span class="nf">Remove</span><span class="p">(</span><span class="nx">tempFile</span><span class="p">.</span><span class="nf">Name</span><span class="p">(</span><span class="p">)</span><span class="p">)</span>
+  <span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span><span class="p">{</span>
+    <span class="nx">log</span><span class="p">.</span><span class="nf">Fatal</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+  <span class="p">}</span>
+  <span class="nx">err</span> <span class="p">=</span> <span class="nx">os</span><span class="p">.</span><span class="nf">Remove</span><span class="p">(</span><span class="nx">tempDirPath</span><span class="p">)</span>
+  <span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span><span class="p">{</span>
+    <span class="nx">log</span><span class="p">.</span><span class="nf">Fatal</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+  <span class="p">}</span>
+  
+<span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="http">通过HTTP下载文件</h2>
+<p>下面的例子是下载特定URL资源到文件</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-go" data-lang="go"><span class="kn">package</span> <span class="nx">main</span>
+
+<span class="kn">import</span> <span class="p">(</span>
+  <span class="s">&#34;io&#34;</span>
+  <span class="s">&#34;log&#34;</span>
+  <span class="s">&#34;net/http&#34;</span>
+  <span class="s">&#34;os&#34;</span>
+<span class="p">)</span>
+
+<span class="kd">func</span> <span class="nf">main</span><span class="p">(</span><span class="p">)</span><span class="p">{</span>
+  <span class="c1">// Create output file
+</span><span class="c1"></span>  <span class="nx">newFile</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">os</span><span class="p">.</span><span class="nf">Create</span><span class="p">(</span><span class="s">&#34;devdungeon.html&#34;</span><span class="p">)</span>
+  <span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span><span class="p">{</span>
+    <span class="nx">log</span><span class="p">.</span><span class="nf">Fatal</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+  <span class="p">}</span>
+  <span class="k">defer</span> <span class="nx">newFile</span><span class="p">.</span><span class="nf">Close</span><span class="p">(</span><span class="p">)</span>
+  
+  <span class="c1">// HTTP GET request devdungeon.com
+</span><span class="c1"></span>  <span class="nx">url</span> <span class="o">:=</span> <span class="s">&#34;http://www.devdungeon.com/archive&#34;</span>
+  <span class="nx">response</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">http</span><span class="p">.</span><span class="nf">Get</span><span class="p">(</span><span class="nx">url</span><span class="p">)</span>
+  <span class="k">defer</span> <span class="nx">response</span><span class="p">.</span><span class="nx">Body</span><span class="p">.</span><span class="nf">Close</span><span class="p">(</span><span class="p">)</span>
+  
+  <span class="c1">// Write bytes from HTTP response to file
+</span><span class="c1"></span>  <span class="c1">// response.Body satisfies the reader interface.
+</span><span class="c1"></span>  <span class="c1">// newFile satisfies the writer interface.
+</span><span class="c1"></span>  <span class="c1">// That allows us to use io.Copy which accepts
+</span><span class="c1"></span>  <span class="c1">// any type that implements reader and writer interface
+</span><span class="c1"></span>  <span class="nx">numBytesWritten</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">io</span><span class="p">.</span><span class="nf">Copy</span><span class="p">(</span><span class="nx">newFile</span><span class="p">,</span> <span class="nx">response</span><span class="p">.</span><span class="nx">Body</span><span class="p">)</span>
+  <span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span><span class="p">{</span>
+    <span class="nx">log</span><span class="p">.</span><span class="nf">Fatal</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>
+  <span class="p">}</span>
+  
+  <span class="nx">log</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;Downloading %d byte file.\n&#34;</span><span class="p">,</span> <span class="nx">numBytesWritten</span><span class="p">)</span>
+<span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="heading-22">总结</h2>
+<p>这篇文章总结了操作文件的一些常用方法，让我们了解到都有哪些方法可以使用。这里面的代码可以作为例子帮助你记起相关操作。</p>
+<p>这些方法分布到了不同的包中。其中<code>os</code>包只提供了最基础的操作包括文件的打开,关闭简单的读取。而<code>io</code>包提供的方法能够用于实现了reader、writer接口的数据，这要比<code>os</code>包更高阶一些。最后的<code>ioutil</code>包提供了更加高阶并且封装好的便捷方法供我们使用。</p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">
+      <a href="http://linuxfunk.com/">Morgana</a>
+    </span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">初次发布</span>
+    <span class="item-content">
+        2020-07-27
+    </span>
+  </p>
+  
+  
+  
+  <p class="copyright-item">
+    <span class="item-title">许可协议</span>
+    <span class="item-content"><a rel="license noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a></span>
+  </p>
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/golang/">golang</a>
+          <a href="/tags/files/">files</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/2020/07/30/openssl-update-for-centos6or7/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">Openssl Update for Centos6or7</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        <a class="next" href="/2020/07/25/go-cheatsheet/">
+            <span class="next-text nav-default">Go Cheatsheet</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+  
+  <div id="utter-container"></div>
+    <script src="https://utteranc.es/client.js"
+        repo= 'fivestrong/fivestrong.github.io'
+        issue-term= "title"
+        theme= 'github-light'
+        crossorigin= "anonymous"
+        async>
+    </script>
+
+  
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:fivestrong@live.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://github.com/fivestrong" class="iconfont icon-github" title="github"></a>
+  <a href="http://linuxfunk.com/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  <div class="busuanzi-footer">
+    <span id="busuanzi_container_site_pv"> 本站总访问量 <span id="busuanzi_value_site_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次 </span>
+      <span class="division">|</span>
+    <span id="busuanzi_container_site_uv"> 本站总访客数 <span id="busuanzi_value_site_uv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 人 </span>
+  </div>
+
+  <span class="copyright-year">
+    &copy; 
+    2015 - 
+    2020
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">Morgana</span>
+  </span>
+</div>
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/dist/even.2139186b.min.js"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>
