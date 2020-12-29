@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Debian 10 Use Nftables for Docker - モルガンナの家</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="Morgana" /><meta name="description" content="众所周知，辣鸡Docker在防火墙上做了自定义规则，导致我们通常添加的限制规则不起作用。这样的话，本来仅仅是一个自己使用的Docker服务直" /><meta name="keywords" content="Hugo, モルガンナの家" />
+
+
+<meta name="robots" content="">
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.61.0 with even 4.0.0" />
+
+
+<link rel="canonical" href="http://linuxfunk.com/2020/12/29/debian10-use-nftables-for-docker/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<link href="/dist/even.84785aa1.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="Debian 10 Use Nftables for Docker" />
+<meta property="og:description" content="众所周知，辣鸡Docker在防火墙上做了自定义规则，导致我们通常添加的限制规则不起作用。这样的话，本来仅仅是一个自己使用的Docker服务直" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://linuxfunk.com/2020/12/29/debian10-use-nftables-for-docker/" />
+<meta property="article:published_time" content="2020-12-29T15:44:07+08:00" />
+<meta property="article:modified_time" content="2020-12-29T15:44:07+08:00" />
+<meta itemprop="name" content="Debian 10 Use Nftables for Docker">
+<meta itemprop="description" content="众所周知，辣鸡Docker在防火墙上做了自定义规则，导致我们通常添加的限制规则不起作用。这样的话，本来仅仅是一个自己使用的Docker服务直">
+<meta itemprop="datePublished" content="2020-12-29T15:44:07&#43;08:00" />
+<meta itemprop="dateModified" content="2020-12-29T15:44:07&#43;08:00" />
+<meta itemprop="wordCount" content="1801">
+
+
+
+<meta itemprop="keywords" content="nftables," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Debian 10 Use Nftables for Docker"/>
+<meta name="twitter:description" content="众所周知，辣鸡Docker在防火墙上做了自定义规则，导致我们通常添加的限制规则不起作用。这样的话，本来仅仅是一个自己使用的Docker服务直"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">モルガンナの家</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">About</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">モルガンナの家</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">Categories</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">About</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">Debian 10 Use Nftables for Docker</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2020-12-29 </span>
+        <div class="post-category">
+            <a href="/categories/linux/"> linux </a>
+            </div>
+          <span class="more-meta"> 约 1801 字 </span>
+          <span class="more-meta"> 预计阅读 4 分钟 </span>
+        <span id="busuanzi_container_page_pv" class="more-meta"> <span id="busuanzi_value_page_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次阅读 </span>
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#nftables">创建基本的nftables配置</a></li>
+        <li><a href="#docker">启动docker服务</a></li>
+        <li><a href="#docker-1">启动docker容器</a></li>
+        <li><a href="#heading">手动添加规则</a></li>
+        <li><a href="#heading-1">注意事项</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <p>众所周知，辣鸡Docker在防火墙上做了自定义规则，导致我们通常添加的限制规则不起作用。这样的话，本来仅仅是一个自己使用的Docker服务直接就全部暴露在互联网上了。</p>
+<p>虽然官网给出了解决方法，可以将限制规则添加到 <code>DOCKER-USER</code> 这个链中，但是这是基于iptables的。而Debian 10 默认防火墙已经切换到了nftables，我试着向<code>DOCKER-USER</code>中添加规则，可惜并不生效。具体可以参考<a href="https://docs.docker.com/network/iptables/">官方文档</a></p>
+<p>查了好多文档最后探索出了一个有效的方法，记录一下以便之后使用</p>
+<h3 id="nftables">创建基本的nftables配置</h3>
+<p>配置文件位于 /etc/nftables.conf</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash"><span class="cp">#!/usr/sbin/nft -f
+</span><span class="cp"></span>
+flush ruleset
+
+<span class="c1"># List all IPs and IP ranges of your traffic filtering proxy source.</span>
+define <span class="nv">SAFE_TRAFFIC_IPS</span> <span class="o">=</span> <span class="o">{</span>
+    x.x.x.x/24
+<span class="o">}</span>
+table inet filter <span class="o">{</span>
+	chain input <span class="o">{</span>
+		<span class="nb">type</span> filter hook input priority 0<span class="p">;</span> policy drop<span class="p">;</span>
+		ct state established,related accept
+		ct state invalid drop
+		iifname <span class="s2">&#34;lo&#34;</span> accept
+		ip protocol icmp limit rate 4/second accept
+		ip6 nexthdr ipv6-icmp limit rate 4/second accept
+		ip protocol igmp limit rate 4/second accept
+		tcp dport <span class="m">22</span> ip saddr <span class="nv">$SAFE_TRAFFIC_IPS</span> accept <span class="c1"># 向特定ip开放 ssh 端口</span>
+		icmpv6 <span class="nb">type</span> <span class="o">{</span> nd-router-advert, nd-neighbor-solicit, nd-neighbor-advert <span class="o">}</span> ip6 hoplimit <span class="m">1</span> accept
+		icmpv6 <span class="nb">type</span> <span class="o">{</span> nd-router-advert, nd-neighbor-solicit, nd-neighbor-advert <span class="o">}</span> ip6 hoplimit <span class="m">255</span> counter packets <span class="m">0</span> bytes <span class="m">0</span> accept
+		counter packets <span class="m">0</span> bytes <span class="m">0</span> reject with icmpx <span class="nb">type</span> admin-prohibited
+	<span class="o">}</span>
+
+	chain forward <span class="o">{</span>
+		<span class="nb">type</span> filter hook forward priority 0<span class="p">;</span> policy accept<span class="p">;</span>
+	<span class="o">}</span>
+
+	chain outbound <span class="o">{</span>
+		<span class="nb">type</span> filter hook output priority 0<span class="p">;</span> policy accept<span class="p">;</span>
+	<span class="o">}</span>
+<span class="o">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="docker">启动docker服务</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">systemctl restart docker
+</code></pre></td></tr></table>
+</div>
+</div><p>这一步能够让docker生成需要的基本规则，并且不会改变我们的默认表 <code>inet filter</code>,查看表 现在有3个</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">nft list tables
+table inet filter
+table ip nat
+table ip filter
+</code></pre></td></tr></table>
+</div>
+</div><p>我们分别将新生成的表的内容添加到<code>nftables.conf</code>配置文件中</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">nft list table nat 
+
+table ip nat <span class="o">{</span>
+	chain PREROUTING <span class="o">{</span>
+		<span class="nb">type</span> nat hook prerouting priority -100<span class="p">;</span> policy accept<span class="p">;</span>
+		fib daddr <span class="nb">type</span> <span class="nb">local</span> counter packets <span class="m">0</span> bytes <span class="m">0</span> jump DOCKER
+	<span class="o">}</span>
+
+	chain INPUT <span class="o">{</span>
+		<span class="nb">type</span> nat hook input priority 100<span class="p">;</span> policy accept<span class="p">;</span>
+	<span class="o">}</span>
+
+	chain POSTROUTING <span class="o">{</span>
+		<span class="nb">type</span> nat hook postrouting priority 100<span class="p">;</span> policy accept<span class="p">;</span>
+		oifname !<span class="o">=</span> <span class="s2">&#34;docker0&#34;</span> ip saddr 172.17.0.0/16 counter packets <span class="m">0</span> bytes <span class="m">0</span> masquerade
+	<span class="o">}</span>
+
+	chain OUTPUT <span class="o">{</span>
+		<span class="nb">type</span> nat hook output priority -100<span class="p">;</span> policy accept<span class="p">;</span>
+		ip daddr !<span class="o">=</span> 127.0.0.0/8 fib daddr <span class="nb">type</span> <span class="nb">local</span> counter packets <span class="m">0</span> bytes <span class="m">0</span> jump DOCKER
+	<span class="o">}</span>
+
+	chain DOCKER <span class="o">{</span>
+		iifname <span class="s2">&#34;docker0&#34;</span> counter packets <span class="m">0</span> bytes <span class="m">0</span> <span class="k">return</span>
+	<span class="o">}</span>
+<span class="o">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">nft list table filter
+
+table ip filter <span class="o">{</span>
+	chain INPUT <span class="o">{</span>
+		<span class="nb">type</span> filter hook input priority 0<span class="p">;</span> policy accept<span class="p">;</span>
+	<span class="o">}</span>
+
+	chain FORWARD <span class="o">{</span>
+		<span class="nb">type</span> filter hook forward priority 0<span class="p">;</span> policy accept<span class="p">;</span>
+		counter packets <span class="m">0</span> bytes <span class="m">0</span> jump DOCKER-USER
+		counter packets <span class="m">0</span> bytes <span class="m">0</span> jump DOCKER-ISOLATION-STAGE-1
+		oifname <span class="s2">&#34;docker0&#34;</span> ct state related,established counter packets <span class="m">0</span> bytes <span class="m">0</span> accept
+		oifname <span class="s2">&#34;docker0&#34;</span> counter packets <span class="m">0</span> bytes <span class="m">0</span> jump DOCKER
+		iifname <span class="s2">&#34;docker0&#34;</span> oifname !<span class="o">=</span> <span class="s2">&#34;docker0&#34;</span> counter packets <span class="m">0</span> bytes <span class="m">0</span> accept
+		iifname <span class="s2">&#34;docker0&#34;</span> oifname <span class="s2">&#34;docker0&#34;</span> counter packets <span class="m">0</span> bytes <span class="m">0</span> accept
+	<span class="o">}</span>
+
+	chain OUTPUT <span class="o">{</span>
+		<span class="nb">type</span> filter hook output priority 0<span class="p">;</span> policy accept<span class="p">;</span>
+	<span class="o">}</span>
+
+	chain DOCKER <span class="o">{</span>
+	<span class="o">}</span>
+
+	chain DOCKER-ISOLATION-STAGE-1 <span class="o">{</span>
+		iifname <span class="s2">&#34;docker0&#34;</span> oifname !<span class="o">=</span> <span class="s2">&#34;docker0&#34;</span> counter packets <span class="m">0</span> bytes <span class="m">0</span> jump DOCKER-ISOLATION-STAGE-2
+		counter packets <span class="m">0</span> bytes <span class="m">0</span> <span class="k">return</span>
+	<span class="o">}</span>
+
+	chain DOCKER-ISOLATION-STAGE-2 <span class="o">{</span>
+		oifname <span class="s2">&#34;docker0&#34;</span> counter packets <span class="m">0</span> bytes <span class="m">0</span> drop
+		counter packets <span class="m">0</span> bytes <span class="m">0</span> <span class="k">return</span>
+	<span class="o">}</span>
+
+	chain DOCKER-USER <span class="o">{</span>
+		counter packets <span class="m">0</span> bytes <span class="m">0</span> <span class="k">return</span>
+	<span class="o">}</span>
+<span class="o">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>这样我们每次重置配置的时候都能生成docker所需的默认表</p>
+<h3 id="docker-1">启动docker容器</h3>
+<p>这时候我们启动docker容器的时候，docker会在这些表的默认基础上添加新的容器规则。我们只需要找到合适的位置修改这些规则就能限制对特定的容器进行访问，我找的注入点是 <code>ip nat DOCKER</code>这个链，比如启动容器后表变成</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">table ip nat <span class="o">{</span>
+	chain PREROUTING <span class="o">{</span>
+		<span class="nb">type</span> nat hook prerouting priority -100<span class="p">;</span> policy accept<span class="p">;</span>
+		fib daddr <span class="nb">type</span> <span class="nb">local</span> counter packets <span class="m">4353</span> bytes <span class="m">217872</span> jump DOCKER
+	<span class="o">}</span>
+
+	chain INPUT <span class="o">{</span>
+		<span class="nb">type</span> nat hook input priority 100<span class="p">;</span> policy accept<span class="p">;</span>
+	<span class="o">}</span>
+
+	chain POSTROUTING <span class="o">{</span>
+		<span class="nb">type</span> nat hook postrouting priority 100<span class="p">;</span> policy accept<span class="p">;</span>
+		oifname !<span class="o">=</span> <span class="s2">&#34;br-d5710cd4cef7&#34;</span> ip saddr 172.18.0.0/16 counter packets <span class="m">0</span> bytes <span class="m">0</span> masquerade
+		oifname !<span class="o">=</span> <span class="s2">&#34;docker0&#34;</span> ip saddr 172.17.0.0/16 counter packets <span class="m">0</span> bytes <span class="m">0</span> masquerade
+		meta l4proto tcp ip saddr 172.18.0.4 ip daddr 172.18.0.4 tcp dport <span class="m">443</span> counter packets <span class="m">0</span> bytes <span class="m">0</span> masquerade
+		meta l4proto tcp ip saddr 172.18.0.4 ip daddr 172.18.0.4 tcp dport <span class="m">80</span> counter packets <span class="m">0</span> bytes <span class="m">0</span> masquerade
+		meta l4proto tcp ip saddr 172.18.0.4 ip daddr 172.18.0.4 tcp dport <span class="m">22</span> counter packets <span class="m">0</span> bytes <span class="m">0</span> masquerade
+	<span class="o">}</span>
+
+	chain OUTPUT <span class="o">{</span>
+		<span class="nb">type</span> nat hook output priority -100<span class="p">;</span> policy accept<span class="p">;</span>
+		ip daddr !<span class="o">=</span> 127.0.0.0/8 fib daddr <span class="nb">type</span> <span class="nb">local</span> counter packets <span class="m">0</span> bytes <span class="m">0</span> jump DOCKER
+	<span class="o">}</span>
+
+	chain DOCKER <span class="o">{</span>
+		iifname <span class="s2">&#34;br-d5710cd4cef7&#34;</span> counter packets <span class="m">0</span> bytes <span class="m">0</span> <span class="k">return</span>
+		iifname <span class="s2">&#34;docker0&#34;</span> counter packets <span class="m">0</span> bytes <span class="m">0</span> <span class="k">return</span>
+		iifname !<span class="o">=</span> <span class="s2">&#34;br-d5710cd4cef7&#34;</span> meta l4proto tcp tcp dport <span class="m">443</span> counter packets <span class="m">4</span> bytes <span class="m">256</span> dnat to 172.18.0.4:443
+		iifname !<span class="o">=</span> <span class="s2">&#34;br-d5710cd4cef7&#34;</span> meta l4proto tcp tcp dport <span class="m">80</span> counter packets <span class="m">2</span> bytes <span class="m">124</span> dnat to 172.18.0.4:80
+		iifname !<span class="o">=</span> <span class="s2">&#34;br-d5710cd4cef7&#34;</span> meta l4proto tcp tcp dport <span class="m">10022</span> counter packets <span class="m">2</span> bytes <span class="m">120</span> dnat to 172.18.0.4:22
+	<span class="o">}</span>
+<span class="o">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="heading">手动添加规则</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">nft list table ip nat -a <span class="c1"># 这个命令会显示表中的handle，方便我们插入和修改规则</span>
+
+....
+chain DOCKER <span class="o">{</span> <span class="c1"># handle 5</span>
+		iifname <span class="s2">&#34;br-d5710cd4cef7&#34;</span> counter packets <span class="m">0</span> bytes <span class="m">0</span> <span class="k">return</span> <span class="c1"># handle 13</span>
+		iifname <span class="s2">&#34;docker0&#34;</span> counter packets <span class="m">0</span> bytes <span class="m">0</span> <span class="k">return</span> <span class="c1"># handle 11</span>
+		iifname !<span class="o">=</span> <span class="s2">&#34;br-d5710cd4cef7&#34;</span> meta l4proto tcp tcp dport <span class="m">443</span> counter packets <span class="m">4</span> bytes <span class="m">256</span> dnat to 172.18.0.4:443 <span class="c1"># handle 14</span>
+		iifname !<span class="o">=</span> <span class="s2">&#34;br-d5710cd4cef7&#34;</span> meta l4proto tcp tcp dport <span class="m">80</span> counter packets <span class="m">2</span> bytes <span class="m">124</span> dnat to 172.18.0.4:80 <span class="c1"># handle 16</span>
+		iifname !<span class="o">=</span> <span class="s2">&#34;br-d5710cd4cef7&#34;</span> meta l4proto tcp tcp dport <span class="m">10022</span> counter packets <span class="m">2</span> bytes <span class="m">120</span> dnat to 172.18.0.4:22 <span class="c1"># handle 18</span>
+	<span class="o">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">nft insert rule ip nat DOCKER handle <span class="m">14</span> ip saddr !<span class="o">=</span> <span class="o">{</span>x.x.x.x/24<span class="o">}</span> drop
+<span class="c1"># 这个规则限制除了指定ip段都不能通过nat访问到容器端口</span>
+</code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">nft replace rule ip nat DOCKER handle <span class="m">14</span> iifname !<span class="o">=</span> <span class="s2">&#34;br-d5710cd4cef7&#34;</span> meta l4proto tcp tcp dport <span class="m">443</span> ip saddr x.x.x.x counter dnat to 172.18.0.4:443
+<span class="c1"># 这条规则可以替换docker生成的规则,添加额外的限制条件，这里限制443端口只能通过指定ip访问，80、10022不受影响</span>
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="heading-1">注意事项</h3>
+<p>这种方法其实并不灵活，因为一旦重启<code>nftables</code>服务所有规则都会重新初始化，还需要重新启动容器，并重新添加规则。这给向 <code>inat filter</code>中加规则增加了麻烦，只能动态添加之后配置文件再添加一次，以便重启防火墙生效。</p>
+<p>而且有一点，如果在Docker服务启动之前就存在 <code>ip nat</code> <code>ip filter</code>这两个表，docker服务会启动报错，只能先启动docker再启动nftables。</p>
+<p>还有就是我们手动添加或者修改过的规则，docker不会自动为我们删除，所以重置之前记得清除规则，否则可能会有问题。</p>
+<p>nftables官方<a href="https://wiki.nftables.org/wiki-nftables/index.php/Main_Page">帮助文档</a></p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">
+      <a href="http://linuxfunk.com/">Morgana</a>
+    </span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">初次发布</span>
+    <span class="item-content">
+        2020-12-29
+    </span>
+  </p>
+  
+  
+  
+  <p class="copyright-item">
+    <span class="item-title">许可协议</span>
+    <span class="item-content"><a rel="license noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a></span>
+  </p>
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/nftables/">nftables</a>
+          </div>
+      <nav class="post-nav">
+        
+        <a class="next" href="/2020/07/30/openssl-update-for-centos6or7/">
+            <span class="next-text nav-default">Openssl Update for Centos6or7</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+  
+  <div id="utter-container"></div>
+    <script src="https://utteranc.es/client.js"
+        repo= 'fivestrong/fivestrong.github.io'
+        issue-term= "title"
+        theme= 'github-light'
+        crossorigin= "anonymous"
+        async>
+    </script>
+
+  
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:fivestrong@live.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://github.com/fivestrong" class="iconfont icon-github" title="github"></a>
+  <a href="http://linuxfunk.com/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  <div class="busuanzi-footer">
+    <span id="busuanzi_container_site_pv"> 本站总访问量 <span id="busuanzi_value_site_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次 </span>
+      <span class="division">|</span>
+    <span id="busuanzi_container_site_uv"> 本站总访客数 <span id="busuanzi_value_site_uv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 人 </span>
+  </div>
+
+  <span class="copyright-year">
+    &copy; 
+    2015 - 
+    2020
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">Morgana</span>
+  </span>
+</div>
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/dist/even.2139186b.min.js"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>
