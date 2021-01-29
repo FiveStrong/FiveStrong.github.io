@@ -6,10 +6,19 @@
     <description>Recent content in Tags on モルガンナの家</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Tue, 29 Dec 2020 15:44:07 +0800</lastBuildDate>
+    <lastBuildDate>Thu, 28 Jan 2021 15:32:54 +0800</lastBuildDate>
     
 	<atom:link href="http://linuxfunk.com/tags/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>snippet</title>
+      <link>http://linuxfunk.com/tags/snippet/</link>
+      <pubDate>Thu, 28 Jan 2021 15:32:54 +0800</pubDate>
+      
+      <guid>http://linuxfunk.com/tags/snippet/</guid>
+      <description></description>
+    </item>
     
     <item>
       <title>nftables</title>

@@ -51,7 +51,7 @@
 <meta itemprop="description" content="众所周知，辣鸡Docker在防火墙上做了自定义规则，导致我们通常添加的限制规则不起作用。这样的话，本来仅仅是一个自己使用的Docker服务直">
 <meta itemprop="datePublished" content="2020-12-29T15:44:07&#43;08:00" />
 <meta itemprop="dateModified" content="2020-12-29T15:44:07&#43;08:00" />
-<meta itemprop="wordCount" content="1801">
+<meta itemprop="wordCount" content="1846">
 
 
 
@@ -127,7 +127,7 @@
         <div class="post-category">
             <a href="/categories/linux/"> linux </a>
             </div>
-          <span class="more-meta"> 约 1801 字 </span>
+          <span class="more-meta"> 约 1846 字 </span>
           <span class="more-meta"> 预计阅读 4 分钟 </span>
         <span id="busuanzi_container_page_pv" class="more-meta"> <span id="busuanzi_value_page_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次阅读 </span>
       </div>
@@ -156,40 +156,111 @@
 <p>虽然官网给出了解决方法，可以将限制规则添加到 <code>DOCKER-USER</code> 这个链中，但是这是基于iptables的。而Debian 10 默认防火墙已经切换到了nftables，我试着向<code>DOCKER-USER</code>中添加规则，可惜并不生效。具体可以参考<a href="https://docs.docker.com/network/iptables/">官方文档</a></p>
 <p>查了好多文档最后探索出了一个有效的方法，记录一下以便之后使用</p>
 <h3 id="nftables">创建基本的nftables配置</h3>
-<p>配置文件位于 /etc/nftables.conf</p>
+<p>配置文件位于 /etc/nftables.conf，直接创建包含docker注入的基本规则，这里将表、链名都于docker需求做了统一</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span><span class="lnt">25
-</span><span class="lnt">26
-</span><span class="lnt">27
-</span><span class="lnt">28
-</span><span class="lnt">29
-</span><span class="lnt">30
-</span><span class="lnt">31
+<pre class="chroma"><code><span class="lnt">  1
+</span><span class="lnt">  2
+</span><span class="lnt">  3
+</span><span class="lnt">  4
+</span><span class="lnt">  5
+</span><span class="lnt">  6
+</span><span class="lnt">  7
+</span><span class="lnt">  8
+</span><span class="lnt">  9
+</span><span class="lnt"> 10
+</span><span class="lnt"> 11
+</span><span class="lnt"> 12
+</span><span class="lnt"> 13
+</span><span class="lnt"> 14
+</span><span class="lnt"> 15
+</span><span class="lnt"> 16
+</span><span class="lnt"> 17
+</span><span class="lnt"> 18
+</span><span class="lnt"> 19
+</span><span class="lnt"> 20
+</span><span class="lnt"> 21
+</span><span class="lnt"> 22
+</span><span class="lnt"> 23
+</span><span class="lnt"> 24
+</span><span class="lnt"> 25
+</span><span class="lnt"> 26
+</span><span class="lnt"> 27
+</span><span class="lnt"> 28
+</span><span class="lnt"> 29
+</span><span class="lnt"> 30
+</span><span class="lnt"> 31
+</span><span class="lnt"> 32
+</span><span class="lnt"> 33
+</span><span class="lnt"> 34
+</span><span class="lnt"> 35
+</span><span class="lnt"> 36
+</span><span class="lnt"> 37
+</span><span class="lnt"> 38
+</span><span class="lnt"> 39
+</span><span class="lnt"> 40
+</span><span class="lnt"> 41
+</span><span class="lnt"> 42
+</span><span class="lnt"> 43
+</span><span class="lnt"> 44
+</span><span class="lnt"> 45
+</span><span class="lnt"> 46
+</span><span class="lnt"> 47
+</span><span class="lnt"> 48
+</span><span class="lnt"> 49
+</span><span class="lnt"> 50
+</span><span class="lnt"> 51
+</span><span class="lnt"> 52
+</span><span class="lnt"> 53
+</span><span class="lnt"> 54
+</span><span class="lnt"> 55
+</span><span class="lnt"> 56
+</span><span class="lnt"> 57
+</span><span class="lnt"> 58
+</span><span class="lnt"> 59
+</span><span class="lnt"> 60
+</span><span class="lnt"> 61
+</span><span class="lnt"> 62
+</span><span class="lnt"> 63
+</span><span class="lnt"> 64
+</span><span class="lnt"> 65
+</span><span class="lnt"> 66
+</span><span class="lnt"> 67
+</span><span class="lnt"> 68
+</span><span class="lnt"> 69
+</span><span class="lnt"> 70
+</span><span class="lnt"> 71
+</span><span class="lnt"> 72
+</span><span class="lnt"> 73
+</span><span class="lnt"> 74
+</span><span class="lnt"> 75
+</span><span class="lnt"> 76
+</span><span class="lnt"> 77
+</span><span class="lnt"> 78
+</span><span class="lnt"> 79
+</span><span class="lnt"> 80
+</span><span class="lnt"> 81
+</span><span class="lnt"> 82
+</span><span class="lnt"> 83
+</span><span class="lnt"> 84
+</span><span class="lnt"> 85
+</span><span class="lnt"> 86
+</span><span class="lnt"> 87
+</span><span class="lnt"> 88
+</span><span class="lnt"> 89
+</span><span class="lnt"> 90
+</span><span class="lnt"> 91
+</span><span class="lnt"> 92
+</span><span class="lnt"> 93
+</span><span class="lnt"> 94
+</span><span class="lnt"> 95
+</span><span class="lnt"> 96
+</span><span class="lnt"> 97
+</span><span class="lnt"> 98
+</span><span class="lnt"> 99
+</span><span class="lnt">100
+</span><span class="lnt">101
+</span><span class="lnt">102
 </span></code></pre></td>
 <td class="lntd">
 <pre class="chroma"><code class="language-bash" data-lang="bash"><span class="cp">#!/usr/sbin/nft -f
@@ -200,171 +271,29 @@ flush ruleset
 define <span class="nv">SAFE_TRAFFIC_IPS</span> <span class="o">=</span> <span class="o">{</span>
     x.x.x.x/24
 <span class="o">}</span>
-table inet filter <span class="o">{</span>
-	chain input <span class="o">{</span>
-		<span class="nb">type</span> filter hook input priority 0<span class="p">;</span> policy drop<span class="p">;</span>
-		ct state established,related accept
-		ct state invalid drop
-		iifname <span class="s2">&#34;lo&#34;</span> accept
-		ip protocol icmp limit rate 4/second accept
-		ip6 nexthdr ipv6-icmp limit rate 4/second accept
-		ip protocol igmp limit rate 4/second accept
-		tcp dport <span class="m">22</span> ip saddr <span class="nv">$SAFE_TRAFFIC_IPS</span> accept <span class="c1"># 向特定ip开放 ssh 端口</span>
-		icmpv6 <span class="nb">type</span> <span class="o">{</span> nd-router-advert, nd-neighbor-solicit, nd-neighbor-advert <span class="o">}</span> ip6 hoplimit <span class="m">1</span> accept
-		icmpv6 <span class="nb">type</span> <span class="o">{</span> nd-router-advert, nd-neighbor-solicit, nd-neighbor-advert <span class="o">}</span> ip6 hoplimit <span class="m">255</span> counter packets <span class="m">0</span> bytes <span class="m">0</span> accept
-		counter packets <span class="m">0</span> bytes <span class="m">0</span> reject with icmpx <span class="nb">type</span> admin-prohibited
-	<span class="o">}</span>
-
-	chain forward <span class="o">{</span>
-		<span class="nb">type</span> filter hook forward priority 0<span class="p">;</span> policy accept<span class="p">;</span>
-	<span class="o">}</span>
-
-	chain outbound <span class="o">{</span>
-		<span class="nb">type</span> filter hook output priority 0<span class="p">;</span> policy accept<span class="p">;</span>
-	<span class="o">}</span>
-<span class="o">}</span>
-</code></pre></td></tr></table>
-</div>
-</div><h3 id="docker">启动docker服务</h3>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
-</span></code></pre></td>
-<td class="lntd">
-<pre class="chroma"><code class="language-bash" data-lang="bash">systemctl restart docker
-</code></pre></td></tr></table>
-</div>
-</div><p>这一步能够让docker生成需要的基本规则，并且不会改变我们的默认表 <code>inet filter</code>,查看表 现在有3个</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span></code></pre></td>
-<td class="lntd">
-<pre class="chroma"><code class="language-bash" data-lang="bash">nft list tables
-table inet filter
-table ip nat
-table ip filter
-</code></pre></td></tr></table>
-</div>
-</div><p>我们分别将新生成的表的内容添加到<code>nftables.conf</code>配置文件中</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span><span class="lnt">25
-</span><span class="lnt">26
-</span></code></pre></td>
-<td class="lntd">
-<pre class="chroma"><code class="language-bash" data-lang="bash">nft list table nat 
-
-table ip nat <span class="o">{</span>
-	chain PREROUTING <span class="o">{</span>
-		<span class="nb">type</span> nat hook prerouting priority -100<span class="p">;</span> policy accept<span class="p">;</span>
-		fib daddr <span class="nb">type</span> <span class="nb">local</span> counter packets <span class="m">0</span> bytes <span class="m">0</span> jump DOCKER
-	<span class="o">}</span>
-
-	chain INPUT <span class="o">{</span>
-		<span class="nb">type</span> nat hook input priority 100<span class="p">;</span> policy accept<span class="p">;</span>
-	<span class="o">}</span>
-
-	chain POSTROUTING <span class="o">{</span>
-		<span class="nb">type</span> nat hook postrouting priority 100<span class="p">;</span> policy accept<span class="p">;</span>
-		oifname !<span class="o">=</span> <span class="s2">&#34;docker0&#34;</span> ip saddr 172.17.0.0/16 counter packets <span class="m">0</span> bytes <span class="m">0</span> masquerade
-	<span class="o">}</span>
-
-	chain OUTPUT <span class="o">{</span>
-		<span class="nb">type</span> nat hook output priority -100<span class="p">;</span> policy accept<span class="p">;</span>
-		ip daddr !<span class="o">=</span> 127.0.0.0/8 fib daddr <span class="nb">type</span> <span class="nb">local</span> counter packets <span class="m">0</span> bytes <span class="m">0</span> jump DOCKER
-	<span class="o">}</span>
-
-	chain DOCKER <span class="o">{</span>
-		iifname <span class="s2">&#34;docker0&#34;</span> counter packets <span class="m">0</span> bytes <span class="m">0</span> <span class="k">return</span>
-	<span class="o">}</span>
-<span class="o">}</span>
-</code></pre></td></tr></table>
-</div>
-</div><div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span><span class="lnt">25
-</span><span class="lnt">26
-</span><span class="lnt">27
-</span><span class="lnt">28
-</span><span class="lnt">29
-</span><span class="lnt">30
-</span><span class="lnt">31
-</span><span class="lnt">32
-</span><span class="lnt">33
-</span><span class="lnt">34
-</span><span class="lnt">35
-</span><span class="lnt">36
-</span><span class="lnt">37
-</span><span class="lnt">38
-</span></code></pre></td>
-<td class="lntd">
-<pre class="chroma"><code class="language-bash" data-lang="bash">nft list table filter
 
 table ip filter <span class="o">{</span>
 	chain INPUT <span class="o">{</span>
-		<span class="nb">type</span> filter hook input priority 0<span class="p">;</span> policy accept<span class="p">;</span>
+    <span class="nb">type</span> filter hook input priority 0<span class="p">;</span> policy drop<span class="p">;</span>
+		ct state invalid counter drop comment <span class="s2">&#34;early drop of invalid packets&#34;</span>
+		ct state <span class="o">{</span>established, related<span class="o">}</span> counter accept comment <span class="s2">&#34;accept all connections related to connections made by us&#34;</span>
+		iif lo accept comment <span class="s2">&#34;accept loopback&#34;</span>
+		iif !<span class="o">=</span> lo ip daddr 127.0.0.1/8 counter drop comment <span class="s2">&#34;drop connections to loopback not coming from loopback&#34;</span>
+		ip protocol icmp limit rate 4/second accept
+		ip protocol igmp limit rate 4/second accept
+		tcp dport <span class="m">22</span> ip saddr <span class="nv">$SAFE_TRAFFIC_IPS</span> accept <span class="c1"># 向特定ip开放 ssh 端口</span>
+		tcp dport <span class="o">{</span>80, 443<span class="o">}</span>  accept <span class="c1"># 开放80,443端口</span>
+    counter comment <span class="s2">&#34;count dropped packets&#34;</span>
 	<span class="o">}</span>
 
 	chain FORWARD <span class="o">{</span>
 		<span class="nb">type</span> filter hook forward priority 0<span class="p">;</span> policy accept<span class="p">;</span>
-		counter packets <span class="m">0</span> bytes <span class="m">0</span> jump DOCKER-USER
-		counter packets <span class="m">0</span> bytes <span class="m">0</span> jump DOCKER-ISOLATION-STAGE-1
-		oifname <span class="s2">&#34;docker0&#34;</span> ct state related,established counter packets <span class="m">0</span> bytes <span class="m">0</span> accept
-		oifname <span class="s2">&#34;docker0&#34;</span> counter packets <span class="m">0</span> bytes <span class="m">0</span> jump DOCKER
-		iifname <span class="s2">&#34;docker0&#34;</span> oifname !<span class="o">=</span> <span class="s2">&#34;docker0&#34;</span> counter packets <span class="m">0</span> bytes <span class="m">0</span> accept
-		iifname <span class="s2">&#34;docker0&#34;</span> oifname <span class="s2">&#34;docker0&#34;</span> counter packets <span class="m">0</span> bytes <span class="m">0</span> accept
+		counter jump DOCKER-USER
+		counter jump DOCKER-ISOLATION-STAGE-1
+		oifname <span class="s2">&#34;docker0&#34;</span> ct state established,related counter accept
+		oifname <span class="s2">&#34;docker0&#34;</span> counter jump DOCKER
+		iifname <span class="s2">&#34;docker0&#34;</span> oifname !<span class="o">=</span> <span class="s2">&#34;docker0&#34;</span> counter accept
+		iifname <span class="s2">&#34;docker0&#34;</span> oifname <span class="s2">&#34;docker0&#34;</span> counter accept
 	<span class="o">}</span>
 
 	chain OUTPUT <span class="o">{</span>
@@ -375,23 +304,105 @@ table ip filter <span class="o">{</span>
 	<span class="o">}</span>
 
 	chain DOCKER-ISOLATION-STAGE-1 <span class="o">{</span>
-		iifname <span class="s2">&#34;docker0&#34;</span> oifname !<span class="o">=</span> <span class="s2">&#34;docker0&#34;</span> counter packets <span class="m">0</span> bytes <span class="m">0</span> jump DOCKER-ISOLATION-STAGE-2
-		counter packets <span class="m">0</span> bytes <span class="m">0</span> <span class="k">return</span>
+		iifname <span class="s2">&#34;docker0&#34;</span> oifname !<span class="o">=</span> <span class="s2">&#34;docker0&#34;</span> counter jump DOCKER-ISOLATION-STAGE-2
+		counter <span class="k">return</span>
 	<span class="o">}</span>
 
 	chain DOCKER-ISOLATION-STAGE-2 <span class="o">{</span>
-		oifname <span class="s2">&#34;docker0&#34;</span> counter packets <span class="m">0</span> bytes <span class="m">0</span> drop
-		counter packets <span class="m">0</span> bytes <span class="m">0</span> <span class="k">return</span>
+		oifname <span class="s2">&#34;docker0&#34;</span> counter drop
+		counter <span class="k">return</span>
 	<span class="o">}</span>
 
 	chain DOCKER-USER <span class="o">{</span>
-		counter packets <span class="m">0</span> bytes <span class="m">0</span> <span class="k">return</span>
+		counter <span class="k">return</span>
+	<span class="o">}</span>
+<span class="o">}</span>
+
+table ip nat <span class="o">{</span>
+	chain PREROUTING <span class="o">{</span>
+		<span class="nb">type</span> nat hook prerouting priority -100<span class="p">;</span> policy accept<span class="p">;</span>
+	<span class="o">}</span>
+
+	chain INPUT <span class="o">{</span>
+		<span class="nb">type</span> nat hook input priority 100<span class="p">;</span> policy accept<span class="p">;</span>
+	<span class="o">}</span>
+
+	chain POSTROUTING <span class="o">{</span>
+		<span class="nb">type</span> nat hook postrouting priority 100<span class="p">;</span> policy accept<span class="p">;</span>
+		oifname !<span class="o">=</span> <span class="s2">&#34;docker0&#34;</span> ip saddr 172.17.0.0/16 counter masquerade
+	<span class="o">}</span>
+
+	chain OUTPUT <span class="o">{</span>
+		<span class="nb">type</span> nat hook output priority -100<span class="p">;</span> policy accept<span class="p">;</span>
+	<span class="o">}</span>
+
+	chain DOCKER <span class="o">{</span>
+		iifname <span class="s2">&#34;docker0&#34;</span> counter <span class="k">return</span>
+	<span class="o">}</span>
+<span class="o">}</span>
+
+
+table ip6 filter <span class="o">{</span>
+	chain INPUT <span class="o">{</span>
+		<span class="nb">type</span> filter hook input priority 0<span class="p">;</span> policy drop<span class="p">;</span>
+		ct state invalid counter drop comment <span class="s2">&#34;early drop of invalid packets&#34;</span>
+		ct state <span class="o">{</span>established, related<span class="o">}</span> counter accept comment <span class="s2">&#34;accept all connections related to connections made by us&#34;</span>
+		iif lo accept comment <span class="s2">&#34;accept loopback&#34;</span>
+		iif !<span class="o">=</span> lo ip6 daddr ::1/128 counter drop comment <span class="s2">&#34;drop connections to loopback not coming from loopback&#34;</span>
+		ip6 nexthdr icmpv6 limit rate 4/second counter accept comment <span class="s2">&#34;accept all ICMP types&#34;</span>
+		<span class="c1"># tcp dport 22 counter accept comment &#34;accept SSH&#34;</span>
+		counter comment <span class="s2">&#34;count dropped packets&#34;</span>
+	<span class="o">}</span>
+
+	chain FORWARD <span class="o">{</span>
+		<span class="nb">type</span> filter hook forward priority 0<span class="p">;</span> policy drop<span class="p">;</span>
+		counter comment <span class="s2">&#34;count dropped packets&#34;</span>
+	<span class="o">}</span>
+
+	<span class="c1"># If you&#39;re not counting packets, this chain can be omitted.</span>
+	chain OUTPUT <span class="o">{</span>
+		<span class="nb">type</span> filter hook output priority 0<span class="p">;</span> policy accept<span class="p">;</span>
+		counter comment <span class="s2">&#34;count accepted packets&#34;</span>
 	<span class="o">}</span>
 <span class="o">}</span>
 </code></pre></td></tr></table>
 </div>
-</div><p>这样我们每次重置配置的时候都能生成docker所需的默认表</p>
-<h3 id="docker-1">启动docker容器</h3>
+</div><h3 id="docker">启动docker服务</h3>
+<p>这里需要注意，如果在Docker服务启动之前就存在 <code>ip nat</code> <code>ip filter</code>这两个表，docker服务会启动报错，所以可以先清除当前规则</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash"><span class="c1"># 清除当前规则</span>
+nft flush ruleset
+<span class="c1"># 启动docker</span>
+systemctl restart docker
+<span class="c1"># 让我们的规则生效</span>
+nft -f /etc/nftables.conf
+</code></pre></td></tr></table>
+</div>
+</div><p>查看表 现在有3个</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">nft list tables
+table ip nat
+table ip filter
+table ip6 filter
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="docker-1">启动docker容器</h3>
 <p>这时候我们启动docker容器的时候，docker会在这些表的默认基础上添加新的容器规则。我们只需要找到合适的位置修改这些规则就能限制对特定的容器进行访问，我找的注入点是 <code>ip nat DOCKER</code>这个链，比如启动容器后表变成</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
@@ -496,24 +507,24 @@ chain DOCKER <span class="o">{</span> <span class="c1"># handle 5</span>
 </span><span class="lnt">2
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-bash" data-lang="bash">nft insert rule ip nat DOCKER handle <span class="m">14</span> ip saddr !<span class="o">=</span> <span class="o">{</span>x.x.x.x/24<span class="o">}</span> drop
-<span class="c1"># 这个规则限制除了指定ip段都不能通过nat访问到容器端口</span>
+<pre class="chroma"><code class="language-bash" data-lang="bash">nft insert rule ip nat DOCKER handle <span class="m">14</span> ip saddr !<span class="o">=</span> <span class="o">{</span>x.x.x.x/24<span class="o">}</span> tcp dport <span class="m">22</span> drop
+<span class="c1"># 这个规则限制除了指定ip外所有访问22端口的ip都会被丢弃，不会执行到下面的端口转发规则</span>
 </code></pre></td></tr></table>
 </div>
 </div><div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
+</span><span class="lnt">3
 </span></code></pre></td>
 <td class="lntd">
 <pre class="chroma"><code class="language-bash" data-lang="bash">nft replace rule ip nat DOCKER handle <span class="m">14</span> iifname !<span class="o">=</span> <span class="s2">&#34;br-d5710cd4cef7&#34;</span> meta l4proto tcp tcp dport <span class="m">443</span> ip saddr x.x.x.x counter dnat to 172.18.0.4:443
-<span class="c1"># 这条规则可以替换docker生成的规则,添加额外的限制条件，这里限制443端口只能通过指定ip访问，80、10022不受影响</span>
+<span class="c1"># 也可以通过修改规则替换docker生成的规则,添加额外的限制条件，这里限制443端口只能通过指定ip访问，80、10022不受影响</span>
+<span class="c1"># 但是不建议这个这样做，修改后规则没法被docker自动删除，建议使用上面的规则直接阻断。</span>
 </code></pre></td></tr></table>
 </div>
 </div><h3 id="heading-1">注意事项</h3>
-<p>这种方法其实并不灵活，因为一旦重启<code>nftables</code>服务所有规则都会重新初始化，还需要重新启动容器，并重新添加规则。这给向 <code>inat filter</code>中加规则增加了麻烦，只能动态添加之后配置文件再添加一次，以便重启防火墙生效。</p>
-<p>而且有一点，如果在Docker服务启动之前就存在 <code>ip nat</code> <code>ip filter</code>这两个表，docker服务会启动报错，只能先启动docker再启动nftables。</p>
-<p>还有就是我们手动添加或者修改过的规则，docker不会自动为我们删除，所以重置之前记得清除规则，否则可能会有问题。</p>
+<p>这种方法其实并不灵活，因为一旦重启<code>nftables</code>服务所有规则都会重新初始化，还需要重新启动容器。不过可以做到了将阻止规则写入配置，每次重启nftables规则都会自动写入，这时候只需要重启docker 容器服务就可以了，省去了手动添加阻止规则的步骤。</p>
 <p>nftables官方<a href="https://wiki.nftables.org/wiki-nftables/index.php/Main_Page">帮助文档</a></p>
 
     </div>
@@ -544,7 +555,11 @@ chain DOCKER <span class="o">{</span> <span class="c1"># handle 5</span>
           <a href="/tags/nftables/">nftables</a>
           </div>
       <nav class="post-nav">
-        
+        <a class="prev" href="/2021/01/28/python-code-snippets/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">Python Code Snippets</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
         <a class="next" href="/2020/07/30/openssl-update-for-centos6or7/">
             <span class="next-text nav-default">Openssl Update for Centos6or7</span>
             <span class="next-text nav-mobile">下一篇</span>
@@ -597,7 +612,7 @@ chain DOCKER <span class="o">{</span> <span class="c1"># handle 5</span>
   <span class="copyright-year">
     &copy; 
     2015 - 
-    2020
+    2021
     <span class="heart">
       <i class="iconfont icon-heart"></i>
     </span>
