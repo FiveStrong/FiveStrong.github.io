@@ -93,14 +93,14 @@
   </url>
   
   <url>
-    <loc>http://linuxfunk.com/categories/golang/</loc>
+    <loc>http://linuxfunk.com/tags/golang/</loc>
     <lastmod>2020-07-27T14:38:57+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>http://linuxfunk.com/tags/golang/</loc>
+    <loc>http://linuxfunk.com/categories/golang/</loc>
     <lastmod>2020-07-27T14:38:57+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
