@@ -19,14 +19,11 @@
 <meta name="author" content="Morgana" /><meta name="description" content="防火墙概述 在工作环境中，我们可能需要多种多样的防火墙设备以满足各种各样的防护需求。 一些边界设备将互联网与内网分离，并维护路由表以提供公有IP" /><meta name="keywords" content="Hugo, モルガンナの家" />
 
 
-<meta name="robots" content="">
 
 
 
 
-
-
-<meta name="generator" content="Hugo 0.61.0 with even 4.0.0" />
+<meta name="generator" content="Hugo 0.61.0 with theme even" />
 
 
 <link rel="canonical" href="http://linuxfunk.com/2020/03/10/linux-%E9%98%B2%E7%81%AB%E5%A2%99%E5%AE%89%E5%85%A81/" />
@@ -37,7 +34,8 @@
 <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
 
 <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
-<link href="/dist/even.84785aa1.min.css" rel="stylesheet">
+
+<link href="/sass/main.min.c6027d52fe21dac0e1e0f5d733e108dbb77b0720664fde93151746da29085e21.css" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
 
 
@@ -138,24 +136,28 @@
   <div class="post-toc-content always-active">
     <nav id="TableOfContents">
   <ul>
-    <li><a href="#heading">防火墙概述</a></li>
-    <li><a href="#iptables-">Iptables 概述</a>
+    <li>
       <ul>
-        <li><a href="#iptables--1">iptables 的基本使用</a></li>
-        <li><a href="#-iptables--icmp-">利用 iptables 阻止 ICMP 协议</a></li>
-        <li><a href="#heading-1">阻止所有没有被允许的请求</a></li>
-        <li><a href="#heading-2">阻止无效的包</a></li>
-        <li><a href="#ipv6-">IPv6 防护</a></li>
+        <li><a href="#heading">防火墙概述</a></li>
+        <li><a href="#iptables-">Iptables 概述</a>
+          <ul>
+            <li><a href="#iptables--1">iptables 的基本使用</a></li>
+            <li><a href="#-iptables--icmp-">利用 iptables 阻止 ICMP 协议</a></li>
+            <li><a href="#heading-1">阻止所有没有被允许的请求</a></li>
+            <li><a href="#heading-2">阻止无效的包</a></li>
+            <li><a href="#ipv6-">IPv6 防护</a></li>
+          </ul>
+        </li>
+        <li><a href="#ubuntu--ufw">Ubuntu 系统内置防火墙软件 ufw</a>
+          <ul>
+            <li><a href="#ufw">配置ufw</a></li>
+            <li><a href="#-ufw-">直接编辑 ufw 规则文件</a></li>
+          </ul>
+        </li>
+        <li><a href="#heading-3">总结</a></li>
+        <li><a href="#heading-4">推荐阅读</a></li>
       </ul>
     </li>
-    <li><a href="#ubuntu--ufw">Ubuntu 系统内置防火墙软件 ufw</a>
-      <ul>
-        <li><a href="#ufw">配置ufw</a></li>
-        <li><a href="#-ufw-">直接编辑 ufw 规则文件</a></li>
-      </ul>
-    </li>
-    <li><a href="#heading-3">总结</a></li>
-    <li><a href="#heading-4">推荐阅读</a></li>
   </ul>
 </nav>
   </div>
@@ -893,18 +895,15 @@ COMMIT
     <div class="post-copyright">
   <p class="copyright-item">
     <span class="item-title">文章作者</span>
-    <span class="item-content">
-      <a href="http://linuxfunk.com/">Morgana</a>
-    </span>
+    <span class="item-content">Morgana</span>
   </p>
   <p class="copyright-item">
-    <span class="item-title">初次发布</span>
+    <span class="item-title">上次更新</span>
     <span class="item-content">
         2020-03-10
+        
     </span>
   </p>
-  
-  
   
   <p class="copyright-item">
     <span class="item-title">许可协议</span>
@@ -931,17 +930,9 @@ COMMIT
   </article>
         </div>
         
-  
-  <div id="utter-container"></div>
-    <script src="https://utteranc.es/client.js"
-        repo= 'fivestrong/fivestrong.github.io'
-        issue-term= "title"
-        theme= 'github-light'
-        crossorigin= "anonymous"
-        async>
-    </script>
 
   
+
   
 
       </div>
@@ -973,13 +964,10 @@ COMMIT
   <span class="copyright-year">
     &copy; 
     2015 - 
-    2021
-    <span class="heart">
-      <i class="iconfont icon-heart"></i>
-    </span>
-    <span class="author">Morgana</span>
+    2021<span class="heart"><i class="iconfont icon-heart"></i></span><span>Morgana</span>
   </span>
 </div>
+
     </footer>
 
     <div class="back-to-top" id="back-to-top">
@@ -990,7 +978,10 @@ COMMIT
   <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
-<script type="text/javascript" src="/dist/even.2139186b.min.js"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.c12618f9a600c40bd024996677e951e64d3487006775aeb22e200c990006c5c7.js"></script>
 
 
 

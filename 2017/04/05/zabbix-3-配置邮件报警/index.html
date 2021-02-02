@@ -20,14 +20,11 @@
 " /><meta name="keywords" content="Hugo, モルガンナの家" />
 
 
-<meta name="robots" content="">
 
 
 
 
-
-
-<meta name="generator" content="Hugo 0.61.0 with even 4.0.0" />
+<meta name="generator" content="Hugo 0.61.0 with theme even" />
 
 
 <link rel="canonical" href="http://linuxfunk.com/2017/04/05/zabbix-3-%E9%85%8D%E7%BD%AE%E9%82%AE%E4%BB%B6%E6%8A%A5%E8%AD%A6/" />
@@ -38,7 +35,8 @@
 <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
 
 <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
-<link href="/dist/even.84785aa1.min.css" rel="stylesheet">
+
+<link href="/sass/main.min.c6027d52fe21dac0e1e0f5d733e108dbb77b0720664fde93151746da29085e21.css" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
 
 
@@ -144,14 +142,18 @@
   <ul>
     <li>
       <ul>
-        <li><a href="#1-mailx--mailx-smtp">1. 安装mailx 服务 通过mailx 配置好外部SMTP服务器相关信息发送邮件（这里是配置发信的地址）：</a></li>
-        <li><a href="#2">2.创建示警媒介</a></li>
-        <li><a href="#3">3.创建触发动作：</a></li>
-      </ul>
-    </li>
-    <li><a href="#-">注意: 这里改了图片里面的默认接收人和恢复主旨，之前的太长邮件显示不全。还有：设置后不要点击【添加】，这里点击更新是无法保存的，切换到【操作】选项卡</a>
-      <ul>
-        <li><a href="#4">4.创建邮件发送脚本：</a></li>
+        <li>
+          <ul>
+            <li><a href="#1-mailx--mailx-smtp">1. 安装mailx 服务 通过mailx 配置好外部SMTP服务器相关信息发送邮件（这里是配置发信的地址）：</a></li>
+            <li><a href="#2">2.创建示警媒介</a></li>
+            <li><a href="#3">3.创建触发动作：</a></li>
+          </ul>
+        </li>
+        <li><a href="#-">注意: 这里改了图片里面的默认接收人和恢复主旨，之前的太长邮件显示不全。还有：设置后不要点击【添加】，这里点击更新是无法保存的，切换到【操作】选项卡</a>
+          <ul>
+            <li><a href="#4">4.创建邮件发送脚本：</a></li>
+          </ul>
+        </li>
       </ul>
     </li>
   </ul>
@@ -322,18 +324,15 @@ chmod +x /usr/local/share/zabbix/alertscripts/sendmail.sh
     <div class="post-copyright">
   <p class="copyright-item">
     <span class="item-title">文章作者</span>
-    <span class="item-content">
-      <a href="http://linuxfunk.com/">Morgana</a>
-    </span>
+    <span class="item-content">Morgana</span>
   </p>
   <p class="copyright-item">
-    <span class="item-title">初次发布</span>
+    <span class="item-title">上次更新</span>
     <span class="item-content">
         2017-04-05
+        
     </span>
   </p>
-  
-  
   
   <p class="copyright-item">
     <span class="item-title">许可协议</span>
@@ -360,17 +359,9 @@ chmod +x /usr/local/share/zabbix/alertscripts/sendmail.sh
   </article>
         </div>
         
-  
-  <div id="utter-container"></div>
-    <script src="https://utteranc.es/client.js"
-        repo= 'fivestrong/fivestrong.github.io'
-        issue-term= "title"
-        theme= 'github-light'
-        crossorigin= "anonymous"
-        async>
-    </script>
 
   
+
   
 
       </div>
@@ -402,13 +393,10 @@ chmod +x /usr/local/share/zabbix/alertscripts/sendmail.sh
   <span class="copyright-year">
     &copy; 
     2015 - 
-    2021
-    <span class="heart">
-      <i class="iconfont icon-heart"></i>
-    </span>
-    <span class="author">Morgana</span>
+    2021<span class="heart"><i class="iconfont icon-heart"></i></span><span>Morgana</span>
   </span>
 </div>
+
     </footer>
 
     <div class="back-to-top" id="back-to-top">
@@ -419,7 +407,10 @@ chmod +x /usr/local/share/zabbix/alertscripts/sendmail.sh
   <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
-<script type="text/javascript" src="/dist/even.2139186b.min.js"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.c12618f9a600c40bd024996677e951e64d3487006775aeb22e200c990006c5c7.js"></script>
 
 
 

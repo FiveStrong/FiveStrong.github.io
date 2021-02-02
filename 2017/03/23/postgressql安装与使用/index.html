@@ -20,14 +20,11 @@
 " /><meta name="keywords" content="Hugo, モルガンナの家" />
 
 
-<meta name="robots" content="">
 
 
 
 
-
-
-<meta name="generator" content="Hugo 0.61.0 with even 4.0.0" />
+<meta name="generator" content="Hugo 0.61.0 with theme even" />
 
 
 <link rel="canonical" href="http://linuxfunk.com/2017/03/23/postgressql%E5%AE%89%E8%A3%85%E4%B8%8E%E4%BD%BF%E7%94%A8/" />
@@ -38,7 +35,8 @@
 <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
 
 <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
-<link href="/dist/even.84785aa1.min.css" rel="stylesheet">
+
+<link href="/sass/main.min.c6027d52fe21dac0e1e0f5d733e108dbb77b0720664fde93151746da29085e21.css" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
 
 
@@ -141,24 +139,28 @@
   <ul>
     <li>
       <ul>
-        <li><a href="#heading">系统版本</a></li>
-        <li><a href="#yum">安装官方yum源</a></li>
-        <li><a href="#heading-1">安装软件</a></li>
-        <li><a href="#heading-2">初始化数据库</a></li>
-        <li><a href="#heading-3">启动数据库</a></li>
-        <li><a href="#heading-4">登录数据库</a></li>
-        <li><a href="#heading-5">创建数据库</a></li>
-        <li><a href="#heading-6">创建用户</a></li>
-        <li><a href="#heading-7">给用户赋予权限</a></li>
-        <li><a href="#-">查看用户 使用数据库</a></li>
-        <li><a href="#heading-8">创建表</a></li>
-        <li><a href="#heading-9">查看表</a></li>
-        <li><a href="#heading-10">修改表字段自增</a></li>
-        <li><a href="#heading-11">插入数据</a></li>
-        <li><a href="#heading-12">查询数据</a></li>
-        <li><a href="#heading-13">配置允许远程登录</a></li>
-        <li><a href="#heading-14">配置用户访问权限</a></li>
-        <li><a href="#heading-15">命令行登录</a></li>
+        <li>
+          <ul>
+            <li><a href="#heading">系统版本</a></li>
+            <li><a href="#yum">安装官方yum源</a></li>
+            <li><a href="#heading-1">安装软件</a></li>
+            <li><a href="#heading-2">初始化数据库</a></li>
+            <li><a href="#heading-3">启动数据库</a></li>
+            <li><a href="#heading-4">登录数据库</a></li>
+            <li><a href="#heading-5">创建数据库</a></li>
+            <li><a href="#heading-6">创建用户</a></li>
+            <li><a href="#heading-7">给用户赋予权限</a></li>
+            <li><a href="#-">查看用户 使用数据库</a></li>
+            <li><a href="#heading-8">创建表</a></li>
+            <li><a href="#heading-9">查看表</a></li>
+            <li><a href="#heading-10">修改表字段自增</a></li>
+            <li><a href="#heading-11">插入数据</a></li>
+            <li><a href="#heading-12">查询数据</a></li>
+            <li><a href="#heading-13">配置允许远程登录</a></li>
+            <li><a href="#heading-14">配置用户访问权限</a></li>
+            <li><a href="#heading-15">命令行登录</a></li>
+          </ul>
+        </li>
       </ul>
     </li>
   </ul>
@@ -424,18 +426,15 @@ host    all             all             ::1/128                 md5
     <div class="post-copyright">
   <p class="copyright-item">
     <span class="item-title">文章作者</span>
-    <span class="item-content">
-      <a href="http://linuxfunk.com/">Morgana</a>
-    </span>
+    <span class="item-content">Morgana</span>
   </p>
   <p class="copyright-item">
-    <span class="item-title">初次发布</span>
+    <span class="item-title">上次更新</span>
     <span class="item-content">
         2017-03-23
+        
     </span>
   </p>
-  
-  
   
   <p class="copyright-item">
     <span class="item-title">许可协议</span>
@@ -462,17 +461,9 @@ host    all             all             ::1/128                 md5
   </article>
         </div>
         
-  
-  <div id="utter-container"></div>
-    <script src="https://utteranc.es/client.js"
-        repo= 'fivestrong/fivestrong.github.io'
-        issue-term= "title"
-        theme= 'github-light'
-        crossorigin= "anonymous"
-        async>
-    </script>
 
   
+
   
 
       </div>
@@ -504,13 +495,10 @@ host    all             all             ::1/128                 md5
   <span class="copyright-year">
     &copy; 
     2015 - 
-    2021
-    <span class="heart">
-      <i class="iconfont icon-heart"></i>
-    </span>
-    <span class="author">Morgana</span>
+    2021<span class="heart"><i class="iconfont icon-heart"></i></span><span>Morgana</span>
   </span>
 </div>
+
     </footer>
 
     <div class="back-to-top" id="back-to-top">
@@ -521,7 +509,10 @@ host    all             all             ::1/128                 md5
   <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
-<script type="text/javascript" src="/dist/even.2139186b.min.js"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.c12618f9a600c40bd024996677e951e64d3487006775aeb22e200c990006c5c7.js"></script>
 
 
 
