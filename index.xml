@@ -17,7 +17,7 @@
       <pubDate>Thu, 28 Jan 2021 15:32:54 +0800</pubDate>
       
       <guid>http://linuxfunk.com/2021/01/28/python-code-snippets/</guid>
-      <description>validate IP addresses 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25  import ipaddress import socket ip_addresses = (&amp;#34;192.168.0.2&amp;#34;, &amp;#34;127.0.0.1&amp;#34;, &amp;#34;192.168.1.257&amp;#34;, &amp;#34;1.0x2.3.4&amp;#34;, &amp;#34;2001:0bd8:85a3:0000:0000:8a2e:0370:7334&amp;#34; ) def valid_ip(ip: str) -&amp;gt; bool: try: ipaddress.ip_address(ip) return True except ValueError: return False def valid_ipv4_addr(ip: str) -&amp;gt; bool: try: socket.inet_pton(socket.AF_INET, ip) return True except socket.error: return False for ip in ip_addresses: print(f&amp;#34;{ip:&amp;lt;40} | {str(valid_ip(ip)):&amp;lt;5} | {valid_ipv4_addr(ip)}&amp;#34;)   1 2 3 4 5  192.</description>
+      <description>validate IP addresses 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 import ipaddress import socket ip_addresses = (&amp;#34;192.168.0.2&amp;#34;, &amp;#34;127.0.0.1&amp;#34;, &amp;#34;192.168.1.257&amp;#34;, &amp;#34;1.0x2.3.4&amp;#34;, &amp;#34;2001:0bd8:85a3:0000:0000:8a2e:0370:7334&amp;#34; ) def valid_ip(ip: str) -&amp;gt; bool: try: ipaddress.ip_address(ip) return True except ValueError: return False def valid_ipv4_addr(ip: str) -&amp;gt; bool: try: socket.inet_pton(socket.AF_INET, ip) return True except socket.error: return False for ip in</description>
     </item>
     
     <item>
