@@ -3,48 +3,55 @@
   
   <url>
     <loc>http://linuxfunk.com/categories/</loc>
-    <lastmod>2021-02-02T21:42:38+08:00</lastmod>
+    <lastmod>2021-02-03T21:36:46+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
     <loc>http://linuxfunk.com/post/</loc>
-    <lastmod>2021-02-02T21:42:38+08:00</lastmod>
+    <lastmod>2021-02-03T21:36:46+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
     <loc>http://linuxfunk.com/tags/react/</loc>
-    <lastmod>2021-02-02T21:42:38+08:00</lastmod>
+    <lastmod>2021-02-03T21:36:46+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>http://linuxfunk.com/2021/02/01/react-core-concepts/</loc>
-    <lastmod>2021-02-02T21:42:38+08:00</lastmod>
+    <loc>http://linuxfunk.com/2021/02/03/react-function-components-and-hooks/</loc>
+    <lastmod>2021-02-03T21:36:46+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
     <loc>http://linuxfunk.com/tags/</loc>
-    <lastmod>2021-02-02T21:42:38+08:00</lastmod>
+    <lastmod>2021-02-03T21:36:46+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
     <loc>http://linuxfunk.com/categories/web/</loc>
-    <lastmod>2021-02-02T21:42:38+08:00</lastmod>
+    <lastmod>2021-02-03T21:36:46+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
     <loc>http://linuxfunk.com/</loc>
+    <lastmod>2021-02-03T21:36:46+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>http://linuxfunk.com/2021/02/01/react-core-concepts/</loc>
     <lastmod>2021-02-02T21:42:38+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
