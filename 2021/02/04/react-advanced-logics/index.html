@@ -1,0 +1,1744 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>React Advanced Logics - モルガンナの家</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="Morgana" /><meta name="description" content="AJAX调用 基于现在流行的前后端分离架构，通过前端调用后端API的需求就很有必要。但是React本身只能使用自身state和props中的数" /><meta name="keywords" content="Hugo, モルガンナの家" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.61.0 with theme even" />
+
+
+<link rel="canonical" href="http://linuxfunk.com/2021/02/04/react-advanced-logics/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<link href="/sass/main.min.c6027d52fe21dac0e1e0f5d733e108dbb77b0720664fde93151746da29085e21.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="React Advanced Logics" />
+<meta property="og:description" content="AJAX调用 基于现在流行的前后端分离架构，通过前端调用后端API的需求就很有必要。但是React本身只能使用自身state和props中的数" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://linuxfunk.com/2021/02/04/react-advanced-logics/" />
+<meta property="article:published_time" content="2021-02-04T13:00:03+08:00" />
+<meta property="article:modified_time" content="2021-02-05T14:46:03+08:00" />
+<meta itemprop="name" content="React Advanced Logics">
+<meta itemprop="description" content="AJAX调用 基于现在流行的前后端分离架构，通过前端调用后端API的需求就很有必要。但是React本身只能使用自身state和props中的数">
+<meta itemprop="datePublished" content="2021-02-04T13:00:03&#43;08:00" />
+<meta itemprop="dateModified" content="2021-02-05T14:46:03&#43;08:00" />
+<meta itemprop="wordCount" content="6221">
+
+
+
+<meta itemprop="keywords" content="react," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="React Advanced Logics"/>
+<meta name="twitter:description" content="AJAX调用 基于现在流行的前后端分离架构，通过前端调用后端API的需求就很有必要。但是React本身只能使用自身state和props中的数"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">モルガンナの家</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">About</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">モルガンナの家</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">Categories</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">About</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">React Advanced Logics</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2021-02-04 </span>
+        <div class="post-category">
+            <a href="/categories/web/"> web </a>
+            </div>
+          <span class="more-meta"> 约 6221 字 </span>
+          <span class="more-meta"> 预计阅读 13 分钟 </span>
+        <span id="busuanzi_container_page_pv" class="more-meta"> <span id="busuanzi_value_page_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次阅读 </span>
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#ajax">AJAX调用</a></li>
+        <li><a href="#axios">使用Axios</a></li>
+        <li><a href="#react-router">React Router</a></li>
+        <li><a href="#react-router-hooks">React Router hooks</a>
+          <ul>
+            <li><a href="#useparams-hook">useParams hook</a></li>
+            <li><a href="#uselocations-hook">useLocations hook</a></li>
+            <li><a href="#usehistory-hook">useHistory hook</a></li>
+            <li><a href="#useroutematch-hook">useRouteMatch hook</a></li>
+          </ul>
+        </li>
+        <li><a href="#context-api">Context API</a></li>
+        <li><a href="#some-tips">Some Tips</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <h2 id="ajax">AJAX调用</h2>
+<p>基于现在流行的前后端分离架构，通过前端调用后端API的需求就很有必要。但是React本身只能使用自身state和props中的数据来渲染UI，这就需要你自己使用一个基于AJAX技术来获取数据的函数库了。</p>
+<p>当前主流的库有：<a href="https://github.com/github/fetch">Fetch</a>、<a href="https://github.com/axios/axios">Axios</a>、<a href="https://github.com/visionmedia/superagent">Superagent</a>，这些HTTP请求库区别不大，挑喜欢用。</p>
+<p>React中请求AJAX的时机一般是组件第一次被挂载到浏览器DOM，这时候你就可以根据获取的数据来更行状态了。</p>
+<p>类组件将AJAX请求放到<code>componentDidMount()</code>生命周期中，然后数据取得之后使用<code>setState</code>方法赋值给变量。下面是一个获取GitHub用户数据API的请求。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-react" data-lang="react"><span class="kr">export</span> <span class="k">default</span> <span class="kr">class</span> <span class="nx">App</span> <span class="kr">extends</span> <span class="nx">React</span><span class="p">.</span><span class="nx">Component</span> <span class="p">{</span>
+  <span class="nx">constructor</span><span class="p">(</span><span class="nx">props</span><span class="p">)</span><span class="p">{</span>
+    <span class="kr">super</span><span class="p">(</span><span class="nx">props</span><span class="p">)</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">state</span> <span class="o">=</span> <span class="p">{</span>
+      <span class="nx">data</span><span class="o">:</span> <span class="p">[</span><span class="p">]</span>
+    <span class="p">}</span><span class="p">;</span>
+  <span class="p">}</span>
+  
+  <span class="nx">componentDidMount</span><span class="p">(</span><span class="p">)</span><span class="p">{</span>
+    <span class="nx">fetch</span><span class="p">(</span><span class="s2">&#34;https://api.github.com/users?per_gage=3&#34;</span><span class="p">)</span>
+    <span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="p">(</span><span class="nx">res</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="nx">res</span><span class="p">.</span><span class="nx">json</span><span class="p">(</span><span class="p">)</span><span class="p">)</span>
+    <span class="p">.</span><span class="nx">then</span><span class="p">(</span>
+    	<span class="p">(</span><span class="nx">data</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span><span class="k">this</span><span class="p">.</span><span class="nx">setState</span><span class="p">(</span><span class="p">{</span><span class="nx">data</span><span class="o">:</span> <span class="nx">data</span><span class="p">}</span><span class="p">)</span><span class="p">;</span><span class="p">}</span><span class="p">,</span>
+      <span class="p">(</span><span class="nx">error</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">error</span><span class="p">)</span><span class="p">}</span>
+    <span class="p">)</span><span class="p">;</span>
+  <span class="p">}</span>
+  
+  <span class="nx">render</span><span class="p">(</span><span class="p">)</span><span class="p">{</span>
+    <span class="kr">const</span> <span class="p">{</span> <span class="nx">data</span> <span class="p">}</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">state</span><span class="p">;</span>
+    <span class="k">return</span> <span class="p">(</span>
+    	<span class="p">&lt;</span><span class="nt">div</span><span class="p"></span><span class="p">&gt;</span>
+      	<span class="p">&lt;</span><span class="nt">h1</span><span class="p"></span><span class="p">&gt;</span><span class="nx">React</span> <span class="nx">AJAX</span> <span class="nx">call</span><span class="p">&lt;</span><span class="p">/</span><span class="nt">h1</span><span class="p">&gt;</span>
+        <span class="p">&lt;</span><span class="nt">ul</span><span class="p"></span><span class="p">&gt;</span><span class="p">{</span><span class="nx">data</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="p">(</span><span class="nx">item</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">(</span><span class="p">&lt;</span><span class="nt">li</span> <span class="na">key</span><span class="o">=</span><span class="p">{</span><span class="nx">item</span><span class="p">.</span><span class="nx">id</span><span class="p">}</span><span class="p"></span><span class="p">&gt;</span><span class="p">{</span><span class="nx">item</span><span class="p">.</span><span class="nx">login</span><span class="p">}</span><span class="p">&lt;</span><span class="p">/</span><span class="nt">li</span><span class="p">&gt;</span><span class="p">)</span><span class="p">)</span><span class="p">}</span><span class="p">&lt;</span><span class="p">/</span><span class="nt">ul</span><span class="p">&gt;</span>
+      <span class="p">&lt;</span><span class="p">/</span><span class="nt">div</span><span class="p">&gt;</span>
+    <span class="p">)</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>当同样的请求使用函数组件获取时，要将请求放到<code>useEffect()</code>hook中，并且第二个参数设置为<code>[]</code>，这样hook只在第一次渲染时运行。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-react" data-lang="react"><span class="kr">export</span> <span class="k">default</span> <span class="kd">function</span> <span class="nx">App</span><span class="p">(</span><span class="p">)</span><span class="p">{</span>
+  <span class="kr">const</span> <span class="p">[</span><span class="nx">data</span><span class="p">,</span> <span class="nx">setData</span><span class="p">]</span> <span class="o">=</span> <span class="nx">useState</span><span class="p">(</span><span class="p">[</span><span class="p">]</span><span class="p">)</span><span class="p">;</span>
+
+  <span class="nx">useEffect</span><span class="p">(</span><span class="p">(</span><span class="p">)</span><span class="p">=&gt;</span><span class="p">{</span>
+    <span class="nx">fetch</span><span class="p">(</span><span class="s2">&#34;https://api.github.com/users?per_gage=3&#34;</span><span class="p">)</span>
+    <span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="p">(</span><span class="nx">res</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="nx">res</span><span class="p">.</span><span class="nx">json</span><span class="p">(</span><span class="p">)</span><span class="p">)</span>
+    <span class="p">.</span><span class="nx">then</span><span class="p">(</span>
+    	<span class="p">(</span><span class="nx">data</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span><span class="nx">setData</span><span class="p">(</span><span class="nx">data</span><span class="p">)</span><span class="p">;</span><span class="p">}</span><span class="p">,</span>
+      <span class="p">(</span><span class="nx">error</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">error</span><span class="p">)</span><span class="p">}</span>
+    <span class="p">)</span><span class="p">;</span>
+  <span class="p">}</span><span class="p">,</span> <span class="p">[</span><span class="p">]</span><span class="p">)</span><span class="p">;</span>
+
+  <span class="k">return</span> <span class="p">(</span>
+    <span class="p">&lt;</span><span class="nt">div</span> <span class="na">className</span><span class="o">=</span><span class="s">&#34;App&#34;</span><span class="p"></span><span class="p">&gt;</span>
+      <span class="p">&lt;</span><span class="nt">h1</span><span class="p"></span><span class="p">&gt;</span><span class="nx">React</span> <span class="nx">AJAX</span> <span class="nx">call</span><span class="p">&lt;</span><span class="p">/</span><span class="nt">h1</span><span class="p">&gt;</span>
+      <span class="p">&lt;</span><span class="nt">ul</span><span class="p"></span><span class="p">&gt;</span>
+        <span class="p">{</span><span class="nx">data</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="p">(</span><span class="nx">item</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">(</span><span class="p">&lt;</span><span class="nt">li</span> <span class="na">key</span><span class="o">=</span><span class="p">{</span><span class="nx">item</span><span class="p">.</span><span class="nx">id</span><span class="p">}</span><span class="p"></span><span class="p">&gt;</span><span class="p">{</span><span class="nx">item</span><span class="p">.</span><span class="nx">login</span><span class="p">}</span><span class="p">&lt;</span><span class="p">/</span><span class="nt">li</span><span class="p">&gt;</span><span class="p">)</span><span class="p">)</span><span class="p">}</span>
+      <span class="p">&lt;</span><span class="p">/</span><span class="nt">ul</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="p">/</span><span class="nt">div</span><span class="p">&gt;</span>
+  <span class="p">)</span>
+<span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>如果你的网络情况不是太好的话，你可能后明显的感觉到页面渲染延迟，这时我们可以添加一个加载中的提示，告诉用户耐心等待。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-react" data-lang="react"><span class="kr">export</span> <span class="k">default</span> <span class="kd">function</span> <span class="nx">App</span><span class="p">(</span><span class="p">)</span><span class="p">{</span>
+  <span class="kr">const</span> <span class="p">[</span><span class="nx">data</span><span class="p">,</span> <span class="nx">setData</span><span class="p">]</span> <span class="o">=</span> <span class="nx">useState</span><span class="p">(</span><span class="p">[</span><span class="p">]</span><span class="p">)</span><span class="p">;</span>
+  <span class="kr">const</span> <span class="p">[</span><span class="nx">isLoading</span><span class="p">,</span> <span class="nx">setLoading</span><span class="p">]</span> <span class="o">=</span> <span class="nx">useState</span><span class="p">(</span><span class="kc">true</span><span class="p">)</span>
+  <span class="kr">const</span> <span class="p">[</span><span class="nx">error</span><span class="p">,</span> <span class="nx">setError</span><span class="p">]</span> <span class="o">=</span> <span class="nx">useState</span><span class="p">(</span><span class="kc">false</span><span class="p">)</span>
+
+  <span class="nx">useEffect</span><span class="p">(</span><span class="p">(</span><span class="p">)</span><span class="p">=&gt;</span><span class="p">{</span>
+    <span class="nx">setTimeout</span><span class="p">(</span><span class="p">(</span><span class="p">)</span><span class="p">=&gt;</span><span class="p">{</span>
+      <span class="nx">fetch</span><span class="p">(</span><span class="s2">&#34;https://api.githu.com/users?per_gage=3&#34;</span><span class="p">)</span>
+      <span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="p">(</span><span class="nx">res</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="nx">res</span><span class="p">.</span><span class="nx">json</span><span class="p">(</span><span class="p">)</span><span class="p">)</span>
+      <span class="p">.</span><span class="nx">then</span><span class="p">(</span>
+        <span class="p">(</span><span class="nx">data</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
+          <span class="nx">setData</span><span class="p">(</span><span class="nx">data</span><span class="p">)</span><span class="p">;</span>
+          <span class="nx">setLoading</span><span class="p">(</span><span class="kc">false</span><span class="p">)</span><span class="p">;</span>
+        <span class="p">}</span><span class="p">,</span>
+        <span class="p">(</span><span class="nx">error</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
+          <span class="nx">setError</span><span class="p">(</span><span class="nx">error</span><span class="p">)</span><span class="p">;</span>
+          <span class="nx">setLoading</span><span class="p">(</span><span class="kc">false</span><span class="p">)</span><span class="p">;</span>
+        <span class="p">}</span>
+      <span class="p">)</span><span class="p">;</span>
+    <span class="p">}</span><span class="p">,</span> <span class="mi">2000</span><span class="p">)</span><span class="p">;</span>
+  <span class="p">}</span><span class="p">,</span> <span class="p">[</span><span class="p">]</span><span class="p">)</span><span class="p">;</span>
+
+  <span class="k">if</span> <span class="p">(</span><span class="nx">error</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="p">&lt;</span><span class="nt">div</span><span class="p"></span><span class="p">&gt;</span><span class="nx">Fetch</span> <span class="nx">request</span> <span class="nx">error</span><span class="o">:</span> <span class="p">{</span><span class="nx">error</span><span class="p">.</span><span class="nx">message</span><span class="p">}</span><span class="p">&lt;</span><span class="p">/</span><span class="nt">div</span><span class="p">&gt;</span><span class="p">;</span>
+  <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">isLoading</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="p">&lt;</span><span class="nt">h1</span><span class="p"></span><span class="p">&gt;</span><span class="nx">Loading</span> <span class="nx">data</span><span class="p">...</span><span class="p">&lt;</span><span class="p">/</span><span class="nt">h1</span><span class="p">&gt;</span>
+  <span class="p">}</span><span class="k">else</span><span class="p">{</span>
+    <span class="k">return</span> <span class="p">(</span>
+      <span class="p">&lt;</span><span class="nt">div</span> <span class="na">className</span><span class="o">=</span><span class="s">&#34;App&#34;</span><span class="p"></span><span class="p">&gt;</span>
+        <span class="p">&lt;</span><span class="nt">h1</span><span class="p"></span><span class="p">&gt;</span><span class="nx">React</span> <span class="nx">AJAX</span> <span class="nx">call</span><span class="p">&lt;</span><span class="p">/</span><span class="nt">h1</span><span class="p">&gt;</span>
+        <span class="p">&lt;</span><span class="nt">ul</span><span class="p"></span><span class="p">&gt;</span>
+          <span class="p">{</span><span class="nx">data</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="p">(</span><span class="nx">item</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">(</span><span class="p">&lt;</span><span class="nt">li</span> <span class="na">key</span><span class="o">=</span><span class="p">{</span><span class="nx">item</span><span class="p">.</span><span class="nx">id</span><span class="p">}</span><span class="p"></span><span class="p">&gt;</span><span class="p">{</span><span class="nx">item</span><span class="p">.</span><span class="nx">login</span><span class="p">}</span><span class="p">&lt;</span><span class="p">/</span><span class="nt">li</span><span class="p">&gt;</span><span class="p">)</span><span class="p">)</span><span class="p">}</span>
+        <span class="p">&lt;</span><span class="p">/</span><span class="nt">ul</span><span class="p">&gt;</span>
+      <span class="p">&lt;</span><span class="p">/</span><span class="nt">div</span><span class="p">&gt;</span>
+    <span class="p">)</span><span class="p">;</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>我们通过<code>isLoading</code>来控制输出，当数据没获取完成，它的值是<code>true</code>，显示正在加载的动画；当数据获取完成它被设置为<code>false</code>，能够正确显示获取到的数据。为了演示效果，这里还在<code>useEffect</code>中添加超时函数，用来模拟网络阻塞的情况。最后代码中还加了对错误信息的处理。</p>
+<h2 id="axios">使用Axios</h2>
+<p><code>Axios</code>是JavaScript对于HTTP的请求库，它跟原生的<code>fetch</code>API相似，但是添加了更多有用的特性(来自官方文档)：</p>
+<ul>
+<li>Make <a href="https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest">XMLHttpRequests</a> from the browser</li>
+<li>Make <a href="http://nodejs.org/api/http.html">http</a> requests from node.js</li>
+<li>Supports the <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a> API</li>
+<li>Intercept request and response</li>
+<li>Transform request and response data</li>
+<li>Cancel requests</li>
+<li>Automatic transforms for JSON data</li>
+<li>Client side support for protecting against <a href="http://en.wikipedia.org/wiki/Cross-site_request_forgery">XSRF</a></li>
+</ul>
+<p>通常对于JavaScript开发者来说，Axios更加通用，它不仅能够自动转化JSON响应到JavaScript数组或者对象，同时无论是服务器端(node.js)或浏览器端都能使用，而fetch在Node.js中不是原生支持。</p>
+<p><strong>在React中使用axios</strong></p>
+<p>使用axios需要额外安装包</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">npm install axios
+</code></pre></td></tr></table>
+</div>
+</div><p>剩下的跟使用<code>fetch</code>一样，把请求放在<code>componentDidMount()</code>或者<code>useEffect hook</code>当中</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-react" data-lang="react"><span class="nx">componentDidMount</span><span class="p">(</span><span class="p">)</span><span class="p">{</span>
+  <span class="nx">axios</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s2">&#34;https://api.github.com/users?per_gage=3&#34;</span><span class="p">)</span>
+  <span class="p">.</span><span class="nx">then</span><span class="p">(</span>
+    <span class="p">(</span><span class="nx">response</span><span class="p">)</span><span class="p">=&gt;</span><span class="p">{</span>
+      <span class="k">this</span><span class="p">.</span><span class="nx">setState</span><span class="p">(</span><span class="p">{</span>
+        <span class="nx">data</span><span class="o">:</span> <span class="nx">response</span><span class="p">.</span><span class="nx">data</span>
+      <span class="p">}</span><span class="p">)</span><span class="p">;</span>
+    <span class="p">}</span>
+  <span class="p">)</span>
+  <span class="p">.</span><span class="k">catch</span><span class="p">(</span><span class="nx">error</span> <span class="p">=&gt;</span> <span class="p">{</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">error</span><span class="p">)</span>
+  <span class="p">}</span><span class="p">)</span>
+<span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-react" data-lang="react"><span class="nx">useEffect</span><span class="p">(</span><span class="p">(</span><span class="p">)</span><span class="p">=&gt;</span><span class="p">{</span>
+  <span class="nx">setTimeout</span><span class="p">(</span><span class="p">(</span><span class="p">)</span><span class="p">=&gt;</span><span class="p">{</span>
+    <span class="nx">axios</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s2">&#34;https://api.github.com/users?per_gage=3&#34;</span><span class="p">)</span>
+    <span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="p">(</span><span class="nx">respone</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
+      <span class="nx">setData</span><span class="p">(</span><span class="nx">respone</span><span class="p">.</span><span class="nx">data</span><span class="p">)</span><span class="p">;</span>
+    <span class="p">}</span><span class="p">)</span>
+    <span class="p">.</span><span class="k">catch</span><span class="p">(</span><span class="p">(</span><span class="nx">error</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
+      <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">error</span><span class="p">)</span><span class="p">;</span>
+    <span class="p">}</span><span class="p">)</span><span class="p">;</span>
+  <span class="p">}</span><span class="p">,</span> <span class="mi">2000</span><span class="p">)</span><span class="p">;</span>
+<span class="p">}</span><span class="p">,</span> <span class="p">[</span><span class="p">]</span><span class="p">)</span><span class="p">;</span>
+</code></pre></td></tr></table>
+</div>
+</div><p><strong>Axios请求示例</strong></p>
+<p>Axios 支持所有的HTTP请求方法，你可以在请求之前对axios进行设置</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-react" data-lang="react"><span class="nx">axios</span><span class="p">(</span><span class="p">{</span>
+  <span class="nx">method</span><span class="o">:</span> <span class="s1">&#39;get&#39;</span><span class="p">,</span>
+  <span class="nx">url</span><span class="o">:</span> <span class="s1">&#39;https://api.github.com/users&#39;</span>
+<span class="p">}</span><span class="p">)</span>
+<span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">response</span><span class="p">)</span><span class="p">{</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">response</span><span class="p">)</span>
+<span class="p">}</span><span class="p">)</span><span class="p">;</span>
+
+<span class="c1">// 或者
+</span><span class="c1"></span>
+<span class="nx">axios</span><span class="p">(</span><span class="p">{</span>
+  <span class="nx">method</span><span class="o">:</span> <span class="s1">&#39;post&#39;</span><span class="p">,</span>
+  <span class="nx">url</span><span class="o">:</span> <span class="s1">&#39;https://api.github.com/users&#39;</span><span class="p">,</span>
+  <span class="nx">data</span><span class="o">:</span> <span class="p">{</span>
+    <span class="nx">firstName</span><span class="o">:</span> <span class="s1">&#39;Fred&#39;</span><span class="p">,</span>
+    <span class="nx">lastName</span><span class="o">:</span> <span class="s1">&#39;Flintstone&#39;</span>
+  <span class="p">}</span>
+<span class="p">}</span><span class="p">)</span>
+<span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">response</span><span class="p">)</span><span class="p">{</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">response</span><span class="p">)</span>
+<span class="p">}</span><span class="p">)</span><span class="p">;</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>或者直接使用对应的方法</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-javascript" data-lang="javascript"><span class="nx">axios</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s2">&#34;https://api.github.com/users&#34;</span><span class="p">)</span>
+<span class="nx">axios</span><span class="p">.</span><span class="nx">post</span><span class="p">(</span><span class="s2">&#34;https://api.github.com/users&#34;</span><span class="p">,</span> <span class="p">{</span>
+    <span class="nx">firstName</span><span class="o">:</span> <span class="s1">&#39;Fred&#39;</span><span class="p">,</span>
+    <span class="nx">lastName</span><span class="o">:</span> <span class="s1">&#39;Flintstone&#39;</span>
+<span class="p">}</span><span class="p">)</span>
+<span class="nx">axios</span><span class="p">.</span><span class="nx">put</span><span class="p">(</span><span class="s2">&#34;https://api.github.com/users&#34;</span><span class="p">)</span>
+<span class="nx">axios</span><span class="p">.</span><span class="nx">patch</span><span class="p">(</span><span class="s2">&#34;https://api.github.com/users&#34;</span><span class="p">)</span>
+<span class="nx">axios</span><span class="p">.</span><span class="k">delete</span><span class="p">(</span><span class="s2">&#34;https://api.github.com/users&#34;</span><span class="p">)</span>
+</code></pre></td></tr></table>
+</div>
+</div><p><strong>同时执行多个请求</strong></p>
+<p>你可以使用<code>Promise.all()</code>配合Axios来并行发出多个请求，等到响应返回之后在执行接下来的逻辑：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-javascript" data-lang="javascript"><span class="kd">function</span> <span class="nx">getUserAccount</span><span class="p">(</span><span class="p">)</span><span class="p">{</span>
+  <span class="k">return</span> <span class="nx">axios</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;/user/123456&#39;</span><span class="p">)</span>
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">getUserPermissions</span><span class="p">(</span><span class="p">)</span><span class="p">{</span>
+  <span class="k">return</span> <span class="nx">axios</span><span class="p">.</span><span class="nx">post</span><span class="p">(</span><span class="s1">&#39;/user/123456/permissions&#39;</span><span class="p">,</span> <span class="p">{</span>
+    <span class="nx">firstName</span><span class="o">:</span> <span class="s1">&#39;Fred&#39;</span><span class="p">,</span>
+    <span class="nx">lastName</span><span class="o">:</span> <span class="s1">&#39;Flintstone&#39;</span>    
+  <span class="p">}</span><span class="p">)</span>
+<span class="p">}</span>
+
+<span class="nb">Promise</span><span class="p">.</span><span class="nx">all</span><span class="p">(</span><span class="p">[</span><span class="nx">getUserAccount</span><span class="p">(</span><span class="p">)</span><span class="p">,</span> <span class="nx">getUserPermissions</span><span class="p">(</span><span class="p">)</span><span class="p">]</span><span class="p">)</span>
+	<span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">results</span><span class="p">)</span><span class="p">)</span><span class="p">{</span>
+		<span class="kr">const</span> <span class="nx">acct</span> <span class="o">=</span> <span class="nx">results</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="p">;</span>
+		<span class="kr">const</span> <span class="nx">perm</span> <span class="o">=</span> <span class="nx">results</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="p">;</span>    
+<span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>多个响应以请求的顺序返回成一个数组</p>
+<h2 id="react-router">React Router</h2>
+<p>React router 是为了解决React应用路由问题的第三方库，它封装了浏览器<code>history API</code>使你的应用UI与浏览器URL同步。当你访问<code>/about</code>页面，React Router会确保About相关页面渲染到屏幕。作为在浏览器运行的单页面应用，React Router提供的功能能让你方便的在浏览器端切换，而不用每个URL都向服务器发送请求。</p>
+<p>React Router有两个包：给React使用的<code>react-router-dom</code>，给React Native使用的<code>react-router-native</code>，我们web应用只用前者就可以了。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">npm install react-router-dom
+</code></pre></td></tr></table>
+</div>
+</div><p>React Router通常会用到三个组件：<code>BrowserRouter</code>，<code>Route</code>，<code>Link</code></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-react" data-lang="react"><span class="kr">import</span> <span class="p">{</span> <span class="nx">BrowserRouter</span> <span class="nx">as</span> <span class="nx">Router</span><span class="p">,</span> <span class="nx">Route</span><span class="p">}</span> <span class="nx">from</span> <span class="s1">&#39;react-router-dom&#39;</span><span class="p">;</span>
+
+<span class="kr">class</span> <span class="nx">RouterNavigationSample</span> <span class="kr">extends</span> <span class="nx">React</span><span class="p">.</span><span class="nx">Component</span> <span class="p">{</span>
+  <span class="nx">render</span><span class="p">(</span><span class="p">)</span><span class="p">{</span>
+    <span class="k">return</span> <span class="p">(</span>
+      <span class="p">&lt;</span><span class="nt">Router</span><span class="p"></span><span class="p">&gt;</span>
+        <span class="o">&lt;</span><span class="o">&gt;</span>
+          <span class="p">&lt;</span><span class="nt">NavigationComponent</span> <span class="p">/</span><span class="p">&gt;</span>
+          <span class="p">&lt;</span><span class="nt">Route</span> <span class="na">exact</span> <span class="na">path</span><span class="o">=</span><span class="s">&#34;/&#34;</span> <span class="na">component</span><span class="o">=</span><span class="p">{</span><span class="nx">Home</span><span class="p">}</span> <span class="p">/</span><span class="p">&gt;</span>
+          <span class="p">&lt;</span><span class="nt">Route</span> <span class="na">path</span><span class="o">=</span><span class="s">&#34;/about&#34;</span> <span class="na">component</span><span class="o">=</span><span class="p">{</span><span class="nx">About</span><span class="p">}</span> <span class="p">/</span><span class="p">&gt;</span>
+        <span class="o">&lt;</span><span class="err">/</span><span class="err">&gt;</span>
+      <span class="p">&lt;</span><span class="p">/</span><span class="nt">Router</span><span class="p">&gt;</span>
+    <span class="p">)</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><p><code>BrowserRouter</code>导入别名<code>Router</code>，作为所有React组件的父组件，在最外层。它会拦截浏览器请求的URL并匹配到正确的<code>Route</code>组件。例如浏览器URL是<code>localhost:3000/about</code>，<code>Router</code>会查找路径为<code>/about</code>对应的组件，这里我们向路径<code>/about</code>的<code>Route</code>注册的组件是<code>About</code>。</p>
+<p>在根路径上我们加入了<code>exact</code>参数，如果没有这个参数，任何path中包含<code>/</code>的路由都会被渲染成<code>Home</code>组件。</p>
+<p><code>Link</code>组件被用作导航，替换传统的<code>&lt;a&gt;</code>标签。传统的锚点标签会在每次点击的时候完全刷新，它不适用于React 应用。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-react" data-lang="react"><span class="kr">class</span> <span class="nx">NavigationComponent</span> <span class="kr">extends</span> <span class="nx">React</span><span class="p">.</span><span class="nx">Component</span> <span class="p">{</span>
+  <span class="nx">render</span><span class="p">(</span><span class="p">)</span><span class="p">{</span>
+    <span class="k">return</span> <span class="p">(</span>
+      <span class="o">&lt;</span><span class="o">&gt;</span>
+        <span class="p">&lt;</span><span class="nt">ul</span><span class="p"></span><span class="p">&gt;</span>
+          <span class="p">&lt;</span><span class="nt">li</span><span class="p"></span><span class="p">&gt;</span><span class="p">&lt;</span><span class="nt">Link</span> <span class="na">to</span><span class="o">=</span><span class="s">&#34;/&#34;</span><span class="p"></span><span class="p">&gt;</span><span class="nx">Home</span><span class="p">&lt;</span><span class="p">/</span><span class="nt">Link</span><span class="p">&gt;</span><span class="p">&lt;</span><span class="p">/</span><span class="nt">li</span><span class="p">&gt;</span>
+          <span class="p">&lt;</span><span class="nt">li</span><span class="p"></span><span class="p">&gt;</span><span class="p">&lt;</span><span class="nt">Link</span> <span class="na">to</span><span class="o">=</span><span class="s">&#34;/about&#34;</span><span class="p"></span><span class="p">&gt;</span><span class="nx">About</span> <span class="nx">page</span><span class="p">&lt;</span><span class="p">/</span><span class="nt">Link</span><span class="p">&gt;</span><span class="p">&lt;</span><span class="p">/</span><span class="nt">li</span><span class="p">&gt;</span>
+        <span class="p">&lt;</span><span class="p">/</span><span class="nt">ul</span><span class="p">&gt;</span>
+        <span class="p">&lt;</span><span class="nt">hr</span><span class="p">/</span><span class="p">&gt;</span>
+      <span class="o">&lt;</span><span class="err">/</span><span class="err">&gt;</span>
+    <span class="p">)</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><p><strong>动态路由</strong></p>
+<p>接着我们来学习另外两个路由组件：<code>Switch</code> 和 <code>Redirect</code>。</p>
+<p><code>Switch</code>组件会在找到第一个匹配路由之后渲染，并停止向下匹配。比如说有下面的例子</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-react" data-lang="react"><span class="kr">import</span> <span class="p">{</span> <span class="nx">Ruote</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">&#39;react-router&#39;</span><span class="p">;</span>
+
+<span class="p">&lt;</span><span class="nt">Route</span> <span class="na">path</span><span class="o">=</span><span class="s">&#34;/about&#34;</span> <span class="na">component</span><span class="o">=</span><span class="p">{</span><span class="nx">About</span><span class="p">}</span> <span class="p">/</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">Route</span> <span class="na">path</span><span class="o">=</span><span class="s">&#34;/:user&#34;</span> <span class="na">component</span><span class="o">=</span><span class="p">{</span><span class="nx">User</span><span class="p">}</span> <span class="p">/</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">Route</span> <span class="na">component</span><span class="o">=</span><span class="p">{</span><span class="nx">NoMatch</span><span class="p">}</span> <span class="p">/</span><span class="p">&gt;</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>上面的代码中，<code>/about</code>会匹配到全部的三个路由，导致它们全部被渲染并且彼此紧邻。通过使用<code>Switch</code>组件，路由仅在匹配到<code>About</code>之后就停止。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-react" data-lang="react"><span class="kr">import</span> <span class="p">{</span> <span class="nx">Switch</span><span class="p">,</span> <span class="nx">Ruote</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">&#39;react-router&#39;</span><span class="p">;</span>
+
+<span class="p">&lt;</span><span class="nt">Switch</span><span class="p"></span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">Route</span> <span class="na">path</span><span class="o">=</span><span class="s">&#34;/about&#34;</span> <span class="na">component</span><span class="o">=</span><span class="p">{</span><span class="nx">About</span><span class="p">}</span> <span class="p">/</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">Route</span> <span class="na">path</span><span class="o">=</span><span class="s">&#34;/:user&#34;</span> <span class="na">component</span><span class="o">=</span><span class="p">{</span><span class="nx">User</span><span class="p">}</span> <span class="p">/</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">Route</span> <span class="na">component</span><span class="o">=</span><span class="p">{</span><span class="nx">NoMatch</span><span class="p">}</span> <span class="p">/</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="p">/</span><span class="nt">Switch</span><span class="p">&gt;</span><span class="p">;</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>这里组件的顺序特别重要，所以确保在声明参数路由、404路由之前先整理好所有静态路由。</p>
+<p><code>Redirect</code>组件用于重定向，<code>from</code>参数填写旧的链接，<code>to</code>参数写将要转向的路由。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-react" data-lang="react"><span class="kr">import</span> <span class="p">{</span> <span class="nx">Redirect</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">&#39;react-router&#39;</span><span class="p">;</span>
+<span class="p">&lt;</span><span class="nt">Redirect</span> <span class="na">from</span><span class="o">=</span><span class="s">&#39;/old-match&#39;</span> <span class="na">to</span><span class="o">=</span><span class="s">&#39;/will-match&#39;</span> <span class="p">/</span><span class="p">&gt;</span><span class="p">;</span>
+</code></pre></td></tr></table>
+</div>
+</div><p><strong>嵌套路由</strong></p>
+<p>直接放案例代码</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span><span class="lnt">53
+</span><span class="lnt">54
+</span><span class="lnt">55
+</span><span class="lnt">56
+</span><span class="lnt">57
+</span><span class="lnt">58
+</span><span class="lnt">59
+</span><span class="lnt">60
+</span><span class="lnt">61
+</span><span class="lnt">62
+</span><span class="lnt">63
+</span><span class="lnt">64
+</span><span class="lnt">65
+</span><span class="lnt">66
+</span><span class="lnt">67
+</span><span class="lnt">68
+</span><span class="lnt">69
+</span><span class="lnt">70
+</span><span class="lnt">71
+</span><span class="lnt">72
+</span><span class="lnt">73
+</span><span class="lnt">74
+</span><span class="lnt">75
+</span><span class="lnt">76
+</span><span class="lnt">77
+</span><span class="lnt">78
+</span><span class="lnt">79
+</span><span class="lnt">80
+</span><span class="lnt">81
+</span><span class="lnt">82
+</span><span class="lnt">83
+</span><span class="lnt">84
+</span><span class="lnt">85
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-react" data-lang="react"><span class="kr">import</span> <span class="p">{</span> <span class="nx">BrowserRouter</span> <span class="nx">as</span> <span class="nx">Router</span><span class="p">,</span> <span class="nx">Link</span><span class="p">,</span> <span class="nx">Route</span><span class="p">}</span> <span class="nx">from</span> <span class="s1">&#39;react-router-dom&#39;</span><span class="p">;</span>
+
+<span class="kr">const</span> <span class="nx">users</span> <span class="o">=</span> <span class="p">[</span>
+  <span class="p">{</span>
+    <span class="nx">id</span><span class="o">:</span> <span class="s1">&#39;1&#39;</span><span class="p">,</span>
+    <span class="nx">name</span><span class="o">:</span> <span class="s1">&#39;Nathan&#39;</span><span class="p">,</span>
+    <span class="nx">role</span><span class="o">:</span> <span class="s1">&#39;Web Developer&#39;</span><span class="p">,</span>
+  <span class="p">}</span><span class="p">,</span>
+  <span class="p">{</span>
+    <span class="nx">id</span><span class="o">:</span> <span class="s1">&#39;2&#39;</span><span class="p">,</span>
+    <span class="nx">name</span><span class="o">:</span> <span class="s1">&#39;Johnson&#39;</span><span class="p">,</span>
+    <span class="nx">role</span><span class="o">:</span> <span class="s1">&#39;React Developer&#39;</span><span class="p">,</span>
+  <span class="p">}</span><span class="p">,</span>
+  <span class="p">{</span>
+    <span class="nx">id</span><span class="o">:</span> <span class="s1">&#39;3&#39;</span><span class="p">,</span>
+    <span class="nx">name</span><span class="o">:</span> <span class="s1">&#39;Alex&#39;</span><span class="p">,</span>
+    <span class="nx">role</span><span class="o">:</span> <span class="s1">&#39;Python Developer&#39;</span><span class="p">,</span>
+  <span class="p">}</span>
+<span class="p">]</span>
+
+<span class="kr">const</span> <span class="nx">Home</span> <span class="o">=</span> <span class="p">(</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="p">&lt;</span><span class="nt">div</span><span class="p"></span><span class="p">&gt;</span><span class="nx">This</span> <span class="nx">is</span> <span class="nx">the</span> <span class="nx">home</span> <span class="nx">page</span><span class="p">&lt;</span><span class="p">/</span><span class="nt">div</span><span class="p">&gt;</span>
+<span class="p">}</span><span class="p">;</span>
+
+<span class="kr">const</span> <span class="nx">About</span> <span class="o">=</span> <span class="p">(</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="p">&lt;</span><span class="nt">div</span><span class="p"></span><span class="p">&gt;</span><span class="nx">This</span> <span class="nx">is</span> <span class="nx">the</span> <span class="nx">about</span> <span class="nx">page</span><span class="p">&lt;</span><span class="p">/</span><span class="nt">div</span><span class="p">&gt;</span>
+<span class="p">}</span><span class="p">;</span>
+
+<span class="kr">const</span> <span class="nx">Users</span> <span class="o">=</span> <span class="p">(</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="p">(</span>
+    <span class="o">&lt;</span><span class="o">&gt;</span>
+      <span class="p">&lt;</span><span class="nt">ul</span><span class="p"></span><span class="p">&gt;</span>
+        <span class="p">{</span>
+          <span class="nx">users</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="p">(</span><span class="p">{</span><span class="nx">name</span><span class="p">,</span> <span class="nx">id</span><span class="p">}</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">(</span><span class="p">&lt;</span><span class="nt">li</span> <span class="na">key</span><span class="o">=</span><span class="p">{</span><span class="nx">id</span><span class="p">}</span><span class="p"></span><span class="p">&gt;</span><span class="p">&lt;</span><span class="nt">Link</span> <span class="na">to</span><span class="o">=</span><span class="p">{</span><span class="sb">`</span><span class="sb">/users/</span><span class="si">${</span><span class="nx">id</span><span class="si">}</span><span class="sb">`</span><span class="p">}</span><span class="p"></span><span class="p">&gt;</span><span class="p">{</span><span class="nx">name</span><span class="p">}</span><span class="p">&lt;</span><span class="p">/</span><span class="nt">Link</span><span class="p">&gt;</span><span class="p">&lt;</span><span class="p">/</span><span class="nt">li</span><span class="p">&gt;</span><span class="p">)</span><span class="p">)</span>
+        <span class="p">}</span>
+      <span class="p">&lt;</span><span class="p">/</span><span class="nt">ul</span><span class="p">&gt;</span>
+      <span class="p">&lt;</span><span class="nt">Route</span> <span class="na">path</span><span class="o">=</span><span class="s">&#39;/users/:id&#39;</span> <span class="na">component</span><span class="o">=</span><span class="p">{</span><span class="nx">User</span><span class="p">}</span> <span class="p">/</span><span class="p">&gt;</span>
+      <span class="p">&lt;</span><span class="nt">hr</span><span class="p">/</span><span class="p">&gt;</span>
+    <span class="o">&lt;</span><span class="err">/</span><span class="err">&gt;</span>
+  <span class="p">)</span><span class="p">;</span>
+<span class="p">}</span><span class="p">;</span>
+
+<span class="kr">const</span> <span class="nx">User</span> <span class="o">=</span> <span class="p">(</span><span class="p">(</span><span class="p">{</span><span class="nx">match</span><span class="p">}</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
+  <span class="kr">const</span> <span class="nx">user</span> <span class="o">=</span> <span class="nx">users</span><span class="p">.</span><span class="nx">find</span><span class="p">(</span><span class="p">(</span><span class="nx">user</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="nx">user</span><span class="p">.</span><span class="nx">id</span> <span class="o">===</span> <span class="nx">match</span><span class="p">.</span><span class="nx">params</span><span class="p">.</span><span class="nx">id</span><span class="p">)</span><span class="p">;</span>
+
+  <span class="k">return</span> <span class="p">(</span>
+    <span class="p">&lt;</span><span class="nt">div</span><span class="p"></span><span class="p">&gt;</span>
+      <span class="nx">Hello</span><span class="o">!</span> <span class="nx">I</span><span class="s1">&#39;m {user.name} and I&#39;</span><span class="nx">m</span> <span class="nx">a</span> <span class="p">{</span><span class="nx">user</span><span class="p">.</span><span class="nx">role</span><span class="p">}</span>
+    <span class="p">&lt;</span><span class="p">/</span><span class="nt">div</span><span class="p">&gt;</span>
+  <span class="p">)</span><span class="p">;</span>
+<span class="p">}</span><span class="p">)</span>
+
+<span class="kr">class</span> <span class="nx">NavigationComponent</span> <span class="kr">extends</span> <span class="nx">React</span><span class="p">.</span><span class="nx">Component</span> <span class="p">{</span>
+  <span class="nx">render</span><span class="p">(</span><span class="p">)</span><span class="p">{</span>
+    <span class="k">return</span> <span class="p">(</span>
+      <span class="o">&lt;</span><span class="o">&gt;</span>
+        <span class="p">&lt;</span><span class="nt">ul</span><span class="p"></span><span class="p">&gt;</span>
+          <span class="p">&lt;</span><span class="nt">li</span><span class="p"></span><span class="p">&gt;</span><span class="p">&lt;</span><span class="nt">Link</span> <span class="na">to</span><span class="o">=</span><span class="s">&#34;/&#34;</span><span class="p"></span><span class="p">&gt;</span><span class="nx">Home</span><span class="p">&lt;</span><span class="p">/</span><span class="nt">Link</span><span class="p">&gt;</span><span class="p">&lt;</span><span class="p">/</span><span class="nt">li</span><span class="p">&gt;</span>
+          <span class="p">&lt;</span><span class="nt">li</span><span class="p"></span><span class="p">&gt;</span><span class="p">&lt;</span><span class="nt">Link</span> <span class="na">to</span><span class="o">=</span><span class="s">&#34;/about&#34;</span><span class="p"></span><span class="p">&gt;</span><span class="nx">About</span> <span class="nx">page</span><span class="p">&lt;</span><span class="p">/</span><span class="nt">Link</span><span class="p">&gt;</span><span class="p">&lt;</span><span class="p">/</span><span class="nt">li</span><span class="p">&gt;</span>
+          <span class="p">&lt;</span><span class="nt">li</span><span class="p"></span><span class="p">&gt;</span><span class="p">&lt;</span><span class="nt">Link</span> <span class="na">to</span><span class="o">=</span><span class="s">&#34;/users&#34;</span><span class="p"></span><span class="p">&gt;</span><span class="nx">Users</span> <span class="nx">page</span><span class="p">&lt;</span><span class="p">/</span><span class="nt">Link</span><span class="p">&gt;</span><span class="p">&lt;</span><span class="p">/</span><span class="nt">li</span><span class="p">&gt;</span>
+        <span class="p">&lt;</span><span class="p">/</span><span class="nt">ul</span><span class="p">&gt;</span>
+        <span class="p">&lt;</span><span class="nt">hr</span><span class="p">/</span><span class="p">&gt;</span>
+      <span class="o">&lt;</span><span class="err">/</span><span class="err">&gt;</span>
+    <span class="p">)</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kr">class</span> <span class="nx">RouterNavigationSample</span> <span class="kr">extends</span> <span class="nx">React</span><span class="p">.</span><span class="nx">Component</span> <span class="p">{</span>
+  <span class="nx">render</span><span class="p">(</span><span class="p">)</span><span class="p">{</span>
+    <span class="k">return</span> <span class="p">(</span>
+      <span class="p">&lt;</span><span class="nt">Router</span><span class="p"></span><span class="p">&gt;</span>
+        <span class="o">&lt;</span><span class="o">&gt;</span>
+          <span class="p">&lt;</span><span class="nt">NavigationComponent</span> <span class="p">/</span><span class="p">&gt;</span>
+          <span class="p">&lt;</span><span class="nt">Route</span> <span class="na">exact</span> <span class="na">path</span><span class="o">=</span><span class="s">&#34;/&#34;</span> <span class="na">component</span><span class="o">=</span><span class="p">{</span><span class="nx">Home</span><span class="p">}</span> <span class="p">/</span><span class="p">&gt;</span>
+          <span class="p">&lt;</span><span class="nt">Route</span> <span class="na">path</span><span class="o">=</span><span class="s">&#34;/about&#34;</span> <span class="na">component</span><span class="o">=</span><span class="p">{</span><span class="nx">About</span><span class="p">}</span> <span class="p">/</span><span class="p">&gt;</span>
+          <span class="p">&lt;</span><span class="nt">Route</span> <span class="na">path</span><span class="o">=</span><span class="s">&#34;/users&#34;</span> <span class="na">component</span><span class="o">=</span><span class="p">{</span><span class="nx">Users</span><span class="p">}</span> <span class="p">/</span><span class="p">&gt;</span>
+        <span class="o">&lt;</span><span class="err">/</span><span class="err">&gt;</span>
+      <span class="p">&lt;</span><span class="p">/</span><span class="nt">Router</span><span class="p">&gt;</span>
+    <span class="p">)</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kr">export</span> <span class="k">default</span> <span class="kd">function</span> <span class="nx">App</span><span class="p">(</span><span class="p">)</span><span class="p">{</span>
+  <span class="k">return</span> <span class="p">&lt;</span><span class="nt">RouterNavigationSample</span> <span class="p">/</span><span class="p">&gt;</span>
+<span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>这里我们加了些用户数据，想要实现的功能是：通过路由展示当前用户列表，用户列表中每个元素又能指向用户详情。</p>
+<p>首先可以先写好对应的路由和跳转超链接，接着创建<code>Users</code>组件，它显示所有用户列表，同时也要用到<code>Link</code>和<code>Route</code>来创建跳转到详情页面的子路由。</p>
+<p>最后在用户详情<code>User</code>组件中通过<code>/users/:id</code>传过来的参数渲染对应用户的详细信息。</p>
+<p>这里有一些需要了解的知识点，每次组件被特定的路由渲染，该组件都会接收到来自React Router的props。有三个路由参数会被向下传递，它们分别是:</p>
+<p><code>match</code> ，<code>location</code>， <code>history</code>，而接收<code>/:id</code>的参数正是<code>match.params.id</code>，最后的id便是路由中的名称，比如你换成了<code>/:userId</code>，那相应的参数应该改为</p>
+<p><code>match.params.userId</code></p>
+<p>了解了route props之后，现在我们可以重构一下<code>Users</code>组件中的代码</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-react" data-lang="react"><span class="kr">const</span> <span class="nx">Users</span> <span class="o">=</span> <span class="p">(</span><span class="p">{</span><span class="nx">match</span><span class="p">}</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="p">(</span>
+    <span class="o">&lt;</span><span class="o">&gt;</span>
+      <span class="p">&lt;</span><span class="nt">ul</span><span class="p"></span><span class="p">&gt;</span>
+        <span class="p">{</span>
+          <span class="nx">users</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="p">(</span><span class="p">{</span><span class="nx">name</span><span class="p">,</span> <span class="nx">id</span><span class="p">}</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">(</span><span class="p">&lt;</span><span class="nt">li</span> <span class="na">key</span><span class="o">=</span><span class="p">{</span><span class="nx">id</span><span class="p">}</span><span class="p"></span><span class="p">&gt;</span><span class="p">&lt;</span><span class="nt">Link</span> <span class="na">to</span><span class="o">=</span><span class="p">{</span><span class="sb">`</span><span class="si">${</span><span class="nx">match</span><span class="p">.</span><span class="nx">url</span><span class="si">}</span><span class="sb">/</span><span class="si">${</span><span class="nx">id</span><span class="si">}</span><span class="sb">`</span><span class="p">}</span><span class="p"></span><span class="p">&gt;</span><span class="p">{</span><span class="nx">name</span><span class="p">}</span><span class="p">&lt;</span><span class="p">/</span><span class="nt">Link</span><span class="p">&gt;</span><span class="p">&lt;</span><span class="p">/</span><span class="nt">li</span><span class="p">&gt;</span><span class="p">)</span><span class="p">)</span>
+        <span class="p">}</span>
+      <span class="p">&lt;</span><span class="p">/</span><span class="nt">ul</span><span class="p">&gt;</span>
+      <span class="p">&lt;</span><span class="nt">Route</span> <span class="na">path</span><span class="o">=</span><span class="p">{</span><span class="sb">`</span><span class="si">${</span><span class="nx">match</span><span class="p">.</span><span class="nx">url</span><span class="si">}</span><span class="sb">/:id</span><span class="sb">`</span><span class="p">}</span> <span class="na">component</span><span class="o">=</span><span class="p">{</span><span class="nx">User</span><span class="p">}</span> <span class="p">/</span><span class="p">&gt;</span>
+      <span class="p">&lt;</span><span class="nt">hr</span><span class="p">/</span><span class="p">&gt;</span>
+    <span class="o">&lt;</span><span class="err">/</span><span class="err">&gt;</span>
+  <span class="p">)</span><span class="p">;</span>
+<span class="p">}</span><span class="p">;</span>
+
+</code></pre></td></tr></table>
+</div>
+</div><p>这样就实现了动态路由</p>
+<p><strong>向路由组件传递参数</strong></p>
+<p>你可能会觉得向路由组件传递参数跟普通的组件传递方式一样：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-react" data-lang="react"><span class="p">&lt;</span><span class="nt">Route</span> <span class="na">path</span><span class="o">=</span><span class="s">&#34;/about&#34;</span> <span class="na">component</span><span class="o">=</span><span class="p">{</span><span class="nx">About</span><span class="p">}</span> <span class="na">user</span><span class="o">=</span><span class="s">&#34;Jelly&#34;</span> <span class="p">/</span><span class="p">&gt;</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>那你就大错特错了，React Router没办法将写在<code>Route</code>中的props转发到<code>component</code>的props中，我们需要另辟它法。</p>
+<p>React Router 提供了 <code>render</code>参数，它接收一个方法，当URL被匹配了之后会被调用。这里的props就能够被组件的props接收到:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-react" data-lang="react"><span class="p">&lt;</span><span class="nt">Route</span> 
+  <span class="na">path</span><span class="o">=</span><span class="s">&#34;/about&#34;</span>
+  <span class="na">render</span><span class="o">=</span><span class="p">{</span><span class="nx">props</span> <span class="p">=&gt;</span> <span class="p">&lt;</span><span class="nt">About</span> <span class="p">{</span><span class="na">...props</span><span class="p">}</span> <span class="na">admin</span><span class="o">=</span><span class="s">&#34;Blus&#34;</span> <span class="p">/</span><span class="p">&gt;</span><span class="p">}</span>
+  <span class="p">/</span><span class="p">&gt;</span>
+
+
+<span class="c1">// the component
+</span><span class="c1"></span><span class="kr">const</span> <span class="nx">About</span> <span class="o">=</span> <span class="nx">props</span> <span class="p">=&gt;</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="p">&lt;</span><span class="nt">div</span><span class="p"></span><span class="p">&gt;</span><span class="nx">This</span> <span class="nx">is</span> <span class="nx">the</span> <span class="nx">about</span> <span class="nx">page</span> <span class="p">{</span><span class="nx">props</span><span class="p">.</span><span class="nx">admin</span><span class="p">}</span><span class="p">&lt;</span><span class="p">/</span><span class="nt">div</span><span class="p">&gt;</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>首先你将React Router听歌的<code>props</code>作为参数传递给自定义的组件，这时组件能够使用 <code>match</code>， <code>loation</code>， <code>history</code>这些参数。同时你也可以提供自定义的参数，上面的例子中<code>admin</code>就是这样。</p>
+<h2 id="react-router-hooks">React Router hooks</h2>
+<p>随着hooks的加入，React Router的开发者也提供了自己的hooks，你可以在自己的React函数组件中任意使用。它将大大提高你编写导航组件的效率。</p>
+<h3 id="useparams-hook">useParams hook</h3>
+<p><code>useParams hook</code>能够直接返回当前路由中的动态参数</p>
+<p>例如，目前有一个`/post/:slug的URL，按照我们之前的处理方法：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-react" data-lang="react"><span class="kr">export</span> <span class="k">default</span> <span class="kd">function</span> <span class="nx">App</span><span class="p">(</span><span class="p">)</span><span class="p">{</span>
+  <span class="k">return</span> <span class="p">(</span>
+  	<span class="p">&lt;</span><span class="nt">Router</span><span class="p"></span><span class="p">&gt;</span>
+    	<span class="p">&lt;</span><span class="nt">div</span><span class="p"></span><span class="p">&gt;</span>
+      	<span class="p">&lt;</span><span class="nt">nav</span><span class="p"></span><span class="p">&gt;</span>
+        	<span class="p">&lt;</span><span class="nt">ul</span><span class="p"></span><span class="p">&gt;</span>
+          	<span class="p">&lt;</span><span class="nt">li</span><span class="p"></span><span class="p">&gt;</span><span class="p">&lt;</span><span class="nt">Link</span> <span class="na">to</span><span class="o">=</span><span class="s">&#34;/&#34;</span><span class="p"></span><span class="p">&gt;</span><span class="nx">Home</span><span class="p">&lt;</span><span class="p">/</span><span class="nt">Link</span><span class="p">&gt;</span><span class="p">&lt;</span><span class="p">/</span><span class="nt">li</span><span class="p">&gt;</span>
+            <span class="p">&lt;</span><span class="nt">li</span><span class="p"></span><span class="p">&gt;</span><span class="p">&lt;</span><span class="nt">Link</span> <span class="na">to</span><span class="o">=</span><span class="s">&#34;/post/hello-world&#34;</span><span class="p"></span><span class="p">&gt;</span><span class="nx">First</span> <span class="nx">Post</span><span class="p">&lt;</span><span class="p">/</span><span class="nt">Link</span><span class="p">&gt;</span><span class="p">&lt;</span><span class="p">/</span><span class="nt">li</span><span class="p">&gt;</span>
+          <span class="p">&lt;</span><span class="p">/</span><span class="nt">ul</span><span class="p">&gt;</span>
+        <span class="p">&lt;</span><span class="p">/</span><span class="nt">nav</span><span class="p">&gt;</span>
+        <span class="p">&lt;</span><span class="nt">Switch</span><span class="p"></span><span class="p">&gt;</span>
+        	<span class="p">&lt;</span><span class="nt">Route</span> <span class="na">path</span><span class="o">=</span><span class="s">&#34;/post/:slug&#34;</span> <span class="na">component</span><span class="o">=</span><span class="p">{</span><span class="nx">Post</span><span class="p">}</span> <span class="p">/</span><span class="p">&gt;</span>
+          <span class="p">&lt;</span><span class="nt">Route</span> <span class="na">path</span><span class="o">=</span><span class="s">&#34;/&#34;</span><span class="p"></span><span class="p">&gt;</span><span class="p">&lt;</span><span class="nt">Home</span> <span class="p">/</span><span class="p">&gt;</span><span class="p">&lt;</span><span class="p">/</span><span class="nt">Route</span><span class="p">&gt;</span>
+        <span class="p">&lt;</span><span class="p">/</span><span class="nt">Switch</span><span class="p">&gt;</span>
+      <span class="p">&lt;</span><span class="p">/</span><span class="nt">div</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="p">/</span><span class="nt">Router</span><span class="p">&gt;</span>
+  <span class="p">)</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>这里我们将<code>Post</code>组件传入到<code>/post/:slug</code>路由当中，这样我们就可以在组件中使用<code>match.params</code>来取得参数</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-react" data-lang="react"><span class="c1">// Old way to fetch parameters
+</span><span class="c1"></span><span class="kd">function</span> <span class="nx">Post</span><span class="p">(</span><span class="p">{</span> <span class="nx">match</span> <span class="p">}</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">let</span> <span class="nx">params</span> <span class="o">=</span> <span class="nx">match</span><span class="p">.</span><span class="nx">params</span><span class="p">;</span>
+  <span class="k">return</span> <span class="p">(</span>
+  	<span class="p">&lt;</span><span class="nt">div</span><span class="p"></span><span class="p">&gt;</span>
+    	<span class="nx">In</span> <span class="nx">React</span> <span class="nx">Router</span> <span class="nx">v4</span><span class="p">,</span> <span class="nx">you</span> <span class="nx">get</span> <span class="nx">parameters</span> <span class="nx">from</span> <span class="nx">the</span> <span class="nx">props</span><span class="p">.</span>
+      <span class="nx">Current</span> <span class="nx">parameter</span> <span class="nx">is</span> <span class="p">&lt;</span><span class="nt">strong</span><span class="p"></span><span class="p">&gt;</span><span class="p">{</span><span class="nx">params</span><span class="p">.</span><span class="nx">slug</span><span class="p">}</span><span class="p">&lt;</span><span class="p">/</span><span class="nt">strong</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="p">/</span><span class="nt">div</span><span class="p">&gt;</span>
+  <span class="p">)</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>这样做可行，但是如果项目中动态路由数目剧增，管理起来会很不方便。你需要了解哪个路由中的组件需要使用到props，哪个不需要。同时这个由<code>Route</code>传递下来的<code>match</code>对象，需要你手动的依次传递到下层的其他DOM组件。</p>
+<p>这时候<code>useParams hook</code>就应运而生了，它能够在不使用组件props的情况下获取到当前路由的参数。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-react" data-lang="react"><span class="p">&lt;</span><span class="nt">Switch</span><span class="p"></span><span class="p">&gt;</span>
+	<span class="p">&lt;</span><span class="nt">Route</span> <span class="na">path</span><span class="o">=</span><span class="s">&#34;/post/:slug&#34;</span> <span class="na">component</span><span class="o">=</span><span class="p">{</span><span class="nx">Post</span><span class="p">}</span> <span class="p">/</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">Route</span> <span class="na">path</span><span class="o">=</span><span class="s">&#34;/users/:id/:hash&#34;</span><span class="p"></span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">Users</span> <span class="p">/</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="p">/</span><span class="nt">Route</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">Route</span><span class="p"></span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">Home</span> <span class="p">/</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="p">/</span><span class="nt">Route</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="p">/</span><span class="nt">Switch</span><span class="p">&gt;</span>
+
+<span class="kd">function</span> <span class="nx">Users</span><span class="p">(</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">let</span> <span class="nx">params</span> <span class="o">=</span> <span class="nx">useParams</span><span class="p">(</span><span class="p">)</span><span class="p">;</span>
+  <span class="k">return</span> <span class="p">(</span>
+    <span class="p">&lt;</span><span class="nt">div</span><span class="p"></span><span class="p">&gt;</span>
+    	<span class="nx">In</span> <span class="nx">React</span> <span class="nx">Router</span> <span class="nx">v5</span><span class="p">,</span> <span class="nx">You</span> <span class="nx">can</span> <span class="nx">use</span> <span class="nx">hooks</span> <span class="nx">to</span> <span class="nx">get</span> <span class="nx">paramters</span><span class="p">.</span>
+      <span class="p">&lt;</span><span class="nt">br</span> <span class="p">/</span><span class="p">&gt;</span>
+      <span class="nx">Current</span> <span class="nx">id</span> <span class="nx">parameter</span> <span class="nx">is</span> <span class="p">&lt;</span><span class="nt">strong</span><span class="p"></span><span class="p">&gt;</span><span class="p">{</span><span class="nx">params</span><span class="p">.</span><span class="nx">id</span><span class="p">}</span><span class="p">&lt;</span><span class="p">/</span><span class="nt">strong</span><span class="p">&gt;</span>
+      <span class="p">&lt;</span><span class="nt">br</span> <span class="p">/</span><span class="p">&gt;</span>
+      <span class="nx">Current</span> <span class="nx">hash</span> <span class="nx">parameter</span> <span class="nx">is</span> <span class="p">&lt;</span><span class="nt">strong</span><span class="p"></span><span class="p">&gt;</span><span class="p">{</span><span class="nx">params</span><span class="p">.</span><span class="nx">hash</span><span class="p">}</span><span class="p">&lt;</span><span class="p">/</span><span class="nt">strong</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="p">/</span><span class="nt">div</span><span class="p">&gt;</span>
+  <span class="p">)</span>
+<span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>如果这时候<code>Users</code>组件的子组件同样需要用到这些参数，你只需要接着使用<code>useParams()</code>就可以了。</p>
+<h3 id="uselocations-hook">useLocations hook</h3>
+<p>在React Router v4版本中，跟获取参数一样，你需要使用组件props模式来取得<code>location</code>对象。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-react" data-lang="react"><span class="p">&lt;</span><span class="nt">Route</span> <span class="na">path</span><span class="o">=</span><span class="s">&#34;/post/:number&#34;</span> <span class="na">component</span><span class="o">=</span><span class="p">{</span><span class="nx">Post</span><span class="p">}</span> <span class="p">/</span><span class="p">&gt;</span>
+
+<span class="kd">function</span> <span class="nx">Post</span><span class="p">(</span><span class="nx">props</span><span class="p">)</span><span class="p">{</span>
+  <span class="k">return</span> <span class="p">(</span>
+    <span class="p">&lt;</span><span class="nt">div</span><span class="p"></span><span class="p">&gt;</span>
+    	<span class="nx">In</span> <span class="nx">React</span> <span class="nx">Router</span> <span class="nx">v4</span><span class="p">,</span> <span class="nx">you</span> <span class="nx">get</span> <span class="nx">the</span> <span class="nx">location</span> <span class="nx">object</span> <span class="nx">from</span> <span class="nx">props</span><span class="p">.</span>
+      <span class="p">&lt;</span><span class="nt">br</span> <span class="p">/</span><span class="p">&gt;</span>
+      <span class="nx">Current</span> <span class="nx">pathname</span><span class="o">:</span> <span class="p">&lt;</span><span class="nt">strong</span><span class="p"></span><span class="p">&gt;</span><span class="p">{</span><span class="nx">props</span><span class="p">.</span><span class="nx">location</span><span class="p">.</span><span class="nx">pathname</span><span class="p">}</span><span class="p">&lt;</span><span class="nt">strong</span><span class="p"></span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="p">/</span><span class="nt">div</span><span class="p">&gt;</span>
+  <span class="p">)</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>v5.1以后，可以使用<code>useLocation hook</code>获取</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-react" data-lang="react"><span class="p">&lt;</span><span class="nt">Route</span> <span class="na">path</span><span class="o">=</span><span class="s">&#34;/users/:id/:password&#34;</span> <span class="p"></span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">Users</span> <span class="p">/</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="p">/</span><span class="nt">Route</span><span class="p">&gt;</span>
+
+<span class="c1">// new way to fetch location with hooks
+</span><span class="c1"></span><span class="kd">function</span> <span class="nx">Users</span><span class="p">(</span><span class="p">)</span><span class="p">{</span>
+  <span class="kd">let</span> <span class="nx">location</span> <span class="o">=</span> <span class="nx">useLocation</span><span class="p">(</span><span class="p">)</span><span class="p">;</span>
+  <span class="k">return</span> <span class="p">(</span>
+    <span class="p">&lt;</span><span class="nt">div</span><span class="p"></span><span class="p">&gt;</span>
+    	<span class="nx">In</span> <span class="nx">React</span> <span class="nx">Router</span> <span class="nx">v5</span><span class="p">,</span> <span class="nx">You</span> <span class="nx">can</span> <span class="nx">use</span> <span class="nx">hooks</span> <span class="nx">to</span> <span class="nx">get</span> <span class="nx">location</span> <span class="nx">object</span><span class="p">.</span>
+      <span class="p">&lt;</span><span class="nt">br</span> <span class="p">/</span><span class="p">&gt;</span>
+      <span class="nx">Current</span> <span class="nx">pathname</span><span class="o">:</span> <span class="p">&lt;</span><span class="nt">strong</span><span class="p"></span><span class="p">&gt;</span><span class="p">{</span><span class="nx">location</span><span class="p">.</span><span class="nx">pathname</span><span class="p">}</span><span class="p">&lt;</span><span class="nt">strong</span><span class="p"></span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="p">/</span><span class="nt">div</span><span class="p">&gt;</span>
+  <span class="p">)</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="usehistory-hook">useHistory hook</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-react" data-lang="react"><span class="p">&lt;</span><span class="nt">Route</span> <span class="na">path</span><span class="o">=</span><span class="s">&#34;/post/:slug&#34;</span> <span class="na">component</span><span class="o">=</span><span class="p">{</span><span class="nx">Post</span><span class="p">}</span><span class="p"></span><span class="p">&gt;</span>
+
+<span class="c1">// Old way to fetch history
+</span><span class="c1"></span><span class="kd">function</span> <span class="nx">Post</span><span class="p">(</span><span class="nx">props</span><span class="p">)</span><span class="p">{</span>
+    <span class="k">return</span> <span class="p">(</span>
+      <span class="p">&lt;</span><span class="nt">div</span><span class="p"></span><span class="p">&gt;</span>
+      	<span class="nx">In</span> <span class="nx">React</span> <span class="nx">Router</span> <span class="nx">v4</span><span class="p">,</span> <span class="nx">you</span> <span class="nx">get</span> <span class="nx">the</span> <span class="nx">history</span> <span class="nx">object</span> <span class="nx">from</span> <span class="nx">props</span><span class="p">.</span>
+        <span class="p">&lt;</span><span class="nt">br</span> <span class="p">/</span><span class="p">&gt;</span>
+        <span class="p">&lt;</span><span class="nt">button</span> <span class="na">type</span><span class="o">=</span><span class="s">&#34;button&#34;</span> <span class="na">onClick</span><span class="o">=</span><span class="p">{</span><span class="p">(</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="nx">props</span><span class="p">.</span><span class="nx">history</span><span class="p">.</span><span class="nx">goBack</span><span class="p">(</span><span class="p">)</span><span class="p">}</span><span class="p"></span><span class="p">&gt;</span><span class="nx">Go</span> <span class="nx">back</span><span class="p">&lt;</span><span class="p">/</span><span class="nt">button</span><span class="p">&gt;</span>
+      <span class="p">&lt;</span><span class="p">/</span><span class="nt">div</span><span class="p">&gt;</span>
+    <span class="p">)</span><span class="p">;</span>
+  <span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>使用<code>useHistory hook</code></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-react" data-lang="react"><span class="p">&lt;</span><span class="nt">Route</span> <span class="na">path</span><span class="o">=</span><span class="s">&#34;/users/:id/:hash&#34;</span><span class="p"></span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">Users</span><span class="p"></span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="p">/</span><span class="nt">Route</span><span class="p">&gt;</span>
+
+
+<span class="kd">function</span> <span class="nx">Users</span><span class="p">(</span><span class="p">)</span><span class="p">{</span>
+    <span class="kd">let</span> <span class="nx">history</span> <span class="o">=</span> <span class="nx">useHistory</span><span class="p">(</span><span class="p">)</span><span class="p">;</span>
+    <span class="k">return</span> <span class="p">(</span>
+      <span class="p">&lt;</span><span class="nt">div</span><span class="p"></span><span class="p">&gt;</span>
+      	<span class="nx">In</span> <span class="nx">React</span> <span class="nx">Router</span> <span class="nx">v5</span><span class="p">,</span> <span class="nx">You</span> <span class="nx">can</span> <span class="nx">use</span> <span class="nx">hooks</span> <span class="nx">to</span> <span class="nx">get</span> <span class="nx">history</span> <span class="nx">object</span><span class="p">.</span>
+        <span class="p">&lt;</span><span class="nt">br</span> <span class="p">/</span><span class="p">&gt;</span>
+        <span class="p">&lt;</span><span class="nt">button</span> <span class="na">type</span><span class="o">=</span><span class="s">&#34;button&#34;</span> <span class="na">onClick</span><span class="o">=</span><span class="p">{</span><span class="p">(</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="nx">history</span><span class="p">.</span><span class="nx">goBack</span><span class="p">(</span><span class="p">)</span><span class="p">}</span><span class="p"></span><span class="p">&gt;</span><span class="nx">Go</span> <span class="nx">back</span><span class="p">&lt;</span><span class="p">/</span><span class="nt">button</span><span class="p">&gt;</span>
+      <span class="p">&lt;</span><span class="p">/</span><span class="nt">div</span><span class="p">&gt;</span>
+    <span class="p">)</span><span class="p">;</span>
+  <span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>使用这些hooks能够极大的简化代码，我们不再需要在组件里面传递<code>component</code>、<code>render</code>参数，仅需要在<code>&lt;Route&gt;</code>中传递URl path，并且把需要渲染的组件包裹在它之间就行。</p>
+<h3 id="useroutematch-hook">useRouteMatch hook</h3>
+<p>有时候为了获取 match 对象，我们需要使用<code>&lt;Route&gt;</code>组件</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-react" data-lang="react"><span class="p">&lt;</span><span class="nt">Route</span> <span class="na">path</span><span class="o">=</span><span class="s">&#34;/post&#34;</span><span class="p"></span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">Post</span> <span class="p">/</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="p">/</span><span class="nt">Route</span><span class="p">&gt;</span>
+
+
+<span class="kd">function</span> <span class="nx">Post</span><span class="p">(</span><span class="p">)</span><span class="p">{</span>
+    <span class="k">return</span> <span class="p">(</span>
+      <span class="p">&lt;</span><span class="nt">Route</span> 
+        <span class="na">path</span><span class="o">=</span><span class="s">&#34;/post/:slug&#34;</span>
+        <span class="na">render</span><span class="o">=</span><span class="p">{</span><span class="p">(</span><span class="p">{</span> <span class="nx">match</span> <span class="p">}</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
+          <span class="k">return</span> <span class="p">(</span>
+          	<span class="p">&lt;</span><span class="nt">div</span><span class="p"></span><span class="p">&gt;</span><span class="nx">Your</span> <span class="nx">current</span> <span class="nx">path</span><span class="o">:</span> <span class="p">&lt;</span><span class="nt">strong</span><span class="p"></span><span class="p">&gt;</span><span class="p">{</span><span class="nx">match</span><span class="p">.</span><span class="nx">path</span><span class="p">}</span><span class="p">&lt;</span><span class="p">/</span><span class="nt">strong</span><span class="p">&gt;</span><span class="p">&lt;</span><span class="p">/</span><span class="nt">div</span><span class="p">&gt;</span>
+          <span class="p">)</span><span class="p">;</span>
+        <span class="p">}</span><span class="p">}</span>
+        <span class="p">/</span><span class="p">&gt;</span>
+    <span class="p">)</span><span class="p">;</span>
+  <span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>v5版本使用hooks的实现</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-react" data-lang="react"><span class="p">&lt;</span><span class="nt">Route</span> <span class="na">path</span><span class="o">=</span><span class="s">&#34;/users&#34;</span><span class="p"></span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">Users</span> <span class="p">/</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="p">/</span><span class="nt">Route</span><span class="p">&gt;</span>
+
+<span class="kd">function</span> <span class="nx">Users</span><span class="p">(</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">let</span> <span class="nx">match</span> <span class="o">=</span> <span class="nx">useRouteMatch</span><span class="p">(</span><span class="s2">&#34;/users/:id/:hash&#34;</span><span class="p">)</span><span class="p">;</span>
+  <span class="k">return</span> <span class="p">(</span>
+  	<span class="p">&lt;</span><span class="nt">div</span><span class="p"></span><span class="p">&gt;</span>
+    	<span class="nx">In</span> <span class="nx">React</span> <span class="nx">Router</span> <span class="nx">v5</span><span class="p">,</span> <span class="nx">You</span> <span class="nx">can</span> <span class="nx">use</span> <span class="nx">useRouteMatch</span> <span class="nx">to</span> <span class="nx">get</span> <span class="nx">match</span> <span class="nx">object</span><span class="p">.</span>
+      <span class="p">&lt;</span><span class="nt">br</span> <span class="p">/</span><span class="p">&gt;</span>
+      <span class="nx">Current</span> <span class="nx">match</span> <span class="nx">path</span><span class="o">:</span> <span class="p">&lt;</span><span class="nt">strong</span><span class="p"></span><span class="p">&gt;</span><span class="p">{</span><span class="nx">match</span><span class="p">.</span><span class="nx">path</span><span class="p">}</span><span class="p">&lt;</span><span class="p">/</span><span class="nt">strong</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="p">/</span><span class="nt">div</span><span class="p">&gt;</span>
+  <span class="p">)</span>
+<span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="context-api">Context API</h2>
+<p>通常来说在React中，你的数据需要从顶层组件一层一层传递到下层组件，即使这些数据只有最后一层组件才需要用到。这种自上而下的数据流有一个好处就是能够精准的定位数据传递过程中在哪里出现了问题。</p>
+<p>不过这种方法确实有点儿死板，所以React提供了类似定义全局变量的功能，这就是<code>Context API</code>。</p>
+<p>在一个组件中定义的数据作为<code>provider</code>生产者，而其他使用这个数据的组件作为<code>consumer</code>消费者。通过Context API共享的数据可以理解为React 组件树中的全局变量，它可以用来实现的功能有：共享当前认证用户、选择的主题或者语言。</p>
+<p>跟 <code>useState hook</code>使用类似，可以通过<code>React.createContext()</code>来创建，并传递默认值</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-react" data-lang="react"><span class="kr">import</span> <span class="nx">React</span> <span class="nx">from</span> <span class="s1">&#39;react&#39;</span><span class="p">;</span>
+
+<span class="c1">// default to &#39;cn&#39;
+</span><span class="c1"></span><span class="kr">const</span> <span class="nx">LanguageContext</span> <span class="o">=</span> <span class="nx">React</span><span class="p">.</span><span class="nx">createContext</span><span class="p">(</span><span class="s1">&#39;cn&#39;</span><span class="p">)</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>这样我们就得到一个可以使用的<code>LanguageContext</code>，它提供了<code>LanguageContext.Provider</code>和 <code>LanguageContext.Consumer</code>两个组件。</p>
+<p><strong>生成context</strong></p>
+<p>context中的数据通常是由state提供，一般当state改变，context相应的数据也会改变。你需要使用<code>Provider</code>组件将自定义组件包起来</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-react" data-lang="react"><span class="kr">import</span> <span class="nx">React</span> <span class="nx">from</span> <span class="s1">&#39;react&#39;</span><span class="p">;</span>
+
+<span class="kr">const</span> <span class="nx">LanguageContext</span> <span class="o">=</span> <span class="nx">React</span><span class="p">.</span><span class="nx">createContext</span><span class="p">(</span><span class="s1">&#39;cn&#39;</span><span class="p">)</span>
+
+<span class="kd">function</span> <span class="nx">App</span><span class="p">(</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kr">const</span> <span class="nx">language</span> <span class="o">=</span> <span class="s1">&#39;en&#39;</span>
+  
+  <span class="k">return</span> <span class="p">(</span>
+    <span class="p">&lt;</span><span class="nt">LanguageContext</span><span class="na">.Provider</span> <span class="na">value</span><span class="o">=</span><span class="p">{</span><span class="nx">language</span><span class="p">}</span><span class="p"></span><span class="p">&gt;</span>
+      <span class="p">&lt;</span><span class="nt">Hello</span> <span class="p">/</span><span class="p">&gt;</span>
+    <span class="o">&lt;</span><span class="err">/</span><span class="err">L</span><span class="err">a</span><span class="err">n</span><span class="err">g</span><span class="err">u</span><span class="err">a</span><span class="err">g</span><span class="err">e</span><span class="err">C</span><span class="err">o</span><span class="err">n</span><span class="err">t</span><span class="err">e</span><span class="err">x</span><span class="err">t</span><span class="err">.</span><span class="err">P</span><span class="err">r</span><span class="err">o</span><span class="err">v</span><span class="err">i</span><span class="err">d</span><span class="err">e</span><span class="err">r</span><span class="err">&gt;</span>
+  <span class="p">)</span>
+<span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>这样<code>&lt;Hello&gt;</code>组件以及它的子组件都能使用<code>LanguageContext</code>提供的值。</p>
+<p><strong>方法组件使用context内容的方式</strong></p>
+<p>方法组件可以使用提供的 <code>useContext</code> hook</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-react" data-lang="react"><span class="kd">function</span> <span class="nx">Hello</span><span class="p">(</span><span class="p">)</span><span class="p">{</span>
+  <span class="kr">const</span> <span class="nx">language</span> <span class="o">=</span> <span class="nx">useContext</span><span class="p">(</span><span class="nx">LanguageContext</span><span class="p">)</span>
+  
+  <span class="k">if</span> <span class="p">(</span><span class="nx">language</span> <span class="o">===</span> <span class="s2">&#34;en&#34;</span><span class="p">)</span><span class="p">{</span>
+    <span class="k">return</span> <span class="p">&lt;</span><span class="nt">h1</span><span class="p"></span><span class="p">&gt;</span><span class="nx">Hello</span><span class="o">!</span><span class="p">&lt;</span><span class="p">/</span><span class="nt">h1</span><span class="p">&gt;</span>
+  <span class="p">}</span>
+  <span class="k">return</span> <span class="p">&lt;</span><span class="nt">h1</span><span class="p"></span><span class="p">&gt;</span><span class="nx">你好</span><span class="err">！</span><span class="p">&lt;</span><span class="p">/</span><span class="nt">h1</span><span class="p">&gt;</span>
+<span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>我们根据上面的代码修改，使得context值能够被改变</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-react" data-lang="react"><span class="kr">import</span> <span class="nx">React</span><span class="p">,</span> <span class="p">{</span> <span class="nx">useState</span><span class="p">,</span> <span class="nx">useContext</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">&#39;react&#39;</span><span class="p">;</span>
+
+<span class="kr">const</span> <span class="nx">LanguageContext</span> <span class="o">=</span> <span class="nx">React</span><span class="p">.</span><span class="nx">createContext</span><span class="p">(</span><span class="p">)</span>
+
+<span class="kd">function</span> <span class="nx">App</span><span class="p">(</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kr">const</span> <span class="p">[</span><span class="nx">language</span><span class="p">,</span> <span class="nx">setLanguage</span><span class="p">]</span> <span class="o">=</span> <span class="nx">useState</span><span class="p">(</span><span class="s2">&#34;en&#34;</span><span class="p">)</span><span class="p">;</span>
+  
+  <span class="kr">const</span> <span class="nx">changeLangeuage</span> <span class="o">=</span> <span class="p">(</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">language</span> <span class="o">===</span> <span class="s2">&#34;en&#34;</span><span class="p">)</span><span class="p">{</span>
+      <span class="nx">setLanguage</span><span class="p">(</span><span class="s2">&#34;cn&#34;</span><span class="p">)</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+      <span class="nx">setLanguage</span><span class="p">(</span><span class="s2">&#34;en&#34;</span><span class="p">)</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+  
+  <span class="k">return</span> <span class="p">(</span>
+    <span class="p">&lt;</span><span class="nt">LanguageContext</span><span class="na">.Provider</span> <span class="na">value</span><span class="o">=</span><span class="p">{</span><span class="nx">language</span><span class="p">}</span><span class="p"></span><span class="p">&gt;</span>
+      <span class="p">&lt;</span><span class="nt">Hello</span> <span class="p">/</span><span class="p">&gt;</span>
+      <span class="p">&lt;</span><span class="nt">button</span> <span class="na">onClick</span><span class="o">=</span><span class="p">{</span><span class="nx">changeLanguage</span><span class="p">}</span><span class="p"></span><span class="p">&gt;</span><span class="nx">Change</span> <span class="nx">Language</span><span class="p">&lt;</span><span class="p">/</span><span class="nt">button</span><span class="p">&gt;</span>
+    <span class="o">&lt;</span><span class="err">/</span><span class="err">L</span><span class="err">a</span><span class="err">n</span><span class="err">g</span><span class="err">u</span><span class="err">a</span><span class="err">g</span><span class="err">e</span><span class="err">C</span><span class="err">o</span><span class="err">n</span><span class="err">t</span><span class="err">e</span><span class="err">x</span><span class="err">t</span><span class="err">.</span><span class="err">P</span><span class="err">r</span><span class="err">o</span><span class="err">v</span><span class="err">i</span><span class="err">d</span><span class="err">e</span><span class="err">r</span><span class="err">&gt;</span>
+  <span class="p">)</span>
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">Hello</span><span class="p">(</span><span class="p">)</span><span class="p">{</span>
+  <span class="kr">const</span> <span class="nx">language</span> <span class="o">=</span> <span class="nx">useContext</span><span class="p">(</span><span class="nx">LanguageContext</span><span class="p">)</span>
+  
+  <span class="k">if</span> <span class="p">(</span><span class="nx">language</span> <span class="o">===</span> <span class="s2">&#34;en&#34;</span><span class="p">)</span><span class="p">{</span>
+    <span class="k">return</span> <span class="p">&lt;</span><span class="nt">h1</span><span class="p"></span><span class="p">&gt;</span><span class="nx">Hello</span><span class="o">!</span><span class="p">&lt;</span><span class="p">/</span><span class="nt">h1</span><span class="p">&gt;</span>
+  <span class="p">}</span>
+  <span class="k">return</span> <span class="p">&lt;</span><span class="nt">h1</span><span class="p"></span><span class="p">&gt;</span><span class="nx">你好</span><span class="err">！</span><span class="p">&lt;</span><span class="p">/</span><span class="nt">h1</span><span class="p">&gt;</span>
+<span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><p><strong>在类组件中使用context值</strong></p>
+<p>在类组件中你可以使用<code>Context.Consumer</code>组件来获取值。这个组件需要一个子函数，它会将当前的值传递进去。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-react" data-lang="react"><span class="kr">class</span> <span class="nx">Hello</span> <span class="kr">extends</span> <span class="nx">React</span><span class="p">.</span><span class="nx">Component</span> <span class="p">{</span>
+  <span class="nx">render</span><span class="p">(</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="p">(</span>
+    	<span class="p">&lt;</span><span class="nt">LanguageContext</span><span class="na">.Consumer</span><span class="p"></span><span class="p">&gt;</span>
+        <span class="p">{</span><span class="p">(</span><span class="nx">language</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
+          <span class="k">if</span> <span class="p">(</span><span class="nx">language</span> <span class="o">===</span> <span class="s2">&#34;en&#34;</span><span class="p">)</span><span class="p">{</span>
+            <span class="k">return</span> <span class="p">&lt;</span><span class="nt">h1</span><span class="p"></span><span class="p">&gt;</span><span class="nx">Hello</span><span class="o">!</span><span class="p">&lt;</span><span class="p">/</span><span class="nt">h1</span><span class="p">&gt;</span>
+          <span class="p">}</span>
+          <span class="k">return</span> <span class="p">&lt;</span><span class="nt">h1</span><span class="p"></span><span class="p">&gt;</span><span class="nx">你好</span><span class="err">！</span><span class="p">&lt;</span><span class="p">/</span><span class="nt">h1</span><span class="p">&gt;</span>
+        <span class="p">}</span><span class="p">}</span>
+      <span class="o">&lt;</span><span class="err">/</span><span class="err">L</span><span class="err">a</span><span class="err">n</span><span class="err">g</span><span class="err">u</span><span class="err">a</span><span class="err">g</span><span class="err">e</span><span class="err">C</span><span class="err">o</span><span class="err">n</span><span class="err">t</span><span class="err">e</span><span class="err">x</span><span class="err">t</span><span class="err">.</span><span class="err">C</span><span class="err">o</span><span class="err">n</span><span class="err">s</span><span class="err">u</span><span class="err">m</span><span class="err">e</span><span class="err">r</span><span class="err">&gt;</span>
+    <span class="p">)</span><span class="p">;</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>这种组件中套函数的方法，看着有点儿反人类，所以React官方还提供了另外一种方法，使用<code>contextType</code>，将context对象赋值给<code>contextType</code>，可以使用<code>this.context</code>得到context的值。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-react" data-lang="react"><span class="kr">class</span> <span class="nx">Hello</span> <span class="kr">extends</span> <span class="nx">React</span><span class="p">.</span><span class="nx">Component</span> <span class="p">{</span>
+  <span class="kr">static</span> <span class="nx">contextType</span> <span class="o">=</span> <span class="nx">LanguageContext</span><span class="p">;</span>
+  <span class="nx">render</span><span class="p">(</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kr">const</span> <span class="nx">language</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">context</span><span class="p">;</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">language</span> <span class="o">===</span> <span class="s2">&#34;en&#34;</span><span class="p">)</span><span class="p">{</span>
+      <span class="k">return</span> <span class="p">&lt;</span><span class="nt">h1</span><span class="p"></span><span class="p">&gt;</span><span class="nx">Hello</span><span class="o">!</span><span class="p">&lt;</span><span class="p">/</span><span class="nt">h1</span><span class="p">&gt;</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="p">&lt;</span><span class="nt">h1</span><span class="p"></span><span class="p">&gt;</span><span class="nx">你好</span><span class="err">！</span><span class="p">&lt;</span><span class="p">/</span><span class="nt">h1</span><span class="p">&gt;</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>由于全局变量的特性，你可以给多个组件提供相同的值。也就是说一个<code>provider</code>可以有多个<code>consumers</code>。</p>
+<h2 id="some-tips">Some Tips</h2>
+<p><strong>不要使用变量展开的方式传递props</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-react" data-lang="react"><span class="kd">function</span> <span class="nx">MainComponent</span><span class="p">(</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kr">const</span> <span class="nx">props</span> <span class="o">=</span> <span class="p">{</span> <span class="nx">firstName</span><span class="o">:</span> <span class="s2">&#34;Jack&#34;</span><span class="p">,</span> <span class="nx">lastName</span><span class="o">:</span> <span class="s2">&#34;Skeld&#34;</span><span class="p">}</span>
+  <span class="k">return</span> <span class="p">&lt;</span><span class="nt">Hello</span> <span class="p">{</span><span class="na">...props</span><span class="p">}</span> <span class="p">/</span><span class="p">&gt;</span>
+<span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>这种方式将变量一股脑的传递到子组件，如果参数很多或者获取的数据来自其他API，全部传递的话，子组件会得到很多无用的数据，不便于定位数据。所以还是推荐用到什么数据就传递什么数据到子组件。</p>
+<p><strong>使用propTypes和defaultProps来对参数做限制</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-react" data-lang="react"><span class="kr">import</span> <span class="nx">React</span> <span class="nx">from</span> <span class="s2">&#34;react&#34;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="nx">ReactDOM</span> <span class="nx">from</span> <span class="s2">&#34;react-dom&#34;</span><span class="p">;</span>
+
+<span class="kd">function</span> <span class="nx">App</span><span class="p">(</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="p">&lt;</span><span class="nt">Greeting</span> <span class="na">name</span><span class="o">=</span><span class="s">&#34;Nathan&#34;</span> <span class="p">/</span><span class="p">&gt;</span><span class="p">;</span>
+<span class="p">}</span>
+    
+<span class="kd">function</span> <span class="nx">Greeting</span><span class="p">(</span><span class="nx">props</span><span class="p">)</span><span class="p">{</span>
+  <span class="k">return</span> <span class="p">(</span>
+  	<span class="p">&lt;</span><span class="nt">p</span><span class="p"></span><span class="p">&gt;</span>
+    	<span class="nx">Hello</span><span class="o">!</span> <span class="nx">I</span><span class="err">&#39;</span><span class="nx">m</span> <span class="p">{</span><span class="nx">props</span><span class="p">.</span><span class="nx">name</span><span class="p">}</span><span class="p">,</span>
+      <span class="nx">a</span> <span class="p">{</span><span class="nx">props</span><span class="p">.</span><span class="nx">name</span><span class="p">}</span> <span class="nx">years</span> <span class="nx">old</span> <span class="p">{</span><span class="nx">props</span><span class="p">.</span><span class="nx">occupation</span><span class="p">}</span><span class="p">.</span>
+      <span class="nx">Pleased</span> <span class="nx">to</span> <span class="nx">meet</span> <span class="nx">you</span><span class="o">!</span>
+    <span class="p">&lt;</span><span class="p">/</span><span class="nt">p</span><span class="p">&gt;</span>
+  <span class="p">)</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nx">ReactDOM</span><span class="p">.</span><span class="nx">render</span><span class="p">(</span><span class="p">&lt;</span><span class="nt">App</span> <span class="p">/</span><span class="p">&gt;</span><span class="p">,</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s2">&#34;root&#34;</span><span class="p">)</span><span class="p">)</span><span class="p">;</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>上面的例子中<code>props.name</code>、<code>props.occupation</code>没有被传递，但是运行不会报错，React会忽略这两个参数，直接渲染剩下的数据。</p>
+<p>我们可以使用第三方包<code>propTypes</code>来对参数进行限制</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">npm install --save prop-types
+</code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-react" data-lang="react"><span class="kr">import</span> <span class="nx">React</span> <span class="nx">from</span> <span class="s2">&#34;react&#34;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="nx">ReactDOM</span> <span class="nx">from</span> <span class="s2">&#34;react-dom&#34;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="nx">PropTypes</span> <span class="nx">from</span> <span class="s2">&#34;prop-types&#34;</span><span class="p">;</span>
+
+<span class="kd">function</span> <span class="nx">App</span><span class="p">(</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="p">&lt;</span><span class="nt">Greeting</span> <span class="na">name</span><span class="o">=</span><span class="s">&#34;Nathan&#34;</span> <span class="p">/</span><span class="p">&gt;</span><span class="p">;</span>
+<span class="p">}</span>
+    
+<span class="kd">function</span> <span class="nx">Greeting</span><span class="p">(</span><span class="nx">props</span><span class="p">)</span><span class="p">{</span>
+  <span class="k">return</span> <span class="p">(</span>
+  	<span class="p">&lt;</span><span class="nt">p</span><span class="p"></span><span class="p">&gt;</span>
+    	<span class="nx">Hello</span><span class="o">!</span> <span class="nx">I</span><span class="err">&#39;</span><span class="nx">m</span> <span class="p">{</span><span class="nx">props</span><span class="p">.</span><span class="nx">name</span><span class="p">}</span><span class="p">,</span>
+      <span class="nx">a</span> <span class="p">{</span><span class="nx">props</span><span class="p">.</span><span class="nx">name</span><span class="p">}</span> <span class="nx">years</span> <span class="nx">old</span> <span class="p">{</span><span class="nx">props</span><span class="p">.</span><span class="nx">occupation</span><span class="p">}</span><span class="p">.</span>
+      <span class="nx">Pleased</span> <span class="nx">to</span> <span class="nx">meet</span> <span class="nx">you</span><span class="o">!</span>
+    <span class="p">&lt;</span><span class="p">/</span><span class="nt">p</span><span class="p">&gt;</span>
+  <span class="p">)</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nx">Greeting</span><span class="p">.</span><span class="nx">propTypes</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="c1">// name must be a string and defined
+</span><span class="c1"></span>  <span class="nx">name</span><span class="o">:</span> <span class="nx">PropTypes</span><span class="p">.</span><span class="nx">string</span><span class="p">.</span><span class="nx">isRequired</span><span class="p">,</span>
+  <span class="c1">// age must be a number and defined
+</span><span class="c1"></span>  <span class="nx">age</span><span class="o">:</span> <span class="nx">PropTypes</span><span class="p">.</span><span class="nx">number</span><span class="p">.</span><span class="nx">isRequired</span><span class="p">,</span>
+  <span class="c1">// occupation must be a string and defined
+</span><span class="c1"></span>  <span class="nx">occupation</span><span class="o">:</span> <span class="nx">PropTypes</span><span class="p">.</span><span class="nx">string</span><span class="p">.</span><span class="nx">isRequired</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="nx">Greeting</span><span class="p">.</span><span class="nx">defaultProps</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="nx">name</span><span class="o">:</span> <span class="s2">&#34;Nathan&#34;</span><span class="p">,</span>
+  <span class="nx">age</span><span class="o">:</span> <span class="mi">27</span><span class="p">,</span>
+  <span class="nx">occupation</span><span class="o">:</span> <span class="s2">&#34;Software Developer&#34;</span>
+<span class="p">}</span>
+
+<span class="nx">ReactDOM</span><span class="p">.</span><span class="nx">render</span><span class="p">(</span><span class="p">&lt;</span><span class="nt">App</span> <span class="p">/</span><span class="p">&gt;</span><span class="p">,</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s2">&#34;root&#34;</span><span class="p">)</span><span class="p">)</span><span class="p">;</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>上面的代码我们通过<code>propTypes</code>限制了传递参数的类型以及是否必须要求提供，同时也加入了默认值。如果不定义默认值，我们不向组件传递值或者传递值类型错误，就会在console抛出告警。加入了默认值之后，不传值的话它会使用你定义的默认值。</p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">Morgana</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2021-02-05
+        
+    </span>
+  </p>
+  
+  <p class="copyright-item">
+    <span class="item-title">许可协议</span>
+    <span class="item-content"><a rel="license noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a></span>
+  </p>
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/react/">react</a>
+          </div>
+      <nav class="post-nav">
+        
+        <a class="next" href="/2021/02/03/react-function-components-and-hooks/">
+            <span class="next-text nav-default">React Function Components and Hooks</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:fivestrong@live.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://github.com/fivestrong" class="iconfont icon-github" title="github"></a>
+  <a href="http://linuxfunk.com/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  <div class="busuanzi-footer">
+    <span id="busuanzi_container_site_pv"> 本站总访问量 <span id="busuanzi_value_site_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次 </span>
+      <span class="division">|</span>
+    <span id="busuanzi_container_site_uv"> 本站总访客数 <span id="busuanzi_value_site_uv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 人 </span>
+  </div>
+
+  <span class="copyright-year">
+    &copy; 
+    2015 - 
+    2021<span class="heart"><i class="iconfont icon-heart"></i></span><span>Morgana</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.c12618f9a600c40bd024996677e951e64d3487006775aeb22e200c990006c5c7.js"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

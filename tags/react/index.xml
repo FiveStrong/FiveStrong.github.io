@@ -6,10 +6,19 @@
     <description>Recent content in react on モルガンナの家</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Wed, 03 Feb 2021 21:36:46 +0800</lastBuildDate>
+    <lastBuildDate>Thu, 04 Feb 2021 13:00:03 +0800</lastBuildDate>
     
 	<atom:link href="http://linuxfunk.com/tags/react/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>React Advanced Logics</title>
+      <link>http://linuxfunk.com/2021/02/04/react-advanced-logics/</link>
+      <pubDate>Thu, 04 Feb 2021 13:00:03 +0800</pubDate>
+      
+      <guid>http://linuxfunk.com/2021/02/04/react-advanced-logics/</guid>
+      <description>AJAX调用 基于现在流行的前后端分离架构，通过前端调用后端API的需求就很有必要。但是React本身只能使用自身state和props中的数</description>
+    </item>
     
     <item>
       <title>React Function Components and Hooks</title>
